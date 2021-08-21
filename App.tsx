@@ -1,28 +1,16 @@
-import tw from './styles/tailwind';
-import React, { FC } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
-import FormulatorProvider, { useFormulatorContext } from './providers/FormulatorProvider';
-
-const ChildComponent : FC = () => {
-
-  const { formula, setFormula } = useFormulatorContext();
-  
-  return (
-    <View style={tw`m-auto`}>
-      {formula &&
-        <Text style={tw`text-black`}>{formula.name}</Text>
-      }
-    </View>
-  )
-}
+import tw from "./styles/tailwind";
+import React from "react";
+import Navigator from "./Navigator";
+import { View } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import FormulatorProvider from "./providers/FormulatorProvider";
 
 export default function App() {
-  return (
-    <View style={tw`h-full flex`}>
-      <FormulatorProvider>
-        <ChildComponent />
-      </FormulatorProvider>
-    </View>
-  );
+	return (
+		<View style={tw`h-full flex`}>
+			<FormulatorProvider>
+				<Navigator />
+			</FormulatorProvider>
+		</View>
+	);
 }
