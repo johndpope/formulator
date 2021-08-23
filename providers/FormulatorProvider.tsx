@@ -1,4 +1,10 @@
 import React from "react";
+import {
+	Formula,
+	FormulaAction,
+	FormulatorContextProps,
+	FormulatorProviderProps,
+} from "../FormulatorTypes";
 
 // FORMULA CONTEXT & USAGE HOOK
 const FormulatorContext = React.createContext<Partial<FormulatorContextProps>>({});
@@ -33,32 +39,4 @@ export default function FormulatorProvider({ data, children }: FormulatorProvide
 			{children}
 		</FormulatorContext.Provider>
 	);
-}
-
-type Variable = {
-	[key: string]: string;
-};
-
-type Formula = {
-	name: string;
-	equation: string;
-	result: string | null;
-	openBrackets: number;
-	lastConstantType: string;
-	variables: Array<Variable>;
-};
-
-type FormulaAction = {
-	type: string;
-	payload: string | number;
-};
-
-interface FormulatorProviderProps {
-	data?: Formula;
-	children: React.ReactNode | Array<React.ReactNode>;
-}
-
-interface FormulatorContextProps {
-	formula: Formula;
-	dispatch: React.Dispatch<FormulaAction>;
 }
