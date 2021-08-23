@@ -1,4 +1,4 @@
-import { Formula } from "../FormulatorTypes";
+import { Formula } from "../types/FormulatorTypes";
 
 const checkIfShouldInsertMultiple = (state: Formula) => {
 	switch (state.lastConstantType) {

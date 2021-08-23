@@ -4,7 +4,7 @@ import {
 	FormulaAction,
 	FormulatorContextProps,
 	FormulatorProviderProps,
-} from "../FormulatorTypes";
+} from "../types/FormulatorTypes";
 
 import {
 	clearAll,
@@ -26,11 +26,23 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 	const { type, payload } = action;
 
 	switch (type) {
+		case "RESET":
+			if (payload == null || typeof payload === "string" || !("name" in payload)) return state;
+			return payload;
+
 		case "CHANGE_NAME":
-			if (typeof payload !== "string" || typeof payload !== "number") return state;
+			if (typeof payload !== "string") return state;
 			return { ...state, name: payload };
-		case "INSERT":
-			if (typeof payload === "string" || typeof payload === "number") return state;
+
+		case "CLEAR_LAST_CONSTANT":
+			return clearLast(state);
+
+		case "CLEAR_ALL_CONSTANTS":
+			return clearAll(state);
+
+		case "INSERT_CONSTANT":
+			if (!payload || typeof payload === "string" || !("constantType" in payload)) return state;
+
 			switch (payload?.constantType) {
 				case "EQ_NUMBER":
 					return insertNumber(state, payload.constantValue);
@@ -47,17 +59,14 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 				default:
 					return state;
 			}
-		case "CLEAR_LAST":
-			return clearLast(state);
-		case "CLEAR_ALL":
-			return clearAll(state);
+
 		default:
 			return state;
 	}
 };
 
 // FORMULA CONTEXT PROVIDER
-export default function FormulatorProvider({ data, children }: FormulatorProviderProps) {
+export default function FormulatorProvider({ children }: FormulatorProviderProps) {
 	const [formula, dispatch] = React.useReducer(formulaReducer, {
 		name: "New Formula",
 		equation: "",
@@ -69,7 +78,7 @@ export default function FormulatorProvider({ data, children }: FormulatorProvide
 
 	return (
 		<FormulatorContext.Provider value={{ formula, dispatch }}>
-			{children}
+			{formula && children}
 		</FormulatorContext.Provider>
 	);
 }

@@ -18,7 +18,7 @@ export type Formula = {
 
 export type FormulaAction = {
 	type: string;
-	payload?: string | number | Constant;
+	payload?: string | Constant | Formula;
 };
 
 export interface FormulatorProviderProps {
