@@ -8,7 +8,8 @@ export default function FormulatorScreen() {
 
 	return (
 		<View style={tw`flex-1 items-center justify-center`}>
-			{formula && <Text>{formula.name}</Text>}
+			{formula && <Text style={tw`py-2`}>{formula.name}</Text>}
+			{formula && <Text style={tw`py-2`}>{formula.equation}</Text>}
 		</View>
 	);
 }

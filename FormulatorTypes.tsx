@@ -2,6 +2,11 @@ export type Variable = {
 	[key: string]: string;
 };
 
+export type Constant = {
+	constantType: string;
+	constantValue?: string;
+};
+
 export type Formula = {
 	name: string;
 	equation: string;
@@ -13,7 +18,7 @@ export type Formula = {
 
 export type FormulaAction = {
 	type: string;
-	payload: string | number;
+	payload?: string | number | Constant;
 };
 
 export interface FormulatorProviderProps {
