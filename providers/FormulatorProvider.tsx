@@ -11,10 +11,12 @@ import {
 	clearLast,
 	insertBracket,
 	insertDecimal,
+	insertVariable,
 	insertNegative,
 	insertNumber,
 	insertOperation,
 	insertPercent,
+	calculateResult,
 } from "../utilities/inserts";
 
 // FORMULA CONTEXT & USAGE HOOK
@@ -40,12 +42,17 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 		case "CLEAR_ALL_CONSTANTS":
 			return clearAll(state);
 
+		case "CALCULATE_RESULT":
+			return calculateResult(state);
+
 		case "INSERT_CONSTANT":
 			if (!payload || typeof payload === "string" || !("constantType" in payload)) return state;
 
 			switch (payload?.constantType) {
 				case "EQ_NUMBER":
 					return insertNumber(state, payload.constantValue);
+				case "EQ_VARIABLE":
+					return insertVariable(state, payload.constantValue);
 				case "EQ_OPERATION":
 					return insertOperation(state, payload.constantValue);
 				case "EQ_BRACKET":
@@ -75,6 +82,10 @@ export default function FormulatorProvider({ children }: FormulatorProviderProps
 		lastConstantType: "",
 		variables: [],
 	});
+
+	React.useEffect(() => {
+		dispatch({ type: "CALCULATE_RESULT" });
+	}, [formula.equation]);
 
 	return (
 		<FormulatorContext.Provider value={{ formula, dispatch }}>

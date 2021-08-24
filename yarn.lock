@@ -4242,6 +4242,11 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+math-string@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/math-string/-/math-string-1.2.0.tgz#34b40c22e8d7672e889948080dcd860ca8a7a595"
+  integrity sha512-KMadEswG8fWhZKtkk4J6Bm83x5dL4KDxYB0varOkAQ1qQkoUwLSo9MiWpibP+atCSPndjTjHmiZCnAp1w1MH/w==
+
 md5-file@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/md5-file/-/md5-file-3.2.3.tgz#f9bceb941eca2214a4c0727f5e700314e770f06f"

@@ -3,6 +3,7 @@ import tw from "../styles/tailwind";
 import { FormulaScreenProps } from "../types/NavigatorTypes";
 import { View, Text, Pressable, TextInput } from "react-native";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
+import Equation from "../components/shared/Equation";
 
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
 	const { formula, dispatch } = useFormulatorContext();
@@ -29,7 +30,8 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 						style={tw`w-full border p-4`}
 						onChangeText={(n) => dispatch({ type: "CHANGE_NAME", payload: n })}
 					/>
-					<Text style={tw`py-2 mt-5`}>{formula.equation}</Text>
+					<Equation data={formula.equation} />
+					<Text>{formula.result}</Text>
 				</View>
 			)}
 		</>
