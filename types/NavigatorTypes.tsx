@@ -7,3 +7,4 @@ type RootStackParamList = {
 };
 
 export type FormulaScreenProps = NativeStackScreenProps<RootStackParamList, "Formulator">;
+export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;

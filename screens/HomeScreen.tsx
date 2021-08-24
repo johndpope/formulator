@@ -1,8 +1,9 @@
 import React from "react";
 import tw from "../styles/tailwind";
 import { View, Text, Pressable } from "react-native";
+import { HomeScreenProps } from "../types/NavigatorTypes";
 
-export default function HomeScreen({ navigation }: { navigation: any }) {
+export default function HomeScreen({ navigation }: HomeScreenProps) {
 	return (
 		<View style={tw`flex-1 bg-gray-100 flex flex-col items-center justify-center`}>
 			<Pressable
@@ -10,7 +11,7 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
 					navigation.navigate("Formulator", {
 						formula: {
 							name: "Custom Name",
-							equation: "",
+							equation: " 1 + 1",
 							result: null,
 							openBrackets: 0,
 							lastConstantType: "",
