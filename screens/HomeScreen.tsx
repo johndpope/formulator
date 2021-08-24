@@ -11,10 +11,10 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 					navigation.navigate("Formulator", {
 						formula: {
 							name: "Custom Name",
-							equation: " 1 + 1",
+							equation: "",
 							result: null,
 							openBrackets: 0,
-							lastConstantType: "EQ_NUMBER",
+							lastConstantType: "",
 							variables: [],
 						},
 					})

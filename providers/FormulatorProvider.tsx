@@ -55,10 +55,12 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 			return createVariable(state, payload);
 
 		case "UPDATE_VARIABLE":
+			// Check if payload is an instance of Variable
 			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
 			return updateVariable(state, payload);
 
 		case "DELETE_VARIABLE":
+			// Check if payload is an instance of Variable
 			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
 			return deleteVariable(state, payload);
 
