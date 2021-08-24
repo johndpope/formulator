@@ -10,8 +10,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	const { formula, dispatch } = useFormulatorContext();
 
 	React.useEffect(() => {
-		if (!route.params) return;
-		const unsubscribe = navigation.addListener("focus", () => {
+		const unsubscribe = navigation.addListener("blur", () => {
 			dispatch?.({
 				type: "RESET",
 				payload: route.params?.formula,
