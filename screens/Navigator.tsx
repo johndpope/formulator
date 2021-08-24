@@ -1,6 +1,6 @@
 import React from "react";
-import HomeScreen from "./screens/HomeScreen";
-import FormulatorScreen from "./screens/FormulatorScreen";
+import HomeScreen from "./HomeScreen";
+import FormulatorScreen from "./FormulatorScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
