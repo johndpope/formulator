@@ -17,6 +17,9 @@ import {
 	insertOperation,
 	insertPercent,
 	calculateResult,
+	createVariable,
+	updateVariable,
+	deleteVariable,
 } from "../utilities/inserts";
 
 // FORMULA CONTEXT & USAGE HOOK
@@ -29,7 +32,8 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 
 	switch (type) {
 		case "RESET":
-			if (payload == null || typeof payload === "string" || !("name" in payload)) return state;
+			// Check if payload is an instance of Formula
+			if (payload == null || typeof payload === "string" || !("variables" in payload)) return state;
 			return payload;
 
 		case "CHANGE_NAME":
@@ -44,6 +48,19 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 
 		case "CALCULATE_RESULT":
 			return calculateResult(state);
+
+		case "CREATE_VARIABLE":
+			// Check if payload is an instance of Variable
+			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
+			return createVariable(state, payload);
+
+		case "UPDATE_VARIABLE":
+			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
+			return updateVariable(state, payload);
+
+		case "DELETE_VARIABLE":
+			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
+			return deleteVariable(state, payload);
 
 		case "INSERT_CONSTANT":
 			if (!payload || typeof payload === "string" || !("constantType" in payload)) return state;
@@ -85,7 +102,7 @@ export default function FormulatorProvider({ children }: FormulatorProviderProps
 
 	React.useEffect(() => {
 		dispatch({ type: "CALCULATE_RESULT" });
-	}, [formula.equation]);
+	}, [formula.equation, formula.variables]);
 
 	return (
 		<FormulatorContext.Provider value={{ formula, dispatch }}>

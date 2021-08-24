@@ -33,6 +33,74 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 					<Equation data={formula.equation} />
 					<Text>{formula.result}</Text>
 					<Calculator dispatch={dispatch} />
+					<View style={tw`flex flex-row`}>
+						<Pressable
+							onPress={() =>
+								dispatch({
+									type: "CREATE_VARIABLE",
+									payload: {
+										name: "total",
+										equation: "50",
+										result: "50",
+										openBrackets: 0,
+										color: "red",
+										lastConstantType: "EQ_NUMBER",
+									},
+								})
+							}
+							style={tw`p-5 bg-gray-300`}>
+							<Text style={tw``}>New Variable</Text>
+						</Pressable>
+						<Pressable
+							onPress={() =>
+								dispatch({
+									type: "UPDATE_VARIABLE",
+									payload: {
+										name: "total",
+										equation: "100",
+										result: "100",
+										openBrackets: 0,
+										color: "blue",
+										lastConstantType: "EQ_NUMBER",
+									},
+								})
+							}
+							style={tw`p-5 bg-gray-200`}>
+							<Text style={tw``}>Update Variable</Text>
+						</Pressable>
+						<Pressable
+							onPress={() =>
+								dispatch({
+									type: "DELETE_VARIABLE",
+									payload: {
+										name: "total",
+										equation: "100",
+										result: "100",
+										openBrackets: 0,
+										color: "blue",
+										lastConstantType: "EQ_NUMBER",
+									},
+								})
+							}
+							style={tw`p-5 bg-gray-200`}>
+							<Text style={tw``}>Delete Variable</Text>
+						</Pressable>
+					</View>
+					<View style={tw`flex flex-row`}>
+						{formula.variables.map((variable, index) => (
+							<Pressable
+								key={`variable-chip-${index}`}
+								onPress={() =>
+									dispatch({
+										type: "INSERT_CONSTANT",
+										payload: { constantType: "EQ_VARIABLE", constantValue: `${variable.name}` },
+									})
+								}
+								style={tw`p-5`}>
+								<Text style={tw`text-${variable.color}-500`}>{variable.name}</Text>
+							</Pressable>
+						))}
+					</View>
 				</View>
 			)}
 		</>

@@ -1,5 +1,5 @@
 import mathString from "math-string";
-import { Formula } from "../types/FormulatorTypes";
+import { Formula, Variable } from "../types/FormulatorTypes";
 
 const checkIfShouldInsertMultiple = (state: Formula) => {
 	switch (state.lastConstantType) {
@@ -33,10 +33,16 @@ export function checkConstantType(constant: string) {
 }
 
 export function calculateResult(state: Formula) {
+	let result;
 	let equation = state.equation
+		.replace(/\s/g, "")
 		.replace(/[.0-9]+%/, (m) => `${parseInt(m) / 100}`)
-		.replace(/\s/g, "");
-	let result = null;
+		.replace(/\{([^)]+?)\}/g, (match) => {
+			let variable = state.variables.find((v) => v.name === match.substring(1, match.length - 1));
+			if (!variable) return "";
+			return `${variable.result}`;
+		});
+
 	try {
 		result = mathString(equation);
 	} catch {
@@ -44,6 +50,35 @@ export function calculateResult(state: Formula) {
 	}
 
 	return { ...state, result };
+}
+
+export function createVariable(state: Formula, variable?: Variable) {
+	if (!variable) return state;
+	let variables: Array<Variable> = [...state.variables];
+
+	variables.push(variable);
+
+	return { ...state, variables };
+}
+
+export function updateVariable(state: Formula, variable: Variable) {
+	let variables: Array<Variable> = [...state.variables];
+	let indexToUpdate: number = variables.findIndex((v: Variable) => v.name === variable.name);
+
+	variables[indexToUpdate] = variable;
+
+	return { ...state, variables };
+}
+
+export function deleteVariable(state: Formula, variable: Variable) {
+	let equation = state.equation.replaceAll(`{${variable.name}}`, `${variable.result}`);
+
+	let variables: Array<Variable> = [...state.variables];
+	let indexToUpdate: number = variables.findIndex((v: Variable) => v.name === variable.name);
+
+	variables.splice(indexToUpdate, 1);
+
+	return { ...state, equation, variables };
 }
 
 export function insertNumber(state: Formula, value?: string) {

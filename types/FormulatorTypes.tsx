@@ -1,10 +1,15 @@
-export type Variable = {
-	[key: string]: string;
-};
-
 export type Constant = {
 	constantType: string;
 	constantValue?: string;
+};
+
+export type Variable = {
+	color: string;
+	name: string;
+	equation: string;
+	result: string | null;
+	openBrackets: number;
+	lastConstantType: string;
 };
 
 export type Formula = {
@@ -18,7 +23,7 @@ export type Formula = {
 
 export type FormulaAction = {
 	type: string;
-	payload?: string | Constant | Formula;
+	payload?: string | Constant | Formula | Variable;
 };
 
 export interface FormulatorProviderProps {

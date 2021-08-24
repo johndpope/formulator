@@ -14,7 +14,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 							equation: " 1 + 1",
 							result: null,
 							openBrackets: 0,
-							lastConstantType: "",
+							lastConstantType: "EQ_NUMBER",
 							variables: [],
 						},
 					})
