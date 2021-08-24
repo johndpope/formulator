@@ -4,6 +4,7 @@ import { FormulaScreenProps } from "../types/NavigatorTypes";
 import { View, Text, Pressable, TextInput } from "react-native";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 import Equation from "../components/shared/Equation";
+import Calculator from "../components/shared/Calculator";
 
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
 	const { formula, dispatch } = useFormulatorContext();
@@ -32,6 +33,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 					/>
 					<Equation data={formula.equation} />
 					<Text>{formula.result}</Text>
+					<Calculator dispatch={dispatch} />
 				</View>
 			)}
 		</>

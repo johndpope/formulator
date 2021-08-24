@@ -10,10 +10,10 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
 					navigation.navigate("Formulator", {
 						formula: {
 							name: "Custom Name",
-							equation: " 1 + 1 * ( 2 + 3 )",
+							equation: "",
 							result: null,
 							openBrackets: 0,
-							lastConstantType: "EqBracketClosed",
+							lastConstantType: "",
 							variables: [],
 						},
 					})
