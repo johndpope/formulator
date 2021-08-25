@@ -31,6 +31,7 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 	const { type, payload } = action;
 
 	switch (type) {
+		case "INIT":
 		case "RESET":
 			// Check if payload is an instance of Formula
 			if (payload == null || typeof payload === "string" || !("variables" in payload)) return state;
