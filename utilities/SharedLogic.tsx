@@ -1,8 +1,7 @@
-import mathString from "math-string";
-import { Formula, Variable } from "../types/FormulatorTypes";
+type Calculable = { equation: string; lastConstantType: string; openBrackets: number };
 
-const checkIfShouldInsertMultiple = (state: Formula) => {
-	switch (state.lastConstantType) {
+export const checkIfShouldInsertMultiple = (equation: string, lastConstantType: string): boolean => {
+	switch (lastConstantType) {
 		case "EQ_NUMBER":
 		case "EQ_VARIABLE":
 		case "EQ_BRACKET_CLOSED":
@@ -11,7 +10,7 @@ const checkIfShouldInsertMultiple = (state: Formula) => {
 			break;
 	}
 
-	if (state.equation.slice(-1) === "%") return true;
+	if (equation.slice(-1) === "%") return true;
 
 	return false;
 };
@@ -32,60 +31,11 @@ export function checkConstantType(constant: string) {
 	}
 }
 
-export function calculateResult(state: Formula) {
-	let result;
-	let equation = state.equation
-		.replace(/\s/g, "")
-		.replace(/[.0-9]+%/, (m) => `${parseInt(m) / 100}`)
-		.replace(/\{([^)]+?)\}/g, (match) => {
-			let variable = state.variables.find((v) => v.name === match.substring(1, match.length - 1));
-			if (!variable) return "";
-			return `${variable.result}`;
-		});
-
-	try {
-		result = mathString(equation);
-	} catch {
-		result = null;
-	}
-
-	return { ...state, result };
-}
-
-export function createVariable(state: Formula, variable?: Variable) {
-	if (!variable) return state;
-	let variables: Array<Variable> = [...state.variables];
-
-	variables.push(variable);
-
-	return { ...state, variables };
-}
-
-export function updateVariable(state: Formula, variable: Variable) {
-	let variables: Array<Variable> = [...state.variables];
-	let indexToUpdate: number = variables.findIndex((v: Variable) => v.name === variable.name);
-
-	variables[indexToUpdate] = variable;
-
-	return { ...state, variables };
-}
-
-export function deleteVariable(state: Formula, variable: Variable) {
-	let equation = state.equation.replaceAll(`{${variable.name}}`, `${variable.result}`);
-
-	let variables: Array<Variable> = [...state.variables];
-	let indexToUpdate: number = variables.findIndex((v: Variable) => v.name === variable.name);
-
-	variables.splice(indexToUpdate, 1);
-
-	return { ...state, equation, variables };
-}
-
-export function insertNumber(state: Formula, value?: string) {
+export function insertNumber(state: Calculable, value?: string) {
 	if (!value) return state;
 
 	// Check if multiplication symbol should be auto inserted before number
-	let isMultiplicable = checkIfShouldInsertMultiple(state);
+	let isMultiplicable = checkIfShouldInsertMultiple(state.equation, state.lastConstantType);
 	let multiplicationInsertion = state.equation.length && isMultiplicable ? " *" : "";
 
 	let isPreceededByPercent = state.equation.slice(-1) === "%";
@@ -96,10 +46,10 @@ export function insertNumber(state: Formula, value?: string) {
 		isPreceededByNumber && !isPreceededByPercent ? value : `${multiplicationInsertion} ${value}`);
 	const lastConstantType = "EQ_NUMBER";
 
-	return { ...state, equation, lastConstantType };
+	return { equation, lastConstantType };
 }
 
-export function insertOperation(state: Formula, value?: string) {
+export function insertOperation(state: Calculable, value?: string) {
 	if (!value || state.lastConstantType === "EQ_BRACKET_OPEN") return state;
 
 	let replacePrevious = state.lastConstantType === "EQ_OPERATION";
@@ -108,10 +58,10 @@ export function insertOperation(state: Formula, value?: string) {
 	const equation = (replacePrevious ? state.equation.slice(0, -2) : state.equation) + ` ${value}`;
 	const lastConstantType = "EQ_OPERATION";
 
-	return { ...state, equation, lastConstantType };
+	return { equation, lastConstantType };
 }
 
-export function insertBracket(state: Formula, value?: string) {
+export function insertBracket(state: Calculable, value?: string) {
 	if (!value) return state;
 
 	// Written this way for readability
@@ -123,42 +73,41 @@ export function insertBracket(state: Formula, value?: string) {
 	}
 
 	// Check if multiplication symbol should be auto inserted before bracket
-	let isMultiplicable = checkIfShouldInsertMultiple(state);
-	let multiplicationInsertion =
-		value === "(" && state.equation.length && isMultiplicable ? " *" : "";
+	let isMultiplicable = checkIfShouldInsertMultiple(state.equation, state.lastConstantType);
+	let multiplicationInsertion = value === "(" && state.equation.length && isMultiplicable ? " *" : "";
 
 	// Final return values for state
 	const openBrackets = state.openBrackets + value === "(" ? 1 : -1;
 	const equation = state.equation + `${multiplicationInsertion} ${value}`;
 	const lastConstantType = value === "(" ? "EQ_BRACKET_OPEN" : "EQ_BRACKET_CLOSED";
 
-	return { ...state, equation, lastConstantType, openBrackets };
+	return { equation, lastConstantType, openBrackets };
 }
 
-export function insertVariable(state: Formula, name?: string) {
+export function insertVariable(state: Calculable, name?: string) {
 	if (!name) return state;
 	// Check if multiplication symbol should be added before variable
-	let isMultiplicable = checkIfShouldInsertMultiple(state);
+	let isMultiplicable = checkIfShouldInsertMultiple(state.equation, state.lastConstantType);
 	let multiplicationInsertion = state.equation.length && isMultiplicable ? " *" : "";
 
 	// Final values to return for state
 	const lastConstantType = "EQ_VARIABLE";
 	const equation = (state.equation += `${multiplicationInsertion} {${name}}`);
 
-	return { ...state, equation, lastConstantType };
+	return { equation, lastConstantType };
 }
 
-export function insertDecimal(state: Formula) {
+export function insertDecimal(state: Calculable) {
 	if (!state.equation.length || state.lastConstantType !== "EQ_NUMBER") return state;
 
 	let equation = state.equation;
 	let isPreceededByDecimal = equation.slice(-1) === ".";
 	equation = isPreceededByDecimal ? equation.slice(0, -1) : (equation += ".");
 
-	return { ...state, equation };
+	return { equation };
 }
 
-export function insertPercent(state: Formula) {
+export function insertPercent(state: Calculable) {
 	if (!state.equation.length || state.lastConstantType !== "EQ_NUMBER") return state;
 
 	let isPercent = state.equation.slice(-1) === "%";
@@ -166,10 +115,10 @@ export function insertPercent(state: Formula) {
 	// Finally return number with / without percentage
 	const equation = isPercent ? state.equation.slice(0, -1) : (state.equation += "%");
 
-	return { ...state, equation };
+	return { equation };
 }
 
-export function insertNegative(state: Formula) {
+export function insertNegative(state: Calculable) {
 	if (!state.equation.length || state.lastConstantType !== "EQ_NUMBER") return state;
 
 	let equation = state.equation;
@@ -180,10 +129,10 @@ export function insertNegative(state: Formula) {
 	} else {
 		equation = equation.replace(/(\d|%)+$/i, (m) => `-${m}`);
 	}
-	return { ...state, equation };
+	return { equation };
 }
 
-export function clearLast(state: Formula) {
+export function clearLast(state: Calculable) {
 	if (!state.equation.length) return state;
 
 	let equation = state.equation;
@@ -213,15 +162,15 @@ export function clearLast(state: Formula) {
 			: state.openBrackets;
 	let lastConstantType = checkConstantType(equation.slice(-1));
 
-	return { ...state, equation, lastConstantType, openBrackets };
+	return { equation, lastConstantType, openBrackets };
 }
 
-export function clearAll(state: Formula) {
+export function clearAll(state: Calculable) {
 	if (!state.equation.length) return state;
 
 	const equation = "";
 	const openBrackets = 0;
 	const lastConstantType = "";
 
-	return { ...state, equation, lastConstantType, openBrackets };
+	return { equation, lastConstantType, openBrackets };
 }

@@ -1,15 +1,8 @@
+import { Variable } from "./VariableTypes";
+
 export type Constant = {
 	constantType: string;
 	constantValue?: string;
-};
-
-export type Variable = {
-	color: string;
-	name: string;
-	equation: string;
-	result: string | null;
-	openBrackets: number;
-	lastConstantType: string;
 };
 
 export type Formula = {
@@ -33,5 +26,5 @@ export interface FormulatorProviderProps {
 
 export interface FormulatorContextProps {
 	formula: Formula;
-	dispatch: React.Dispatch<FormulaAction>;
+	formulaDispatch: React.Dispatch<FormulaAction>;
 }

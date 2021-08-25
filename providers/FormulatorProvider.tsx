@@ -7,20 +7,29 @@ import {
 } from "../types/FormulatorTypes";
 
 import {
-	clearAll,
-	clearLast,
-	insertBracket,
-	insertDecimal,
-	insertVariable,
-	insertNegative,
-	insertNumber,
-	insertOperation,
-	insertPercent,
+	clearFormulaAll,
+	clearFormulaLast,
+	insertFormulaBracket,
+	insertFormulaDecimal,
+	insertFormulaNegative,
+	insertFormulaNumber,
+	insertFormulaOperation,
+	insertFormulaPercent,
+	insertFormulaVariable,
+	createFormulaVariable,
+	updateFormulaVariable,
+	deleteFormulaVariable,
 	calculateResult,
-	createVariable,
-	updateVariable,
-	deleteVariable,
-} from "../utilities/inserts";
+} from "../utilities/FormulatorLogic";
+
+const defaultFormulaState = {
+	name: "New Formula",
+	equation: "",
+	result: null,
+	openBrackets: 0,
+	lastConstantType: "",
+	variables: [],
+};
 
 // FORMULA CONTEXT & USAGE HOOK
 const FormulatorContext = React.createContext<Partial<FormulatorContextProps>>({});
@@ -32,20 +41,22 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 
 	switch (type) {
 		case "INIT":
-		case "RESET":
 			// Check if payload is an instance of Formula
 			if (payload == null || typeof payload === "string" || !("variables" in payload)) return state;
 			return payload;
+
+		case "RESET":
+			return defaultFormulaState;
 
 		case "CHANGE_NAME":
 			if (typeof payload !== "string") return state;
 			return { ...state, name: payload };
 
 		case "CLEAR_LAST_CONSTANT":
-			return clearLast(state);
+			return clearFormulaLast(state);
 
 		case "CLEAR_ALL_CONSTANTS":
-			return clearAll(state);
+			return clearFormulaAll(state);
 
 		case "CALCULATE_RESULT":
 			return calculateResult(state);
@@ -53,36 +64,36 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 		case "CREATE_VARIABLE":
 			// Check if payload is an instance of Variable
 			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
-			return createVariable(state, payload);
+			return createFormulaVariable(state, payload);
 
 		case "UPDATE_VARIABLE":
 			// Check if payload is an instance of Variable
 			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
-			return updateVariable(state, payload);
+			return updateFormulaVariable(state, payload);
 
 		case "DELETE_VARIABLE":
 			// Check if payload is an instance of Variable
 			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
-			return deleteVariable(state, payload);
+			return deleteFormulaVariable(state, payload);
 
 		case "INSERT_CONSTANT":
 			if (!payload || typeof payload === "string" || !("constantType" in payload)) return state;
 
 			switch (payload?.constantType) {
 				case "EQ_NUMBER":
-					return insertNumber(state, payload.constantValue);
+					return insertFormulaNumber(state, payload.constantValue);
 				case "EQ_VARIABLE":
-					return insertVariable(state, payload.constantValue);
+					return insertFormulaVariable(state, payload.constantValue);
 				case "EQ_OPERATION":
-					return insertOperation(state, payload.constantValue);
+					return insertFormulaOperation(state, payload.constantValue);
 				case "EQ_BRACKET":
-					return insertBracket(state, payload.constantValue);
+					return insertFormulaBracket(state, payload.constantValue);
 				case "EQ_PERCENTAGE":
-					return insertPercent(state);
+					return insertFormulaPercent(state);
 				case "EQ_NEGATIVE":
-					return insertNegative(state);
+					return insertFormulaNegative(state);
 				case "EQ_DECIMAL":
-					return insertDecimal(state);
+					return insertFormulaDecimal(state);
 				default:
 					return state;
 			}
@@ -94,21 +105,14 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 
 // FORMULA CONTEXT PROVIDER
 export default function FormulatorProvider({ children }: FormulatorProviderProps) {
-	const [formula, dispatch] = React.useReducer(formulaReducer, {
-		name: "New Formula",
-		equation: "",
-		result: null,
-		openBrackets: 0,
-		lastConstantType: "",
-		variables: [],
-	});
+	const [formula, formulaDispatch] = React.useReducer(formulaReducer, defaultFormulaState);
 
 	React.useEffect(() => {
-		dispatch({ type: "CALCULATE_RESULT" });
+		formulaDispatch({ type: "CALCULATE_RESULT" });
 	}, [formula.equation, formula.variables]);
 
 	return (
-		<FormulatorContext.Provider value={{ formula, dispatch }}>
+		<FormulatorContext.Provider value={{ formula, formulaDispatch }}>
 			{formula && children}
 		</FormulatorContext.Provider>
 	);

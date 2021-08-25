@@ -1,6 +1,6 @@
 import tw from "./styles/tailwind";
 import React from "react";
-import Navigator from "./screens/Navigator";
+import Navigator from "./Navigator";
 import { View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import FormulatorProvider from "./providers/FormulatorProvider";
