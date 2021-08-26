@@ -30,7 +30,7 @@ WebBrowser.maybeCompleteAuthSession();
 // Initialize Firebase
 const db = firebase.firestore();
 
-export const AuthContext = React.createContext<Partial<AuthContextProps>>({});
+const AuthContext = React.createContext<Partial<AuthContextProps>>({});
 export const useAuthContext = () => React.useContext(AuthContext);
 
 export default function AuthProvider({ children }: AuthProviderProps) {

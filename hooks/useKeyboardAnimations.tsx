@@ -2,16 +2,27 @@ import React from "react";
 import { Platform, Keyboard, Animated } from "react-native";
 
 export default function useKeyboardAnimations() {
-	const fadeOut = React.useRef(new Animated.Value(1)).current;
-	const fadeIn = React.useRef(new Animated.Value(0)).current;
+	const fadeOutOnKeyboard = React.useRef(new Animated.Value(1)).current;
+	const translateOutOnKeyboard = React.useRef(new Animated.Value(0)).current;
 	const [isKeyboardVisible, setKeyboardVibility] = React.useState(false);
 
 	const keyboardDidShow = () => {
-		Animated.timing(fadeOut, { toValue: 0.2, duration: 200, useNativeDriver: true }).start();
+		Animated.timing(fadeOutOnKeyboard, { toValue: 0, duration: 200, useNativeDriver: true }).start();
+		Animated.timing(translateOutOnKeyboard, {
+			toValue: -100,
+			duration: 200,
+			useNativeDriver: true,
+		}).start();
+
 		setKeyboardVibility(true);
 	};
 	const keyboardDidHide = () => {
-		Animated.timing(fadeOut, { toValue: 1, duration: 200, useNativeDriver: true }).start();
+		Animated.timing(fadeOutOnKeyboard, { toValue: 1, duration: 200, useNativeDriver: true }).start();
+		Animated.timing(translateOutOnKeyboard, {
+			toValue: 0,
+			duration: 200,
+			useNativeDriver: true,
+		}).start();
 		setKeyboardVibility(false);
 	};
 	const dismissKeyboard = () => Keyboard.dismiss();
@@ -33,8 +44,8 @@ export default function useKeyboardAnimations() {
 	}, []);
 
 	return {
-		fadeIn,
-		fadeOut,
+		fadeOutOnKeyboard,
+		translateOutOnKeyboard,
 		isKeyboardVisible,
 		dismissKeyboard,
 	};
