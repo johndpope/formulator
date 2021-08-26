@@ -3,6 +3,7 @@
     "name": "formulator",
     "slug": "formulator",
     "version": "1.0.0",
+    "scheme": "formulator",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
