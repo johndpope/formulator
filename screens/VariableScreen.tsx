@@ -17,7 +17,7 @@ import {
 	insertVariableOperation,
 	insertVariablePercent,
 	calculateResult,
-} from "../utilities/VariableLogic";
+} from "../logic/VariableLogic";
 
 const defaultVariableState: Variable = {
 	name: "New Variable",

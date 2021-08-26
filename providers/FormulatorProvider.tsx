@@ -21,7 +21,7 @@ import {
 	updateFormulaVariable,
 	deleteFormulaVariable,
 	calculateResult,
-} from "../utilities/FormulatorLogic";
+} from "../logic/FormulatorLogic";
 import { useAuthContext } from "./AuthProvider";
 
 // FORMULA CONTEXT & USAGE HOOK

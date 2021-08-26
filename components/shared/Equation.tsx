@@ -1,7 +1,7 @@
 import tw from "../../styles/tailwind";
 import React from "react";
 import { View, Text } from "react-native";
-import { checkConstantType } from "../../utilities/SharedLogic";
+import { checkConstantType } from "../../logic/SharedLogic";
 
 export default function Equation({ data }: EquationProps) {
 	const [constants, setConstants] = React.useState<Array<EquationConstant>>([]);
