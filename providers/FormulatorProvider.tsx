@@ -25,7 +25,7 @@ import {
 import { useAuthContext } from "./AuthProvider";
 
 // FORMULA CONTEXT & USAGE HOOK
-const FormulatorContext = React.createContext<Partial<FormulatorContextProps>>({});
+const FormulatorContext = React.createContext<FormulatorContextProps>(undefined!);
 export const useFormulatorContext = () => React.useContext(FormulatorContext);
 
 const defaultFormulaState = {

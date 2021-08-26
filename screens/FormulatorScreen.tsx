@@ -12,7 +12,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	const { formula, formulaDispatch } = useFormulatorContext();
 
 	React.useEffect(() => {
-		formulaDispatch?.({
+		formulaDispatch({
 			type: "INIT",
 			payload: route.params?.formula,
 		});
@@ -20,7 +20,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 
 	return (
 		<>
-			{formula && formulaDispatch && (
+			{formula && (
 				<View style={tw`flex-1 flex-col items-center justify-center p-10`}>
 					<TextInput
 						selectTextOnFocus
