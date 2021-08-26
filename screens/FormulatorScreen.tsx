@@ -1,15 +1,17 @@
+import _ from "lodash";
 import React from "react";
 import tw from "../styles/tailwind";
-import { FormulaScreenProps } from "../types/NavigatorTypes";
-import { View, Text, Pressable, TextInput } from "react-native";
-import { useFormulatorContext } from "../providers/FormulatorProvider";
 import Equation from "../components/shared/Equation";
 import Calculator from "../components/shared/Calculator";
 import { useAuthContext } from "../providers/AuthProvider";
+import { FormulaScreenProps } from "../types/NavigatorTypes";
+import { View, Text, Pressable, TextInput } from "react-native";
+import { useFormulatorContext } from "../providers/FormulatorProvider";
 
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
 	const { user } = useAuthContext();
 	const { formula, formulaDispatch } = useFormulatorContext();
+	const [changeStatus, setChangeStatus] = React.useState<number>(2);
 
 	React.useEffect(() => {
 		formulaDispatch({
@@ -18,10 +20,22 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 		});
 	}, []);
 
+	React.useEffect(() => {
+		if (!formula) return;
+
+		let formulaHasFid = "fid" in formula;
+		let formulaHasChanged = !_.isEqual(route.params?.formula, formula);
+
+		if (!formulaHasFid && changeStatus !== 0) setChangeStatus(0);
+		if (formulaHasFid && formulaHasChanged && changeStatus !== 1) setChangeStatus(1);
+		if (formulaHasFid && !formulaHasChanged && changeStatus !== 2) setChangeStatus(2);
+	}, [formula]);
+
 	return (
 		<>
 			{formula && (
 				<View style={tw`flex-1 flex-col items-center justify-center p-10`}>
+					<Text>{changeStatus}</Text>
 					<TextInput
 						selectTextOnFocus
 						value={formula.name}
