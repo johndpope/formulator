@@ -99,10 +99,13 @@ export function insertVariable(state: Calculable, name?: string) {
 
 export function insertDecimal(state: Calculable) {
 	if (!state.equation.length || state.lastConstantType !== "EQ_NUMBER") return state;
+	let existingDecimal = state.equation.match(/(\d\.).+$/g);
+	if (existingDecimal) return state;
 
 	let equation = state.equation;
 	let isPreceededByDecimal = equation.slice(-1) === ".";
 	equation = isPreceededByDecimal ? equation.slice(0, -1) : (equation += ".");
+	console.log(equation.match(/\d\.+$/g));
 
 	return { equation };
 }
