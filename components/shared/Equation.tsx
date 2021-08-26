@@ -1,6 +1,6 @@
 import tw from "../../styles/tailwind";
 import React from "react";
-import { View, Text } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 import { checkConstantType } from "../../logic/SharedLogic";
 
 export default function Equation({ data }: EquationProps) {
@@ -25,10 +25,14 @@ export default function Equation({ data }: EquationProps) {
 	}, [data]);
 
 	return (
-		<View style={tw`flex flex-row p-5`}>
-			{constants.map((constant, index) => (
-				<Text key={`equation-constant-${index}`}>{constant.value}</Text>
-			))}
+		<View style={tw`h-40 w-full`}>
+			<ScrollView contentContainerStyle={tw`flex flex-row flex-wrap flex-1 px-5 py-4`}>
+				{constants.map((constant, index) => (
+					<Text key={`equation-constant-${index}`} style={tw`text-3xl`}>
+						{constant.value}
+					</Text>
+				))}
+			</ScrollView>
 		</View>
 	);
 }
