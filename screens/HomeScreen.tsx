@@ -38,7 +38,7 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 							equation: "10 + 20",
 							result: "30",
 							openBrackets: 0,
-							lastConstantType: "",
+							lastConstantType: "EQ_NUMBER",
 							variables: [],
 						},
 					})

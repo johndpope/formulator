@@ -61,7 +61,7 @@ const variableReducer = (state: Variable, action: VariableAction): Variable => {
 					return insertVariableOperation(state, payload.constantValue);
 				case "EQ_BRACKET":
 					return insertVariableBracket(state, payload.constantValue);
-				case "EQ_PERCENTAGE":
+				case "EQ_PERCENT":
 					return insertVariablePercent(state);
 				case "EQ_NEGATIVE":
 					return insertVariableNegative(state);

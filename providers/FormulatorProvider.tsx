@@ -72,14 +72,14 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
 			return deleteFormulaVariable(state, payload);
 
+		case "CALCULATE_RESULT":
+			return calculateResult(state);
+
 		case "CLEAR_LAST_CONSTANT":
 			return clearFormulaLast(state);
 
 		case "CLEAR_ALL_CONSTANTS":
 			return clearFormulaAll(state);
-
-		case "CALCULATE_RESULT":
-			return calculateResult(state);
 
 		case "INSERT_CONSTANT":
 			if (!payload || typeof payload === "string" || !("constantType" in payload)) return state;
@@ -93,7 +93,7 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 					return insertFormulaOperation(state, payload.constantValue);
 				case "EQ_BRACKET":
 					return insertFormulaBracket(state, payload.constantValue);
-				case "EQ_PERCENTAGE":
+				case "EQ_PERCENT":
 					return insertFormulaPercent(state);
 				case "EQ_NEGATIVE":
 					return insertFormulaNegative(state);

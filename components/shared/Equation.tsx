@@ -21,7 +21,6 @@ export default function Equation({ data }: EquationProps) {
 	}
 
 	React.useEffect(() => {
-		if (!data) return;
 		setConstants(generateConstantsArray(data));
 	}, [data]);
 

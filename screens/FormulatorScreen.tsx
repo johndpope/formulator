@@ -24,15 +24,22 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	}, []);
 
 	React.useEffect(() => {
+		if (!formula?.fid) return;
+		navigation.setParams({ formula });
+	}, [formula?.fid]);
+
+	React.useEffect(() => {
 		if (!formula) return;
 
 		const formulaHasFid = "fid" in formula;
 		const formulaHasChanged = !_.isEqual(route.params?.formula, formula);
 
+		// console.log(route.params?.formula, formula);
+
 		if (!formulaHasFid && changeStatus !== 0) setChangeStatus(0);
 		if (formulaHasFid && formulaHasChanged && changeStatus !== 1) setChangeStatus(1);
 		if (formulaHasFid && !formulaHasChanged && changeStatus !== 2) setChangeStatus(2);
-	}, [formula]);
+	}, [formula, route.params]);
 
 	return (
 		<>
