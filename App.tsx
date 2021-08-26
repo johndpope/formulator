@@ -5,6 +5,11 @@ import { View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import AuthProvider from "./providers/AuthProvider";
 import FormulatorProvider from "./providers/FormulatorProvider";
+import { fal } from "@fortawesome/pro-light-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+library.add(fab, fal);
+
 import {
 	useFonts,
 	Poppins_400Regular,

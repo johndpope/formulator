@@ -18,17 +18,11 @@ import {
 	TouchableWithoutFeedback,
 } from "react-native";
 
-import { fal } from "@fortawesome/pro-light-svg-icons";
-import { fab } from "@fortawesome/free-brands-svg-icons";
-import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { HeaderText, LabelText, ButtonText, BodyText } from "../components/Typography";
 import { LoginScreenProps } from "../types/NavigatorTypes";
 import { useAuthContext } from "../providers/AuthProvider";
 import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
-
-library.add(fab, fal);
-
 export default function LoginScreen({ navigation }: LoginScreenProps) {
 	const { signInWithEmail, signInWithGoogle, resetPassword, authError } = useAuthContext();
 	const { fadeOutOnKeyboard, translateOutOnKeyboard, dismissKeyboard } = useKeyboardAnimations();

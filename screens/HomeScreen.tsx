@@ -1,14 +1,15 @@
 import React from "react";
 import tw from "../styles/tailwind";
-import { View, Text, Pressable } from "react-native";
-import { HomeScreenProps } from "../types/NavigatorTypes";
+import { useFormulas } from "../hooks/useFormulas";
 import { useAuthContext } from "../providers/AuthProvider";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
-import { useFormulas } from "../hooks/useFormulas";
+import { HomeScreenProps } from "../types/NavigatorTypes";
+import { SafeAreaView, View, Text, Pressable } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 	const { user, signOut, signInWithGoogle } = useAuthContext();
-	const { formula, formulaDispatch } = useFormulatorContext();
+	const { formulaDispatch } = useFormulatorContext();
 	const { formulas, error, loading } = useFormulas();
 
 	React.useEffect(() => {
@@ -21,37 +22,36 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 	}, [navigation]);
 
 	return (
-		<View style={tw`flex-1 bg-gray-100 flex flex-col items-center justify-center`}>
-			<Text>{user && user.displayName}</Text>
-			<Pressable onPress={() => signOut?.()} style={tw`p-5 bg-red-200`}>
-				<Text>Signin out</Text>
-			</Pressable>
-			<Pressable onPress={() => signInWithGoogle?.()} style={tw`p-5 bg-purple-200`}>
-				<Text>Signin with Google</Text>
-			</Pressable>
-			<Pressable
-				onPress={() =>
-					navigation.navigate("Formulator", {
-						formula: {
-							user: user.uid,
-							name: "Another Formula",
-							equation: "10 + 20",
-							result: "30",
-							openBrackets: 0,
-							lastConstantType: "EQ_NUMBER",
-							variables: [],
-						},
-					})
-				}
-				style={tw`p-5 bg-gray-200`}>
-				<Text>Press Me</Text>
-			</Pressable>
-			<View style={tw`flex flex-col p-5 w-full`}>
+		<SafeAreaView style={tw`flex-1 bg-gray-100 flex flex-col`}>
+			<View style={tw`h-14 w-full flex flex-row items-center justify-between px-5`}>
+				<Pressable onPress={() => signOut()} style={tw`w-10 h-10 bg-gray-200`}>
+					<FontAwesomeIcon icon={["fal", "sign-out-alt"]} size={24} style={tw`m-auto`} />
+				</Pressable>
+				<Text>{user && user.displayName}</Text>
+				<Pressable
+					onPress={() =>
+						navigation.navigate("Formulator", {
+							formula: {
+								user: user.uid,
+								name: "Another Formula",
+								equation: "10 + 20",
+								result: "30",
+								openBrackets: 0,
+								lastConstantType: "EQ_NUMBER",
+								variables: [],
+							},
+						})
+					}
+					style={tw`w-10 h-10 bg-gray-200`}>
+					<FontAwesomeIcon icon={["fal", "plus-square"]} size={24} style={tw`m-auto`} />
+				</Pressable>
+			</View>
+			<View style={tw`flex flex-col w-full p-4`}>
 				{!loading &&
 					formulas.map((formula) => (
 						<Pressable
 							key={`formula-${formula.fid}`}
-							style={tw`p-5 flex flex-col`}
+							style={tw`p-4 flex flex-col`}
 							onPress={() =>
 								navigation.navigate("Formulator", {
 									formula: {
@@ -65,6 +65,6 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 						</Pressable>
 					))}
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 }

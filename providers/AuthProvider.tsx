@@ -30,7 +30,7 @@ WebBrowser.maybeCompleteAuthSession();
 // Initialize Firebase
 const db = firebase.firestore();
 
-const AuthContext = React.createContext<Partial<AuthContextProps>>({});
+const AuthContext = React.createContext<AuthContextProps>(undefined!);
 export const useAuthContext = () => React.useContext(AuthContext);
 
 export default function AuthProvider({ children }: AuthProviderProps) {
@@ -39,7 +39,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 	});
 
 	const [user, setUser] = React.useState<any | null>();
-	const [authError, setAuthError] = React.useState<string>();
+	const [authError, setAuthError] = React.useState<string>("");
 
 	const signInWithGoogle = () => promptAsync();
 
