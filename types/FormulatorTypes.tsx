@@ -6,6 +6,8 @@ export type Constant = {
 };
 
 export type Formula = {
+	fid?: string;
+	user?: string;
 	name: string;
 	equation: string;
 	result: string | null;

@@ -4,10 +4,12 @@ import { View, Text, Pressable } from "react-native";
 import { HomeScreenProps } from "../types/NavigatorTypes";
 import { useAuthContext } from "../providers/AuthProvider";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
+import { useFormulas } from "../hooks/useFormulas";
 
 export default function HomeScreen({ route, navigation }: HomeScreenProps) {
-	const { formula, formulaDispatch } = useFormulatorContext();
 	const { user, signOut, signInWithGoogle } = useAuthContext();
+	const { formula, formulaDispatch } = useFormulatorContext();
+	const { formulas, error, loading } = useFormulas();
 
 	React.useEffect(() => {
 		const unsubscribe = navigation.addListener("focus", () => {
@@ -43,6 +45,10 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 				style={tw`p-5 bg-gray-200`}>
 				<Text>Press Me</Text>
 			</Pressable>
+			<View style={tw`flex flex-col p-5`}>
+				{!loading &&
+					formulas.map((formula) => <Text key={`formula-${formula.fid}`}>{formula.name}</Text>)}
+			</View>
 		</View>
 	);
 }
