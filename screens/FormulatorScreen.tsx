@@ -8,6 +8,9 @@ import { FormulaScreenProps } from "../types/NavigatorTypes";
 import { View, Text, Pressable, TextInput } from "react-native";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 
+const statusColors = ["red-500", "yellow-500", "green-500"];
+const statusText = ["Unsaved", "Changed", "Saved"];
+
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
 	const { user } = useAuthContext();
 	const { formula, formulaDispatch } = useFormulatorContext();
@@ -23,8 +26,8 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	React.useEffect(() => {
 		if (!formula) return;
 
-		let formulaHasFid = "fid" in formula;
-		let formulaHasChanged = !_.isEqual(route.params?.formula, formula);
+		const formulaHasFid = "fid" in formula;
+		const formulaHasChanged = !_.isEqual(route.params?.formula, formula);
 
 		if (!formulaHasFid && changeStatus !== 0) setChangeStatus(0);
 		if (formulaHasFid && formulaHasChanged && changeStatus !== 1) setChangeStatus(1);
@@ -35,7 +38,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 		<>
 			{formula && (
 				<View style={tw`flex-1 flex-col items-center justify-center p-10`}>
-					<Text>{changeStatus}</Text>
+					<Text style={tw`text-${statusColors[changeStatus]}`}>{statusText[changeStatus]}</Text>
 					<TextInput
 						selectTextOnFocus
 						value={formula.name}
