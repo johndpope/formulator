@@ -1,4 +1,6 @@
 import mathString from "math-string";
+import "firebase/firestore";
+import firebase from "firebase";
 import { Formula } from "../types/FormulatorTypes";
 import { Variable } from "../types/VariableTypes";
 import {
@@ -13,26 +15,36 @@ import {
 	clearAll,
 } from "./SharedLogic";
 
-export function calculateResult(state: Formula) {
-	let result;
-	let equation = state.equation.replace(/\s/g, "").replace(/[.0-9]+%/, (m) => `${parseInt(m) / 100}`);
-
-	// Replace variables if state is an instance of Formula
-	if (state?.variables.length) {
-		equation = equation.replace(/\{([^)]+?)\}/g, (match) => {
-			let variable = state.variables.find((v) => v.name === match.substring(1, match.length - 1));
-			if (!variable) return "";
-			return `${variable.result}`;
-		});
+export function saveFormula(state: Formula) {
+	if ("fid" in state) {
+		return updateFormula(state);
+	} else {
+		return createFormula(state);
 	}
+}
 
-	try {
-		result = mathString(equation);
-	} catch {
-		result = null;
-	}
+export function createFormula(state: Formula) {
+	const ref = firebase.firestore().collection("user_formulas").doc();
+	const formula = { fid: ref.id, ...state };
 
-	return { ...state, result };
+	ref
+		.set(formula)
+		.then(() => console.log("Successfully created formula"))
+		.catch((err) => console.log(err));
+
+	return formula;
+}
+
+export function updateFormula(state: Formula) {
+	firebase
+		.firestore()
+		.collection("user_formulas")
+		.doc(state.fid)
+		.update(state)
+		.then(() => console.log("successfully updated formula"))
+		.catch((err) => console.log(err));
+
+	return state;
 }
 
 export function createFormulaVariable(state: Formula, variable?: Variable) {
@@ -127,4 +139,26 @@ export function clearFormulaAll(state: Formula) {
 	const updated = clearAll({ equation, lastConstantType, openBrackets });
 
 	return { ...state, ...updated };
+}
+
+export function calculateResult(state: Formula) {
+	let result;
+	let equation = state.equation.replace(/\s/g, "").replace(/[.0-9]+%/, (m) => `${parseInt(m) / 100}`);
+
+	// Replace variables if state is an instance of Formula
+	if (state?.variables.length) {
+		equation = equation.replace(/\{([^)]+?)\}/g, (match) => {
+			let variable = state.variables.find((v) => v.name === match.substring(1, match.length - 1));
+			if (!variable) return "";
+			return `${variable.result}`;
+		});
+	}
+
+	try {
+		result = mathString(equation);
+	} catch {
+		result = null;
+	}
+
+	return { ...state, result };
 }

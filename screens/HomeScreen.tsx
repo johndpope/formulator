@@ -33,9 +33,10 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 				onPress={() =>
 					navigation.navigate("Formulator", {
 						formula: {
-							name: "Custom Name",
-							equation: "",
-							result: null,
+							user: user.uid,
+							name: "Another Formula",
+							equation: "10 + 20",
+							result: "30",
 							openBrackets: 0,
 							lastConstantType: "",
 							variables: [],
@@ -45,9 +46,24 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 				style={tw`p-5 bg-gray-200`}>
 				<Text>Press Me</Text>
 			</Pressable>
-			<View style={tw`flex flex-col p-5`}>
+			<View style={tw`flex flex-col p-5 w-full`}>
 				{!loading &&
-					formulas.map((formula) => <Text key={`formula-${formula.fid}`}>{formula.name}</Text>)}
+					formulas.map((formula) => (
+						<Pressable
+							key={`formula-${formula.fid}`}
+							style={tw`p-5 flex flex-col`}
+							onPress={() =>
+								navigation.navigate("Formulator", {
+									formula: {
+										user: user.uid,
+										...formula,
+									},
+								})
+							}>
+							<Text style={tw`font-bold pb-2`}>{formula.name}</Text>
+							<Text>{formula.equation}</Text>
+						</Pressable>
+					))}
 			</View>
 		</View>
 	);

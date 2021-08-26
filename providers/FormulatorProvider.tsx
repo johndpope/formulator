@@ -7,6 +7,7 @@ import {
 } from "../types/FormulatorTypes";
 
 import {
+	saveFormula,
 	clearFormulaAll,
 	clearFormulaLast,
 	insertFormulaBracket,
@@ -21,6 +22,11 @@ import {
 	deleteFormulaVariable,
 	calculateResult,
 } from "../utilities/FormulatorLogic";
+import { useAuthContext } from "./AuthProvider";
+
+// FORMULA CONTEXT & USAGE HOOK
+const FormulatorContext = React.createContext<Partial<FormulatorContextProps>>({});
+export const useFormulatorContext = () => React.useContext(FormulatorContext);
 
 const defaultFormulaState = {
 	name: "New Formula",
@@ -30,10 +36,6 @@ const defaultFormulaState = {
 	lastConstantType: "",
 	variables: [],
 };
-
-// FORMULA CONTEXT & USAGE HOOK
-const FormulatorContext = React.createContext<Partial<FormulatorContextProps>>({});
-export const useFormulatorContext = () => React.useContext(FormulatorContext);
 
 // FORMULA REDUCER
 const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
@@ -52,14 +54,8 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 			if (typeof payload !== "string") return state;
 			return { ...state, name: payload };
 
-		case "CLEAR_LAST_CONSTANT":
-			return clearFormulaLast(state);
-
-		case "CLEAR_ALL_CONSTANTS":
-			return clearFormulaAll(state);
-
-		case "CALCULATE_RESULT":
-			return calculateResult(state);
+		case "SAVE_FORMULA":
+			return saveFormula(state);
 
 		case "CREATE_VARIABLE":
 			// Check if payload is an instance of Variable
@@ -75,6 +71,15 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 			// Check if payload is an instance of Variable
 			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
 			return deleteFormulaVariable(state, payload);
+
+		case "CLEAR_LAST_CONSTANT":
+			return clearFormulaLast(state);
+
+		case "CLEAR_ALL_CONSTANTS":
+			return clearFormulaAll(state);
+
+		case "CALCULATE_RESULT":
+			return calculateResult(state);
 
 		case "INSERT_CONSTANT":
 			if (!payload || typeof payload === "string" || !("constantType" in payload)) return state;

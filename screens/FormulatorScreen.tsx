@@ -5,8 +5,10 @@ import { View, Text, Pressable, TextInput } from "react-native";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 import Equation from "../components/shared/Equation";
 import Calculator from "../components/shared/Calculator";
+import { useAuthContext } from "../providers/AuthProvider";
 
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
+	const { user } = useAuthContext();
 	const { formula, formulaDispatch } = useFormulatorContext();
 
 	React.useEffect(() => {
@@ -50,6 +52,11 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 							</Pressable>
 						))}
 					</View>
+					<Pressable
+						onPress={() => formulaDispatch({ type: "SAVE_FORMULA" })}
+						style={tw`p-5 bg-purple-200`}>
+						<Text>Save Formula</Text>
+					</Pressable>
 				</View>
 			)}
 		</>
