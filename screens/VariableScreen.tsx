@@ -79,6 +79,9 @@ const variableReducer = (state: Variable, action: VariableAction): Variable => {
 export default function VariableScreen({ route, navigation }: VariableScreenProps) {
 	const { formula, formulaDispatch } = useFormulatorContext();
 	const [variable, dispatch] = React.useReducer(variableReducer, defaultVariableState);
+	const [nameIsInvalid, setNameIsInvalid] = React.useState<boolean>(false);
+
+	const handleSave = () => {};
 
 	React.useEffect(() => {
 		dispatch?.({
@@ -98,6 +101,14 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	}, [navigation]);
 
 	React.useEffect(() => {
+		const existingIndex: number = formula.variables.findIndex((v: Variable) => v.name === variable.name);
+		const nameAlreadyExists = existingIndex !== -1;
+
+		if (!nameIsInvalid && nameAlreadyExists) setNameIsInvalid(true);
+		if (nameIsInvalid && !nameAlreadyExists) setNameIsInvalid(false);
+	}, [variable.name]);
+
+	React.useEffect(() => {
 		dispatch({ type: "CALCULATE_RESULT" });
 	}, [variable.equation]);
 
@@ -105,6 +116,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 		<>
 			{variable && dispatch && (
 				<View style={tw`flex-1 flex-col items-center justify-center p-10`}>
+					<Text>{nameIsInvalid && "Name already exists"}</Text>
 					<TextInput
 						selectTextOnFocus
 						value={variable.name}
