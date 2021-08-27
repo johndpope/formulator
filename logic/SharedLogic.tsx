@@ -40,13 +40,14 @@ export function formatNumber(value: string) {
 }
 
 export function insertNumber(state: Calculable, value?: string) {
-	if (!value || state.equation.slice(-1) === "|") return state;
+	if (!value) return state;
 
 	// Check if multiplication symbol should be auto inserted before number
 	let isMultiplicable = checkIfShouldInsertMultiple(state.equation, state.lastConstantType);
 	let multiplicationInsertion = state.equation.length && isMultiplicable ? " *" : "";
 
 	let isPreceededByPercent = state.equation.slice(-1) === "%";
+	let isPreceededByLineBreak = state.equation.slice(-1) === "|";
 	let isPreceededByNumber = state.lastConstantType === "EQ_NUMBER";
 
 	if (isPreceededByNumber) {
@@ -56,7 +57,9 @@ export function insertNumber(state: Calculable, value?: string) {
 
 	// Final return values for state
 	const equation = (state.equation +=
-		isPreceededByNumber && !isPreceededByPercent ? value : `${multiplicationInsertion} ${value}`);
+		isPreceededByNumber && !(isPreceededByPercent || isPreceededByLineBreak)
+			? value
+			: `${multiplicationInsertion} ${value}`);
 	const lastConstantType = "EQ_NUMBER";
 
 	return { equation, lastConstantType };
