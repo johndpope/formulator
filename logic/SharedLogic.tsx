@@ -26,13 +26,21 @@ export function checkConstantType(constant: string) {
 			return "EQ_BRACKET_OPEN";
 		case ")":
 			return "EQ_BRACKET_CLOSED";
+		case "|":
+			return "EQ_LINE_BREAK";
 		default:
 			return constant?.includes("}") ? "EQ_VARIABLE" : "EQ_NUMBER";
 	}
 }
 
+export function formatNumber(value: string) {
+	return value.includes(".")
+		? value.replace(/(.*)\./, (match) => match.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+		: value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export function insertNumber(state: Calculable, value?: string) {
-	if (!value) return state;
+	if (!value || state.equation.slice(-1) === "|") return state;
 
 	// Check if multiplication symbol should be auto inserted before number
 	let isMultiplicable = checkIfShouldInsertMultiple(state.equation, state.lastConstantType);
@@ -40,6 +48,11 @@ export function insertNumber(state: Calculable, value?: string) {
 
 	let isPreceededByPercent = state.equation.slice(-1) === "%";
 	let isPreceededByNumber = state.lastConstantType === "EQ_NUMBER";
+
+	if (isPreceededByNumber) {
+		const lastNumber: RegExpMatchArray | null = state.equation.match(/(\d|\.)+$/g);
+		if (lastNumber && lastNumber[0].length >= 13) return state;
+	}
 
 	// Final return values for state
 	const equation = (state.equation +=
@@ -132,6 +145,13 @@ export function insertNegative(state: Calculable) {
 	} else {
 		equation = equation.replace(/(\d|%)+$/i, (m) => `-${m}`);
 	}
+	return { equation };
+}
+
+export function insertLineBreak(state: Calculable) {
+	if (!state.equation.length || state.equation.slice(-1) === "|") return state;
+	let equation = state.equation;
+	equation += "|";
 	return { equation };
 }
 

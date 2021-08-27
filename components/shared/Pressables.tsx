@@ -3,6 +3,7 @@ import tw from "../../styles/tailwind";
 import { View, Text, Pressable } from "react-native";
 import { FormulaAction } from "../../types/FormulatorTypes";
 import { VariableAction } from "../../types/VariableTypes";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 type PressableProps = {
 	value?: string;
@@ -106,6 +107,14 @@ export function PressableDecimal({ dispatch }: PressableProps) {
 				})
 			}>
 			<Text>.</Text>
+		</Pressable>
+	);
+}
+
+export function PressableLineBreak({ dispatch }: PressableProps) {
+	return (
+		<Pressable style={pressableStyle} onPress={() => dispatch({ type: "INSERT_LINE_BREAK" })}>
+			<FontAwesomeIcon icon={["fal", "arrow-square-right"]} size={16} />
 		</Pressable>
 	);
 }

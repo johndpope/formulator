@@ -5,6 +5,7 @@ import { VariableScreenProps } from "../types/NavigatorTypes";
 import { Variable, VariableAction } from "../types/VariableTypes";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 
+import Result from "../components/shared/Result";
 import Equation from "../components/shared/Equation";
 import Calculator from "../components/shared/Calculator";
 import {
@@ -115,17 +116,17 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	return (
 		<>
 			{variable && dispatch && (
-				<View style={tw`flex-1 flex-col items-center justify-center p-10`}>
+				<View style={tw`flex-1 flex-col items-center justify-center`}>
 					<Text>{nameIsInvalid && "Name already exists"}</Text>
 					<TextInput
 						selectTextOnFocus
 						value={variable.name}
 						placeholder={variable.name}
-						style={tw`w-full border p-4`}
+						style={tw`w-full border p-4 text-center`}
 						onChangeText={(n) => dispatch({ type: "CHANGE_NAME", payload: n })}
 					/>
 					<Equation data={variable.equation} />
-					<Text>{variable.result}</Text>
+					<Result data={variable.result} />
 					<Calculator dispatch={dispatch} />
 					<Pressable
 						onPress={() => {

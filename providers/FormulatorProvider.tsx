@@ -20,6 +20,7 @@ import {
 	createFormulaVariable,
 	updateFormulaVariable,
 	deleteFormulaVariable,
+	insertFormulaLineBreak,
 	calculateResult,
 } from "../logic/FormulatorLogic";
 import { useAuthContext } from "./AuthProvider";
@@ -80,6 +81,9 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 
 		case "CLEAR_ALL_CONSTANTS":
 			return clearFormulaAll(state);
+
+		case "INSERT_LINE_BREAK":
+			return insertFormulaLineBreak(state);
 
 		case "INSERT_CONSTANT":
 			if (!payload || typeof payload === "string" || !("constantType" in payload)) return state;

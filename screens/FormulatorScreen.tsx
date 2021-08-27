@@ -47,7 +47,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 				<View style={[tw`flex-1 flex-col items-center`, { paddingTop: Constants.statusBarHeight }]}>
 					<View style={tw`h-14 w-full flex flex-row items-center justify-between px-5`}>
 						<Pressable onPress={() => navigation.goBack()} style={tw`w-12 h-10 bg-gray-200`}>
-							<FontAwesomeIcon icon={["fal", "sign-out-alt"]} size={24} style={tw`m-auto`} />
+							<FontAwesomeIcon icon={["fal", "chevron-left"]} size={24} style={tw`m-auto`} />
 						</Pressable>
 
 						<TextInput
@@ -63,7 +63,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 							<Text style={tw`m-auto`}>Save</Text>
 						</Pressable>
 					</View>
-					<Equation data={formula.equation} />
+					<Equation data={formula.equation} variables={formula.variables} />
 					<Result data={formula.result} />
 					<Calculator dispatch={formulaDispatch} />
 					<View style={tw`flex flex-row px-5 items-center mt-auto mb-10`}>

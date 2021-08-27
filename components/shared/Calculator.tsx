@@ -11,6 +11,7 @@ import {
 	PressablePercent,
 	PressableDecimal,
 	PressableNegative,
+	PressableLineBreak,
 } from "./Pressables";
 
 interface CalculatorProps {
@@ -19,11 +20,12 @@ interface CalculatorProps {
 
 export default function Calculator({ dispatch }: CalculatorProps) {
 	return (
-		<View style={tw`flex flex-row justify-center flex-wrap p-5`}>
+		<View style={tw`flex-1 flex flex-row justify-center flex-wrap p-5`}>
 			<PressableClear dispatch={dispatch} />
 			<PressableBracket value="(" dispatch={dispatch} />
 			<PressableBracket value=")" dispatch={dispatch} />
-			<PressablePercent dispatch={dispatch} />
+			{/* <PressablePercent dispatch={dispatch} /> */}
+			<PressableLineBreak dispatch={dispatch} />
 			<PressableNumber value="1" dispatch={dispatch} />
 			<PressableNumber value="2" dispatch={dispatch} />
 			<PressableNumber value="3" dispatch={dispatch} />

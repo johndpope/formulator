@@ -13,6 +13,7 @@ import {
 	insertNegative,
 	clearLast,
 	clearAll,
+	insertLineBreak,
 } from "./SharedLogic";
 
 export function saveFormula(state: Formula) {
@@ -127,6 +128,13 @@ export function insertFormulaNegative(state: Formula) {
 	return { ...state, ...updated };
 }
 
+export function insertFormulaLineBreak(state: Formula) {
+	const { equation, lastConstantType, openBrackets } = state;
+	const updated = insertLineBreak({ equation, lastConstantType, openBrackets });
+
+	return { ...state, ...updated };
+}
+
 export function clearFormulaLast(state: Formula) {
 	const { equation, lastConstantType, openBrackets } = state;
 	const updated = clearLast({ equation, lastConstantType, openBrackets });
@@ -143,7 +151,7 @@ export function clearFormulaAll(state: Formula) {
 
 export function calculateResult(state: Formula) {
 	let result;
-	let equation = state.equation.replace(/\s/g, "").replace(/[.0-9]+%/, (m) => `${parseInt(m) / 100}`);
+	let equation = state.equation.replace(/\s|\|/g, "").replace(/[.0-9]+%/, (m) => `${parseInt(m) / 100}`);
 
 	// Replace variables if state is an instance of Formula
 	if (state?.variables.length) {
