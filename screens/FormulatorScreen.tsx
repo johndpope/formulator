@@ -26,15 +26,13 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	React.useEffect(() => {
 		if (!formula?.fid) return;
 		navigation.setParams({ formula });
-	}, [formula?.fid]);
+	}, [formula?.fid, formula?.timestamp]);
 
 	React.useEffect(() => {
 		if (!formula) return;
 
 		let formulaHasFid = "fid" in formula;
 		let formulaHasChanged = !_.isEqual(route.params?.formula, formula);
-
-		console.log(formulaHasFid, formulaHasChanged);
 
 		// If changeStatus is not already set, check for FID and data changes, then set status
 		if (changeStatus !== 0 && !formulaHasFid) setChangeStatus(0);

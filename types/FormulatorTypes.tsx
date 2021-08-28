@@ -1,4 +1,6 @@
 import { Variable } from "./VariableTypes";
+import "firebase/firestore";
+import firebase from "firebase";
 
 export type Constant = {
 	constantType: string;
@@ -14,6 +16,7 @@ export type Formula = {
 	openBrackets: number;
 	lastConstantType: string;
 	variables: Array<Variable>;
+	timestamp?: firebase.firestore.Timestamp | firebase.firestore.FieldValue;
 };
 
 export type FormulaAction = {

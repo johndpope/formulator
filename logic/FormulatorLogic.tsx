@@ -26,7 +26,11 @@ export function saveFormula(state: Formula) {
 
 export function createFormula(state: Formula) {
 	const ref = firebase.firestore().collection("user_formulas").doc();
-	const formula = { fid: ref.id, ...state };
+
+	const fid = ref.id;
+	const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+	const formula = { ...state, fid, timestamp };
 
 	ref
 		.set(formula)
@@ -39,12 +43,15 @@ export function createFormula(state: Formula) {
 export function updateFormula(state: Formula) {
 	const ref = firebase.firestore().collection("user_formulas").doc(state.fid);
 
+	const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+	const formula = { ...state, timestamp };
+
 	ref
-		.update(state)
+		.update(formula)
 		.then(() => console.log("successfully updated formula"))
 		.catch((err) => console.log(err));
 
-	return state;
+	return formula;
 }
 
 export function createFormulaVariable(state: Formula, variable?: Variable) {

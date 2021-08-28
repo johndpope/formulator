@@ -52,14 +52,15 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 						<Pressable
 							key={`formula-${formula.fid}`}
 							style={tw`p-4 flex flex-col`}
-							onPress={() =>
+							onPress={() => {
+								console.log(formula);
 								navigation.navigate("Formulator", {
 									formula: {
 										user: user.uid,
 										...formula,
 									},
-								})
-							}>
+								});
+							}}>
 							<Text style={tw`font-bold pb-2`}>{formula.name}</Text>
 							<Text>{formula.equation}</Text>
 						</Pressable>
