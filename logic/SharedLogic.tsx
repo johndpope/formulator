@@ -155,17 +155,17 @@ export function insertNegative(state: Calculable) {
 }
 
 export function insertLineBreak(state: Calculable) {
-	if (!state.equation.length || state.equation.slice(-1) === "|") return state;
+	if (!state.equation.length || state.equation.slice(-2) === " |") return state;
 	let equation = state.equation;
-	equation += "|";
+	equation += " |";
 	return { equation };
 }
 
 export function insertLineBreakBefore(state: Calculable) {
-	let isPreceededByLineBreak = state.equation.slice(-1) === "|";
+	let isPreceededByLineBreak = state.equation.slice(-2) === " |";
 	if (isPreceededByLineBreak) return state;
 
-	const equation = state.equation.replace(/\s+\S*$/g, (match) => `|${match}`);
+	const equation = state.equation.replace(/\s+\S*$/g, (match) => ` |${match}`);
 
 	return { equation };
 }
