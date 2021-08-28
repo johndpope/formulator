@@ -55,6 +55,17 @@ export function updateFormula(state: Formula) {
 	return formula;
 }
 
+export function deleteFormula(state: Formula, fid: string) {
+	const ref = firebase.firestore().collection("user_formulas").doc(fid);
+
+	ref
+		.delete()
+		.then(() => console.log("Document successfully deleted!"))
+		.catch((error) => console.error("Error removing document: ", error));
+
+	return state;
+}
+
 export function createFormulaVariable(state: Formula, variable?: Variable) {
 	if (!variable || !("variables" in state) || !Array.isArray(state.variables)) return state;
 	let variables: Array<Variable> = [...state.variables];

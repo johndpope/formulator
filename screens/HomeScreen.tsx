@@ -51,9 +51,8 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 					formulas.map((formula) => (
 						<Pressable
 							key={`formula-${formula.fid}`}
-							style={tw`p-4 flex flex-col`}
+							style={tw`p-4 flex flex-row items-center`}
 							onPress={() => {
-								console.log(formula);
 								navigation.navigate("Formulator", {
 									formula: {
 										user: user.uid,
@@ -61,8 +60,15 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 									},
 								});
 							}}>
-							<Text style={tw`font-bold pb-2`}>{formula.name}</Text>
-							<Text>{formula.equation}</Text>
+							<Pressable
+								onPress={() => formulaDispatch({ type: "DELETE_FORMULA", payload: formula.fid })}
+								style={tw`mr-5`}>
+								<FontAwesomeIcon icon={["fal", "trash-alt"]} size={20} />
+							</Pressable>
+							<View style={tw`flex flex-col`}>
+								<Text style={tw`font-bold pb-2`}>{formula.name}</Text>
+								<Text>{formula.equation}</Text>
+							</View>
 						</Pressable>
 					))}
 			</View>

@@ -19,6 +19,16 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	const { formula, formulaDispatch } = useFormulatorContext();
 	const [changeStatus, setChangeStatus] = React.useState<number>(2);
 
+	function handleSave() {
+		if (!formula.result) return;
+		formulaDispatch({ type: "SAVE_FORMULA" });
+	}
+
+	function handleDelete() {
+		navigation.goBack();
+		formulaDispatch({ type: "DELETE_FORMULA", payload: formula.fid });
+	}
+
 	React.useEffect(() => {
 		formulaDispatch({ type: "INIT", payload: route.params?.formula });
 	}, []);
@@ -55,6 +65,10 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 							<FontAwesomeIcon icon={["fal", "chevron-left"]} size={20} style={tw`m-auto text-white`} />
 						</Pressable>
 
+						<Pressable onPress={handleDelete} style={tw`w-10 h-10`}>
+							<FontAwesomeIcon icon={["fal", "trash-alt"]} size={16} style={tw`m-auto text-white`} />
+						</Pressable>
+
 						<TextInput
 							selectTextOnFocus
 							value={formula.name}
@@ -63,9 +77,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 							onChangeText={(n) => formulaDispatch({ type: "CHANGE_NAME", payload: n })}
 						/>
 
-						<Pressable
-							onPress={() => formulaDispatch({ type: "SAVE_FORMULA" })}
-							style={tw`flex flex-row w-10 h-10`}>
+						<Pressable onPress={handleSave} style={tw`flex flex-row w-10 h-10`}>
 							<Text style={tw`text-sm m-auto text-white font-bold`}>Save</Text>
 						</Pressable>
 					</View>

@@ -8,6 +8,7 @@ import {
 
 import {
 	saveFormula,
+	deleteFormula,
 	clearFormulaAll,
 	clearFormulaLast,
 	insertFormulaBracket,
@@ -58,6 +59,10 @@ const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
 
 		case "SAVE_FORMULA":
 			return saveFormula(state);
+
+		case "DELETE_FORMULA":
+			if (typeof payload !== "string") return state;
+			return deleteFormula(state, payload);
 
 		case "CREATE_VARIABLE":
 			// Check if payload is an instance of Variable
