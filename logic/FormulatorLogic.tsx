@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import mathString from "math-string";
 import "firebase/firestore";
 import firebase from "firebase";
@@ -68,9 +69,9 @@ export function deleteFormula(state: Formula, fid: string) {
 
 export function createFormulaVariable(state: Formula, variable?: Variable) {
 	if (!variable || !("variables" in state) || !Array.isArray(state.variables)) return state;
-	let variables: Array<Variable> = [...state.variables];
-
-	variables.push(variable);
+	const variables: Array<Variable> = [...state.variables];
+	const vid = uuid();
+	variables.push({ ...variable, vid });
 
 	return { ...state, variables };
 }
@@ -78,7 +79,7 @@ export function createFormulaVariable(state: Formula, variable?: Variable) {
 export function updateFormulaVariable(state: Formula, variable: Variable) {
 	if (!variable || !("variables" in state) || !Array.isArray(state.variables)) return state;
 	let variables: Array<Variable> = [...state.variables];
-	let indexToUpdate: number = variables.findIndex((v: Variable) => v.name === variable.name);
+	let indexToUpdate: number = variables.findIndex((v: Variable) => v.vid === variable.vid);
 
 	variables[indexToUpdate] = variable;
 

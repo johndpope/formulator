@@ -1,3 +1,4 @@
+import "react-native-get-random-values";
 import tw from "./styles/tailwind";
 import React from "react";
 import Navigator from "./Navigator";

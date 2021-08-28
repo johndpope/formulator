@@ -4,6 +4,7 @@ export type Constant = {
 };
 
 export type Variable = {
+	vid?: string;
 	color: string;
 	name: string;
 	equation: string;

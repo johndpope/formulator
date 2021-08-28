@@ -17,6 +17,7 @@
     "@react-navigation/native-stack": "^6.1.0",
     "@react-navigation/stack": "^6.0.7",
     "@types/lodash": "^4.14.172",
+    "@types/uuid": "^8.3.1",
     "expo": "~42.0.1",
     "expo-application": "^3.2.0",
     "expo-auth-session": "^3.3.1",
@@ -31,6 +32,7 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-get-random-values": "^1.7.0",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
@@ -38,6 +40,7 @@
     "react-native-web": "^0.17.1",
     "tailwind-react-native-classnames": "^1.4.1",
     "tailwindcss": "^2.2.7",
+    "uuid": "^8.3.2",
     "validator": "^13.6.0"
   },
   "devDependencies": {

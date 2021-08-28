@@ -106,8 +106,9 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 
 	const handleSave = () => {
 		if (!variable.result) return;
+		const saveAction = "vid" in variable ? "UPDATE_VARIABLE" : "CREATE_VARIABLE";
 		formulaDispatch({
-			type: route.params?.variable ? "UPDATE_VARIABLE" : "CREATE_VARIABLE",
+			type: saveAction,
 			payload: variable,
 		});
 		navigation.goBack();

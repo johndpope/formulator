@@ -61,7 +61,7 @@ export default function Equation({ data, color, variables, dispatch }: EquationP
 	React.useEffect(() => {
 		setConstants(generateConstantsArray(data));
 		setNumLines(generateLineBreaks(data));
-	}, [data]);
+	}, [data, variables]);
 
 	return (
 		<View style={tw`px-5 py-1`}>
@@ -108,7 +108,7 @@ export default function Equation({ data, color, variables, dispatch }: EquationP
 											<View
 												style={tw`flex flex-row items-center py-1 px-2 rounded-sm bg-${
 													constant?.color || "gray"
-												}-500 bg-opacity-25`}>
+												}-500 bg-opacity-30`}>
 												<Text style={tw`text-sm pr-1 text-${constant?.color || "gray"}-500`}>{`{`}</Text>
 												<Text style={tw`text-sm text-white capitalize`}>{constant.value}</Text>
 												<Text style={tw`text-sm pl-1 text-${constant?.color || "gray"}-500`}>{`}`}</Text>
