@@ -24,7 +24,7 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 	return (
 		<SafeAreaView style={tw`flex-1 bg-gray-100 flex flex-col`}>
 			<View style={tw`h-14 w-full flex flex-row items-center justify-between px-5`}>
-				<Pressable onPress={() => signOut()} style={tw`w-10 h-10 bg-gray-200`}>
+				<Pressable onPress={() => signOut()} style={tw`w-10 h-10`}>
 					<FontAwesomeIcon icon={["fal", "sign-out-alt"]} size={24} style={tw`m-auto`} />
 				</Pressable>
 				<Text>{user && user.displayName}</Text>
@@ -42,7 +42,7 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 							},
 						})
 					}
-					style={tw`w-10 h-10 bg-gray-200`}>
+					style={tw`w-10 h-10`}>
 					<FontAwesomeIcon icon={["fal", "plus-square"]} size={24} style={tw`m-auto`} />
 				</Pressable>
 			</View>

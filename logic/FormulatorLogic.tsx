@@ -37,10 +37,9 @@ export function createFormula(state: Formula) {
 }
 
 export function updateFormula(state: Formula) {
-	firebase
-		.firestore()
-		.collection("user_formulas")
-		.doc(state.fid)
+	const ref = firebase.firestore().collection("user_formulas").doc(state.fid);
+
+	ref
 		.update(state)
 		.then(() => console.log("successfully updated formula"))
 		.catch((err) => console.log(err));

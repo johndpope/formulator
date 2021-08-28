@@ -3,6 +3,7 @@ import tw from "../../styles/tailwind";
 import { Pressable, View, Text } from "react-native";
 import { FormulaAction } from "../../types/FormulatorTypes";
 import { VariableAction } from "../../types/VariableTypes";
+import { OperationSymbolMap } from "../../types/EquationTypes";
 import {
 	PressableClear,
 	PressableNumber,
@@ -20,11 +21,11 @@ interface CalculatorProps {
 
 export default function Calculator({ dispatch }: CalculatorProps) {
 	return (
-		<View style={tw`flex-1 flex flex-row justify-center flex-wrap p-5`}>
+		<View style={tw`flex-1 flex flex-row justify-center flex-wrap px-5`}>
 			<PressableClear dispatch={dispatch} />
 			<PressableBracket value="(" dispatch={dispatch} />
 			<PressableBracket value=")" dispatch={dispatch} />
-			{/* <PressablePercent dispatch={dispatch} /> */}
+			<PressablePercent dispatch={dispatch} />
 			<PressableLineBreak dispatch={dispatch} />
 			<PressableNumber value="1" dispatch={dispatch} />
 			<PressableNumber value="2" dispatch={dispatch} />

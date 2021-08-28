@@ -12,11 +12,10 @@ import { useFormulatorContext } from "../providers/FormulatorProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { FlatList } from "react-native-gesture-handler";
 
-const statusColors = ["red-500", "yellow-500", "green-500"];
+const statusColors = ["red", "yellow", "green"];
 const statusText = ["Unsaved", "Changed", "Saved"];
 
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
-	const { user } = useAuthContext();
 	const { formula, formulaDispatch } = useFormulatorContext();
 	const [changeStatus, setChangeStatus] = React.useState<number>(2);
 
@@ -32,8 +31,10 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	React.useEffect(() => {
 		if (!formula) return;
 
-		const formulaHasFid = "fid" in formula;
-		const formulaHasChanged = !_.isEqual(route.params?.formula, formula);
+		let formulaHasFid = "fid" in formula;
+		let formulaHasChanged = !_.isEqual(route.params?.formula, formula);
+
+		console.log(formulaHasFid, formulaHasChanged);
 
 		// If changeStatus is not already set, check for FID and data changes, then set status
 		if (changeStatus !== 0 && !formulaHasFid) setChangeStatus(0);
@@ -44,23 +45,30 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	return (
 		<>
 			{formula && (
-				<View style={[tw`flex-1 flex-col items-center`, { paddingTop: Constants.statusBarHeight }]}>
-					<View style={tw`h-14 w-full flex flex-row items-center justify-between px-5`}>
-						<Pressable onPress={() => navigation.goBack()} style={tw`w-12 h-10 bg-gray-200`}>
-							<FontAwesomeIcon icon={["fal", "chevron-left"]} size={24} style={tw`m-auto`} />
+				<View
+					style={[
+						tw`flex-1 flex-col items-center bg-gray-800`,
+						{ paddingTop: Constants.statusBarHeight },
+					]}>
+					<View style={tw`h-14 w-full flex flex-row items-center justify-center px-5`}>
+						<View style={tw`absolute top-0 w-2 h-2 rounded-full bg-${statusColors[changeStatus]}-500`} />
+
+						<Pressable onPress={() => navigation.goBack()} style={tw`w-10 h-10`}>
+							<FontAwesomeIcon icon={["fal", "chevron-left"]} size={20} style={tw`m-auto text-white`} />
 						</Pressable>
 
 						<TextInput
 							selectTextOnFocus
 							value={formula.name}
 							placeholder={formula.name}
-							style={tw`flex-1 mx-3 border p-3 text-center`}
+							style={tw`flex-1 mx-3 p-2 text-center text-white`}
 							onChangeText={(n) => formulaDispatch({ type: "CHANGE_NAME", payload: n })}
 						/>
+
 						<Pressable
 							onPress={() => formulaDispatch({ type: "SAVE_FORMULA" })}
-							style={tw`flex flex-row w-12 h-10 bg-gray-200`}>
-							<Text style={tw`m-auto`}>Save</Text>
+							style={tw`flex flex-row w-10 h-10`}>
+							<Text style={tw`text-sm m-auto text-white font-bold`}>Save</Text>
 						</Pressable>
 					</View>
 					<Equation data={formula.equation} variables={formula.variables} />
@@ -85,8 +93,8 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 								</Pressable>
 							)}
 						/>
-						<Pressable onPress={() => navigation.navigate("Variable")} style={tw`w-10 h-10 bg-gray-200`}>
-							<FontAwesomeIcon icon={["fal", "plus-circle"]} size={24} style={tw`m-auto`} />
+						<Pressable onPress={() => navigation.navigate("Variable")} style={tw`w-10 h-10`}>
+							<FontAwesomeIcon icon={["fal", "plus-circle"]} size={24} style={tw`m-auto text-white`} />
 						</Pressable>
 					</View>
 				</View>
