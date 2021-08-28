@@ -67,7 +67,7 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 							</Pressable>
 							<View style={tw`flex flex-col`}>
 								<Text style={tw`font-bold pb-2`}>{formula.name}</Text>
-								<Text>{formula.equation}</Text>
+								<Text>{formula.equation.replaceAll("|", "")}</Text>
 							</View>
 						</Pressable>
 					))}

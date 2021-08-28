@@ -68,10 +68,14 @@ export function insertNumber(state: Calculable, value?: string) {
 export function insertOperation(state: Calculable, value?: string) {
 	if (!value || state.lastConstantType === "EQ_BRACKET_OPEN") return state;
 
-	let replacePrevious = state.lastConstantType === "EQ_OPERATION";
+	const replacePrevious = state.lastConstantType === "EQ_OPERATION";
+	const isPreceededByLineBreak = state.equation.slice(-1) === "|";
+	const replacementOperation = isPreceededByLineBreak
+		? state.equation.replace(/(\+|-|\*|\/) \|$/g, `${value} |`)
+		: state.equation.slice(0, -2) + ` ${value}`;
 
 	// Final return values for state
-	const equation = (replacePrevious ? state.equation.slice(0, -2) : state.equation) + ` ${value}`;
+	const equation = replacePrevious ? replacementOperation : `${state.equation} ${value}`;
 	const lastConstantType = "EQ_OPERATION";
 
 	return { equation, lastConstantType };
