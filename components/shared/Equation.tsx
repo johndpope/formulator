@@ -13,10 +13,11 @@ const operationSymbols: OperationSymbolMap = {
 };
 
 export default function Equation({ data, color, variables, dispatch }: EquationProps) {
+	const [loaded, setLoaded] = React.useState<boolean>(false);
 	const [constants, setConstants] = React.useState<Array<EquationConstant>>([]);
 	const [numLines, setNumLines] = React.useState<number>(0);
 	const scrollViewRef = React.useRef<ScrollView>(null);
-	const lineHeight = React.useRef<number>(36);
+	const lineHeight = React.useRef<number>(0);
 
 	function generateConstantsArray(eq: string): Array<EquationConstant> {
 		let eqSplit = eq.match(/([-.0-9(?%)]+)|([\+|-|\/|\*|\(|\)])|(\{([^)]+?)\})/g);
@@ -45,12 +46,17 @@ export default function Equation({ data, color, variables, dispatch }: EquationP
 	}
 
 	const handleContentSizeChange = (w: number, h: number) => {
-		scrollViewRef?.current?.scrollToEnd?.({ animated: true });
-
+		if (!loaded) return;
 		if (Math.round(h) > lineHeight.current) {
 			dispatch({ type: "INSERT_LINE_BREAK_BEFORE" });
 		}
+
+		scrollViewRef?.current?.scrollToEnd?.({ animated: true });
 	};
+
+	React.useEffect(() => {
+		if (lineHeight.current > 0) setLoaded(true);
+	}, [lineHeight.current]);
 
 	React.useEffect(() => {
 		setConstants(generateConstantsArray(data));
@@ -59,7 +65,7 @@ export default function Equation({ data, color, variables, dispatch }: EquationP
 
 	return (
 		<View style={tw`px-5 py-1`}>
-			<View style={[tw`h-52 w-full flex flex-row border border-${color || "gray"}-500 py-2 pr-3`]}>
+			<View style={[tw`h-52 w-full flex flex-row border border-${color || "gray"}-500 py-3 pr-3`]}>
 				<View
 					style={tw`w-8 absolute left-0 inset-y-0 border-r border-${color || "gray"}-500 z-50`}></View>
 				<ScrollView
@@ -114,11 +120,11 @@ export default function Equation({ data, color, variables, dispatch }: EquationP
 						</React.Fragment>
 					))}
 					<View
+						key={`equation-lines`}
+						style={tw`w-8 absolute left-0 top-0`}
 						onLayout={(e) => {
 							lineHeight.current = e.nativeEvent.layout.height;
-						}}
-						key={`equation-lines`}
-						style={tw`w-8 absolute left-0 top-0`}>
+						}}>
 						{[...Array(numLines + 1).keys()].map((lineNum) => (
 							<View key={`equation-line-${lineNum}`} style={tw`w-8 h-9 flex flex-row flex-none`}>
 								<Text style={tw`m-auto text-sm ${color ? `text-${color}-500` : `text-gray-600`}`}>
