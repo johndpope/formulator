@@ -93,7 +93,7 @@ export function insertBracket(state: Calculable, value?: string) {
 	const multiplicationInsertion = value === "(" && state.equation.length && isMultiplicable ? " *" : "";
 
 	// Final return values for state
-	const openBrackets = state.openBrackets + value === "(" ? 1 : -1;
+	const openBrackets = state.openBrackets + (value === "(" ? 1 : -1);
 	const equation = state.equation + `${multiplicationInsertion} ${value}`;
 	const lastConstantType = value === "(" ? "EQ_BRACKET_OPEN" : "EQ_BRACKET_CLOSED";
 
