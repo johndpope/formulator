@@ -86,6 +86,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 											payload: { constantType: "EQ_VARIABLE", constantValue: `${item.name}` },
 										})
 									}
+									onLongPress={() => navigation.navigate("Variable", { variable: item })}
 									style={tw`px-4 py-2 bg-${item.color}-500 mr-2`}>
 									<Text style={tw`text-white`}>{item.name}</Text>
 								</Pressable>

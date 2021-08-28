@@ -99,10 +99,15 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	const [variable, dispatch] = React.useReducer(variableReducer, defaultVariableState);
 	const [nameIsInvalid, setNameIsInvalid] = React.useState<boolean>(false);
 
+	const handleDelete = () => {
+		navigation.goBack();
+		formulaDispatch({ type: "DELETE_VARIABLE", payload: variable });
+	};
+
 	const handleSave = () => {
 		if (!variable.result) return;
-		formulaDispatch?.({
-			type: "CREATE_VARIABLE",
+		formulaDispatch({
+			type: route.params?.variable ? "UPDATE_VARIABLE" : "CREATE_VARIABLE",
 			payload: variable,
 		});
 		navigation.goBack();
@@ -145,13 +150,15 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 						<View style={tw`w-12 h-1 bg-${variable.color}-500 rounded-full mt-4 mb-3`}></View>
 						{nameIsInvalid && <Text style={tw`px-2 pb-2`}>Name already exists</Text>}
 						<View style={tw`h-14 w-full flex flex-row items-center justify-between px-5`}>
-							<Pressable onPress={() => navigation.goBack()} style={tw`w-10 h-10`}>
-								<FontAwesomeIcon
-									icon={["fal", "chevron-left"]}
-									size={20}
-									style={tw`m-auto text-white`}
-								/>
-							</Pressable>
+							{route.params?.variable && (
+								<Pressable onPress={handleDelete} style={tw`w-10 h-10`}>
+									<FontAwesomeIcon
+										icon={["fal", "trash-alt"]}
+										size={20}
+										style={tw`m-auto text-${variable.color}-500`}
+									/>
+								</Pressable>
+							)}
 
 							<View style={tw`flex-1 mx-3 border border-${variable.color}-500`}>
 								<TextInput
@@ -164,7 +171,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 							</View>
 
 							<Pressable onPress={handleSave} style={tw`flex flex-row w-10 h-10`}>
-								<Text style={tw`text-sm m-auto text-white font-bold`}>Save</Text>
+								<Text style={tw`text-sm m-auto text-${variable.color}-500 font-bold`}>Save</Text>
 							</Pressable>
 						</View>
 						<Equation data={variable.equation} color={variable.color} dispatch={dispatch} />
