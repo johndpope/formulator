@@ -1,14 +1,16 @@
 import mathString from "math-string";
 import { Variable } from "../types/VariableTypes";
 import {
+	clearAll,
+	clearLast,
 	insertNumber,
 	insertOperation,
 	insertBracket,
 	insertPercent,
 	insertDecimal,
 	insertNegative,
-	clearLast,
-	clearAll,
+	insertLineBreak,
+	insertLineBreakBefore,
 } from "./SharedLogic";
 
 export function calculateResult(state: Variable) {
@@ -63,6 +65,19 @@ export function insertVariableNegative(state: Variable) {
 	const { equation, lastConstantType, openBrackets } = state;
 	const updated = insertNegative({ equation, lastConstantType, openBrackets });
 
+	return { ...state, ...updated };
+}
+
+export function insertVariableLineBreak(state: Variable) {
+	const { equation, lastConstantType, openBrackets } = state;
+	const updated = insertLineBreak({ equation, lastConstantType, openBrackets });
+
+	return { ...state, ...updated };
+}
+
+export function insertVariableLineBreakBefore(state: Variable) {
+	const { equation, lastConstantType, openBrackets } = state;
+	const updated = insertLineBreakBefore({ equation, lastConstantType, openBrackets });
 	return { ...state, ...updated };
 }
 

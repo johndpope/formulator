@@ -4,6 +4,8 @@ import firebase from "firebase";
 import { Formula } from "../types/FormulatorTypes";
 import { Variable } from "../types/VariableTypes";
 import {
+	clearAll,
+	clearLast,
 	insertNumber,
 	insertOperation,
 	insertBracket,
@@ -11,9 +13,8 @@ import {
 	insertPercent,
 	insertDecimal,
 	insertNegative,
-	clearLast,
-	clearAll,
 	insertLineBreak,
+	insertLineBreakBefore,
 } from "./SharedLogic";
 
 export function saveFormula(state: Formula) {
@@ -138,6 +139,12 @@ export function insertFormulaLineBreak(state: Formula) {
 	const { equation, lastConstantType, openBrackets } = state;
 	const updated = insertLineBreak({ equation, lastConstantType, openBrackets });
 
+	return { ...state, ...updated };
+}
+
+export function insertFormulaLineBreakBefore(state: Formula) {
+	const { equation, lastConstantType, openBrackets } = state;
+	const updated = insertLineBreakBefore({ equation, lastConstantType, openBrackets });
 	return { ...state, ...updated };
 }
 

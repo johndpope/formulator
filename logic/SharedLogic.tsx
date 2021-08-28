@@ -43,12 +43,12 @@ export function insertNumber(state: Calculable, value?: string) {
 	if (!value) return state;
 
 	// Check if multiplication symbol should be auto inserted before number
-	let isMultiplicable = checkIfShouldInsertMultiple(state.equation, state.lastConstantType);
-	let multiplicationInsertion = state.equation.length && isMultiplicable ? " *" : "";
+	const isMultiplicable = checkIfShouldInsertMultiple(state.equation, state.lastConstantType);
+	const multiplicationInsertion = state.equation.length && isMultiplicable ? " *" : "";
 
-	let isPreceededByPercent = state.equation.slice(-1) === "%";
-	let isPreceededByLineBreak = state.equation.slice(-1) === "|";
-	let isPreceededByNumber = state.lastConstantType === "EQ_NUMBER";
+	const isPreceededByPercent = state.equation.slice(-1) === "%";
+	const isPreceededByLineBreak = state.equation.slice(-1) === "|";
+	const isPreceededByNumber = state.lastConstantType === "EQ_NUMBER";
 
 	if (isPreceededByNumber) {
 		const lastNumber: RegExpMatchArray | null = state.equation.match(/(\d|\.)+$/g);
@@ -89,8 +89,8 @@ export function insertBracket(state: Calculable, value?: string) {
 	}
 
 	// Check if multiplication symbol should be auto inserted before bracket
-	let isMultiplicable = checkIfShouldInsertMultiple(state.equation, state.lastConstantType);
-	let multiplicationInsertion = value === "(" && state.equation.length && isMultiplicable ? " *" : "";
+	const isMultiplicable = checkIfShouldInsertMultiple(state.equation, state.lastConstantType);
+	const multiplicationInsertion = value === "(" && state.equation.length && isMultiplicable ? " *" : "";
 
 	// Final return values for state
 	const openBrackets = state.openBrackets + value === "(" ? 1 : -1;
@@ -103,8 +103,8 @@ export function insertBracket(state: Calculable, value?: string) {
 export function insertVariable(state: Calculable, name?: string) {
 	if (!name) return state;
 	// Check if multiplication symbol should be added before variable
-	let isMultiplicable = checkIfShouldInsertMultiple(state.equation, state.lastConstantType);
-	let multiplicationInsertion = state.equation.length && isMultiplicable ? " *" : "";
+	const isMultiplicable = checkIfShouldInsertMultiple(state.equation, state.lastConstantType);
+	const multiplicationInsertion = state.equation.length && isMultiplicable ? " *" : "";
 
 	// Final values to return for state
 	const lastConstantType = "EQ_VARIABLE";
@@ -115,11 +115,11 @@ export function insertVariable(state: Calculable, name?: string) {
 
 export function insertDecimal(state: Calculable) {
 	if (!state.equation.length || state.lastConstantType !== "EQ_NUMBER") return state;
-	let existingDecimal = state.equation.match(/(\d\.).+$/g);
+	const existingDecimal = state.equation.match(/(\d\.).+$/g);
 	if (existingDecimal) return state;
 
 	let equation = state.equation;
-	let isPreceededByDecimal = equation.slice(-1) === ".";
+	const isPreceededByDecimal = equation.slice(-1) === ".";
 	equation = isPreceededByDecimal ? equation.slice(0, -1) : (equation += ".");
 	console.log(equation.match(/\d\.+$/g));
 
@@ -129,7 +129,7 @@ export function insertDecimal(state: Calculable) {
 export function insertPercent(state: Calculable) {
 	if (!state.equation.length || state.lastConstantType !== "EQ_NUMBER") return state;
 
-	let isPercent = state.equation.slice(-1) === "%";
+	const isPercent = state.equation.slice(-1) === "%";
 
 	// Finally return number with / without percentage
 	const equation = isPercent ? state.equation.slice(0, -1) : (state.equation += "%");
@@ -141,13 +141,16 @@ export function insertNegative(state: Calculable) {
 	if (!state.equation.length || state.lastConstantType !== "EQ_NUMBER") return state;
 
 	let equation = state.equation;
-	let isNegativeNumber = state.equation.match(/-(\d|%)+$/i) !== null;
+	const isNegativeNumber = state.equation.match(/-(\d|\.|%)+$/i) !== null;
 
 	if (isNegativeNumber) {
-		equation = equation.replace(/-(\d|%)+$/i, (m) => `${m.substring(1)}`);
+		// Remove existing minus symbol
+		equation = equation.replace(/-(\d|\.|%)+$/i, (m) => `${m.substring(1)}`);
 	} else {
-		equation = equation.replace(/(\d|%)+$/i, (m) => `-${m}`);
+		// Insert new minus symbol before number
+		equation = equation.replace(/(\d|\.|%)+$/i, (m) => `-${m}`);
 	}
+
 	return { equation };
 }
 
@@ -155,6 +158,15 @@ export function insertLineBreak(state: Calculable) {
 	if (!state.equation.length || state.equation.slice(-1) === "|") return state;
 	let equation = state.equation;
 	equation += "|";
+	return { equation };
+}
+
+export function insertLineBreakBefore(state: Calculable) {
+	let isPreceededByLineBreak = state.equation.slice(-1) === "|";
+	if (isPreceededByLineBreak) return state;
+
+	const equation = state.equation.replace(/\s+\S*$/g, (match) => `|${match}`);
+
 	return { equation };
 }
 
@@ -167,9 +179,9 @@ export function clearLast(state: Calculable) {
 		// If last type is variable, replace {variable_name} with an empty string
 		equation = equation.trim().replace(/ ?\{(\w|\s|\d)+\}$/, "");
 	} else {
-		let preceedingCharacter = equation.charAt(equation.length - 2);
-		let isPreceededByMinus = preceedingCharacter === "-";
-		let isPreceededBySpace = preceedingCharacter === " ";
+		const preceedingCharacter = equation.charAt(equation.length - 2);
+		const isPreceededByMinus = preceedingCharacter === "-";
+		const isPreceededBySpace = preceedingCharacter === " ";
 
 		// If preceeding is (' -' minus) remove 3 characters,
 		// If (' ' space) remove 2 characters,
@@ -178,7 +190,7 @@ export function clearLast(state: Calculable) {
 		equation = state.equation.slice(0, numCharactersToRemove);
 	}
 
-	let openBrackets =
+	const openBrackets =
 		equation.length <= 1
 			? 0
 			: state.lastConstantType === "EQ_BRACKET_OPEN"
@@ -186,7 +198,7 @@ export function clearLast(state: Calculable) {
 			: state.lastConstantType === "EQ_BRACKET_CLOSED"
 			? (state.openBrackets += 1)
 			: state.openBrackets;
-	let lastConstantType = checkConstantType(equation.slice(-1));
+	const lastConstantType = checkConstantType(equation.slice(-1));
 
 	return { equation, lastConstantType, openBrackets };
 }

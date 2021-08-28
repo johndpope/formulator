@@ -10,6 +10,7 @@ import Result from "../components/shared/Result";
 import Equation from "../components/shared/Equation";
 import Calculator from "../components/shared/Calculator";
 import {
+	calculateResult,
 	clearVariableAll,
 	clearVariableLast,
 	insertVariableBracket,
@@ -18,7 +19,8 @@ import {
 	insertVariableNumber,
 	insertVariableOperation,
 	insertVariablePercent,
-	calculateResult,
+	insertVariableLineBreak,
+	insertVariableLineBreakBefore,
 } from "../logic/VariableLogic";
 
 const colors = ["yellow", "blue", "green", "purple", "pink", "red"];
@@ -59,6 +61,12 @@ const variableReducer = (state: Variable, action: VariableAction): Variable => {
 
 		case "CALCULATE_RESULT":
 			return calculateResult(state);
+
+		case "INSERT_LINE_BREAK":
+			return insertVariableLineBreak(state);
+
+		case "INSERT_LINE_BREAK_BEFORE":
+			return insertVariableLineBreakBefore(state);
 
 		case "INSERT_CONSTANT":
 			if (!payload || typeof payload === "string" || !("constantType" in payload)) return state;
@@ -159,7 +167,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 								<Text style={tw`text-sm m-auto text-white font-bold`}>Save</Text>
 							</Pressable>
 						</View>
-						<Equation data={variable.equation} color={variable.color} />
+						<Equation data={variable.equation} color={variable.color} dispatch={dispatch} />
 						<Result data={variable.result} color={variable.color} />
 						<Calculator dispatch={dispatch} />
 						<View style={tw`flex flex-row justify-around px-5 pt-5 w-full`}>

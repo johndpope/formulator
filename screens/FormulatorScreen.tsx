@@ -69,7 +69,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 							<Text style={tw`text-sm m-auto text-white font-bold`}>Save</Text>
 						</Pressable>
 					</View>
-					<Equation data={formula.equation} variables={formula.variables} />
+					<Equation data={formula.equation} variables={formula.variables} dispatch={formulaDispatch} />
 					<Result data={formula.result} />
 					<Calculator dispatch={formulaDispatch} />
 					<View style={tw`flex flex-row px-5 items-center mt-auto mb-10`}>

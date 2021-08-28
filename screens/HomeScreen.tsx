@@ -34,10 +34,10 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 							formula: {
 								user: user.uid,
 								name: "Another Formula",
-								equation: "10 + 20",
-								result: "30",
+								equation: "",
+								result: null,
 								openBrackets: 0,
-								lastConstantType: "EQ_NUMBER",
+								lastConstantType: "",
 								variables: [],
 							},
 						})

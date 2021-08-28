@@ -12,44 +12,49 @@ const operationSymbols: OperationSymbolMap = {
 	"/": "divide",
 };
 
-export default function Equation({ data, color, variables }: EquationProps) {
+export default function Equation({ data, color, variables, dispatch }: EquationProps) {
 	const [constants, setConstants] = React.useState<Array<EquationConstant>>([]);
 	const [numLines, setNumLines] = React.useState<number>(0);
 	const scrollViewRef = React.useRef<ScrollView>(null);
-	const lineHeight = React.useRef<number>(0);
+	const lineHeight = React.useRef<number>(36);
 
-	function generateConstantsArray(data: string): Array<EquationConstant> {
-		let eqSplit = data.match(/([-.0-9(?%)]+)|([\+|-|\/|\*|\(|\)])|(\{([^)]+?)\})/g);
+	function generateConstantsArray(eq: string): Array<EquationConstant> {
+		let eqSplit = eq.match(/([-.0-9(?%)]+)|([\+|-|\/|\*|\(|\)])|(\{([^)]+?)\})/g);
 
-		return eqSplit === null
-			? []
-			: eqSplit.map((constant) => {
-					const constantType = checkConstantType(constant);
-					let c: EquationConstant = {
-						type: constantType,
-						value: constant.replace(/\{|\}/g, ""),
-					};
-					if (variables && constantType === "EQ_VARIABLE") {
-						let match = variables.find((v) => v.name === c.value);
-						c.color = match?.color;
-					}
-					return c;
-			  });
+		const constantsArray =
+			eqSplit === null
+				? []
+				: eqSplit.map((constant) => {
+						const constantType = checkConstantType(constant);
+						let c: EquationConstant = {
+							type: constantType,
+							value: constant.replace(/\{|\}/g, ""),
+						};
+						if (variables && constantType === "EQ_VARIABLE") {
+							let match = variables.find((v) => v.name === c.value);
+							c.color = match?.color;
+						}
+						return c;
+				  });
+		return constantsArray;
+	}
+
+	function generateLineBreaks(eq: string) {
+		let lines = eq.match(/\|/g);
+		return lines?.length || 0;
 	}
 
 	const handleContentSizeChange = (w: number, h: number) => {
 		scrollViewRef?.current?.scrollToEnd?.({ animated: true });
+
 		if (Math.round(h) > lineHeight.current) {
-			setNumLines((pnl) => pnl + 1);
+			dispatch({ type: "INSERT_LINE_BREAK_BEFORE" });
 		}
-		if (Math.round(h) < lineHeight.current) {
-			setNumLines((pnl) => pnl - 1);
-		}
-		if (h === 0) setNumLines(0);
 	};
 
 	React.useEffect(() => {
 		setConstants(generateConstantsArray(data));
+		setNumLines(generateLineBreaks(data));
 	}, [data]);
 
 	return (
@@ -114,7 +119,7 @@ export default function Equation({ data, color, variables }: EquationProps) {
 						}}
 						key={`equation-lines`}
 						style={tw`w-8 absolute left-0 top-0`}>
-						{[...Array(numLines).keys()].map((lineNum) => (
+						{[...Array(numLines + 1).keys()].map((lineNum) => (
 							<View key={`equation-line-${lineNum}`} style={tw`w-8 h-9 flex flex-row flex-none`}>
 								<Text style={tw`m-auto text-sm ${color ? `text-${color}-500` : `text-gray-600`}`}>
 									{lineNum + 1}
