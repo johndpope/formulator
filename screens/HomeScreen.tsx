@@ -1,5 +1,6 @@
 import React from "react";
 import tw from "../styles/tailwind";
+import Constants from "expo-constants";
 import { useFormulas } from "../hooks/useFormulas";
 import { useAuthContext } from "../providers/AuthProvider";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
@@ -22,12 +23,12 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 	}, [navigation]);
 
 	return (
-		<SafeAreaView style={tw`flex-1 bg-gray-100 flex flex-col`}>
-			<View style={tw`h-14 w-full flex flex-row items-center justify-between px-5`}>
+		<View style={[tw`flex-1 bg-warmGray-800 flex flex-col`, { paddingTop: Constants.statusBarHeight }]}>
+			<View style={tw`bg-warmGray-900 h-14 w-full flex flex-row items-center justify-between px-5`}>
 				<Pressable onPress={() => signOut()} style={tw`w-10 h-10`}>
-					<FontAwesomeIcon icon={["fal", "sign-out-alt"]} size={24} style={tw`m-auto`} />
+					<FontAwesomeIcon icon={["fal", "sign-out-alt"]} size={24} style={tw`text-white m-auto`} />
 				</Pressable>
-				<Text>{user && user.displayName}</Text>
+				<Text style={tw`text-white`}>{user && user.displayName}</Text>
 				<Pressable
 					onPress={() =>
 						navigation.navigate("Formulator", {
@@ -43,7 +44,7 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 						})
 					}
 					style={tw`w-10 h-10`}>
-					<FontAwesomeIcon icon={["fal", "plus-square"]} size={24} style={tw`m-auto`} />
+					<FontAwesomeIcon icon={["fal", "plus-square"]} size={24} style={tw`text-white m-auto`} />
 				</Pressable>
 			</View>
 			<View style={tw`flex flex-col w-full p-4`}>
@@ -72,6 +73,6 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 						</Pressable>
 					))}
 			</View>
-		</SafeAreaView>
+		</View>
 	);
 }
