@@ -7,11 +7,13 @@ import { useFormulatorContext } from "../providers/FormulatorProvider";
 import { HomeScreenProps } from "../types/NavigatorTypes";
 import { SafeAreaView, View, Text, Pressable } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { useThemeContext } from "../providers/ThemeProvider";
 
 export default function HomeScreen({ route, navigation }: HomeScreenProps) {
-	const { user, signOut, signInWithGoogle } = useAuthContext();
+	const { theme } = useThemeContext();
 	const { formulaDispatch } = useFormulatorContext();
 	const { formulas, error, loading } = useFormulas();
+	const { user, signOut } = useAuthContext();
 
 	React.useEffect(() => {
 		const unsubscribe = navigation.addListener("focus", () => {
@@ -23,12 +25,17 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 	}, [navigation]);
 
 	return (
-		<View style={[tw`flex-1 bg-warmGray-800 flex flex-col`, { paddingTop: Constants.statusBarHeight }]}>
-			<View style={tw`bg-warmGray-900 h-14 w-full flex flex-row items-center justify-between px-5`}>
+		<View
+			style={[tw`${theme.background} flex-1 flex flex-col`, { paddingTop: Constants.statusBarHeight }]}>
+			<View style={tw`${theme.foreground} h-14 w-full flex flex-row items-center justify-between px-5`}>
 				<Pressable onPress={() => signOut()} style={tw`w-10 h-10`}>
-					<FontAwesomeIcon icon={["fal", "sign-out-alt"]} size={24} style={tw`text-white m-auto`} />
+					<FontAwesomeIcon
+						icon={["fal", "sign-out-alt"]}
+						size={24}
+						style={tw`${theme.text.primary} m-auto`}
+					/>
 				</Pressable>
-				<Text style={tw`text-white`}>{user && user.displayName}</Text>
+				<Text style={tw`${theme.text.primary}`}>{user && user.displayName}</Text>
 				<Pressable
 					onPress={() =>
 						navigation.navigate("Formulator", {
@@ -44,7 +51,11 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 						})
 					}
 					style={tw`w-10 h-10`}>
-					<FontAwesomeIcon icon={["fal", "plus-square"]} size={24} style={tw`text-white m-auto`} />
+					<FontAwesomeIcon
+						icon={["fal", "plus-square"]}
+						size={24}
+						style={tw`${theme.text.primary} m-auto`}
+					/>
 				</Pressable>
 			</View>
 			<View style={tw`flex flex-col w-full p-4`}>
@@ -64,11 +75,15 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 							<Pressable
 								onPress={() => formulaDispatch({ type: "DELETE_FORMULA", payload: formula.fid })}
 								style={tw`mr-5`}>
-								<FontAwesomeIcon icon={["fal", "trash-alt"]} size={20} />
+								<FontAwesomeIcon
+									icon={["fal", "trash-alt"]}
+									size={20}
+									style={tw`text-${theme.colors.red}`}
+								/>
 							</Pressable>
 							<View style={tw`flex flex-col`}>
-								<Text style={tw`font-bold pb-2`}>{formula.name}</Text>
-								<Text>{formula.equation.replaceAll("|", "")}</Text>
+								<Text style={tw`${theme.text.primary} font-bold pb-2`}>{formula.name}</Text>
+								<Text style={tw`${theme.text.secondary}`}>{formula.equation.replaceAll("|", "")}</Text>
 							</View>
 						</Pressable>
 					))}
