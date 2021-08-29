@@ -114,6 +114,11 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 		navigation.goBack();
 	};
 
+	const handleNameChange = (n: string) => {
+		if (!/^[\sa-zA-Z]*$/g.test(n) || nameIsInvalid) return;
+		dispatch({ type: "CHANGE_NAME", payload: n });
+	};
+
 	React.useEffect(() => {
 		dispatch?.({
 			type: "INIT",
@@ -167,7 +172,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 									value={variable.name}
 									placeholder={variable.name}
 									style={tw`p-2 text-center text-white`}
-									onChangeText={(n) => dispatch({ type: "CHANGE_NAME", payload: n })}
+									onChangeText={handleNameChange}
 								/>
 							</View>
 

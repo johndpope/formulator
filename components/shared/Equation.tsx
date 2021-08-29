@@ -64,19 +64,24 @@ export default function Equation({ data, color, variables, dispatch }: EquationP
 	}, [data, variables]);
 
 	return (
-		<View style={tw`px-5 py-1`}>
-			<View style={[tw`h-52 w-full flex flex-row border border-${color || "gray"}-500 py-3 pr-3`]}>
+		<View style={tw`py-1`}>
+			<View
+				style={[
+					tw`h-60 w-full flex flex-row bg-gray-900 border-t border-b border-${
+						color || "gray"
+					}-700 py-3 pr-3`,
+				]}>
 				<View
-					style={tw`w-8 absolute left-0 inset-y-0 border-r border-${color || "gray"}-500 z-50`}></View>
+					style={tw`w-8 absolute left-0 inset-y-0 border-r border-${color || "gray"}-800 z-50`}></View>
 				<ScrollView
-					bounces={false}
+					bounces={true}
 					ref={scrollViewRef}
 					showsVerticalScrollIndicator={false}
 					onContentSizeChange={handleContentSizeChange}
 					contentContainerStyle={[tw`flex flex-row flex-wrap justify-end pl-12`]}>
 					{constants.map((constant, index) => (
 						<React.Fragment key={`equation-constant-${index}`}>
-							{constant.type === "EQ_LINE_BREAK" ? (
+							{constant.value === "|" ? (
 								<View style={tw`w-full h-${index === constants.length - 1 ? "9" : "0"}`}></View>
 							) : (
 								<View style={tw`flex flex-row max-w-full items-center px-1`}>
