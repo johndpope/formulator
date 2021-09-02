@@ -2,6 +2,7 @@ import React from "react";
 import tw from "../styles/tailwind";
 import { SafeAreaView, View, Text, TextInput, Pressable } from "react-native";
 import { VariableScreenProps } from "../types/NavigatorTypes";
+import { Theme } from "../types/ThemeTypes";
 import { Variable, VariableAction } from "../types/VariableTypes";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -108,6 +109,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 
 	const handleSave = () => {
 		if (!variable.result) return;
+		if (nameIsInvalid) return;
 
 		const saveAction = "vid" in variable ? "UPDATE_VARIABLE" : "CREATE_VARIABLE";
 		formulaDispatch({
@@ -118,7 +120,6 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	};
 
 	const handleNameChange = (n: string) => {
-		if (nameIsInvalid) return;
 		dispatch({ type: "CHANGE_NAME", payload: n.replaceAll("|", "") });
 	};
 
@@ -145,7 +146,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 
 	React.useEffect(() => {
 		const existingIndex: number = formula.variables.findIndex((v: Variable) => v.name === variable.name);
-		const nameAlreadyExists = existingIndex !== -1;
+		const nameAlreadyExists = route.params?.variable.name !== variable.name && existingIndex !== -1;
 
 		if (!nameIsInvalid && nameAlreadyExists) setNameIsInvalid(true);
 		if (nameIsInvalid && !nameAlreadyExists) setNameIsInvalid(false);
@@ -164,7 +165,11 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 							{ backgroundColor: theme.colors[variable.color] },
 							tw`w-12 h-1 mx-auto rounded-full mt-4`,
 						]}></View>
-					{/* {nameIsInvalid && <Text style={tw`px-2 pb-2`}>Name already exists</Text>} */}
+					{nameIsInvalid && (
+						<Text style={[{ color: theme.colors.error }, tw`px-2 pt-2 text-xs mx-auto`]}>
+							! A Variable with this name already exists
+						</Text>
+					)}
 					<Header>
 						{route.params?.variable ? (
 							<IconButton onPress={handleDelete} icon={["fal", "trash-alt"]} />
