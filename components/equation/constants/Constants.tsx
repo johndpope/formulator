@@ -15,7 +15,7 @@ export function Constant({ constant, color }: ConstantProps) {
 	return (
 		<Text
 			style={[
-				tw`text-xl leading-8 px-px`,
+				tw`text-xl leading-9 px-px`,
 				{
 					color: color || "",
 					fontFamily: "NovaMono_400Regular",
@@ -30,7 +30,7 @@ export function ConstantNumber({ constant, color }: ConstantProps) {
 	return (
 		<Text
 			style={[
-				tw`text-xl leading-8 px-px`,
+				tw`text-xl leading-9 px-px`,
 				{
 					color: color || "",
 					fontFamily: "NovaMono_400Regular",
@@ -50,7 +50,7 @@ const operationSymbols: OperationSymbolMap = {
 
 export function ConstantOperation({ constant, color }: ConstantProps) {
 	return (
-		<View style={tw`flex-none flex flex-row items-center h-8 px-2`}>
+		<View style={tw`flex-none flex flex-row items-center h-9 px-2`}>
 			<FontAwesomeIcon
 				icon={["fal", `${operationSymbols[constant.value]}`]}
 				size={18}

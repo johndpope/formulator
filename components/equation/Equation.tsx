@@ -47,7 +47,7 @@ export default function Equation({ data, color, variables, dispatch }: EquationP
 					borderColor: theme.border,
 					backgroundColor: theme.background.secondary,
 				},
-				tw`h-44 w-full flex flex-row border-t border-b`,
+				tw`h-48 w-full flex flex-row border-t border-b`,
 			]}>
 			<View style={[{ borderColor: theme.border }, tw`absolute w-9 left-0 inset-y-0 border-r`]}></View>
 			<ScrollView
