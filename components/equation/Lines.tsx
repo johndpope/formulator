@@ -13,7 +13,7 @@ export default function EquationsLines({ numLines, lineHeight }: EquationLinesPr
 	return (
 		<View
 			key={`equation-lines`}
-			style={tw`absolute left-0 top-0 h-full justify-around py-2 w-9`}
+			style={tw`absolute left-0 top-0 pt-2 w-9`}
 			onLayout={(e) => {
 				lineHeight.current = e.nativeEvent.layout.height;
 			}}>
@@ -21,8 +21,8 @@ export default function EquationsLines({ numLines, lineHeight }: EquationLinesPr
 				<View key={`equation-line-${lineNum}`} style={tw`h-9 flex flex-row flex-none`}>
 					<Text
 						style={[
-							tw`m-auto text-sm`,
-							{ color: theme.text.secondary, fontFamily: "NovaMono_400Regular" },
+							tw`m-auto text-sm leading-9`,
+							{ color: theme.button.secondary, fontFamily: "NovaMono_400Regular" },
 						]}>
 						{lineNum + 1}
 					</Text>

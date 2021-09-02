@@ -244,11 +244,11 @@ export function insertLineBreakBefore(state: Calculable) {
 	const isAlreadyLineBreak = state.equation.slice(-1) === "|";
 	if (isAlreadyLineBreak) return state;
 
-	// const equation = state.equation.replace(/\s+\S*$/g, (match) => ` |${match}`);
-	const equation = state.equation.replace(
-		/\s?(-?)(\{([^{}]+)\}|\+|-|\*|\/|\(|\)|\d|0?\.|%)$/g,
-		(match) => ` |${match}`
-	);
+	const equation = state.equation.replace(/\s+\S*$/g, (match) => ` |${match}`);
+	// const equation = state.equation.replace(
+	// 	/\s?(\{([^{}]+)\}|\+|-|\*|\/|\(|\)|-?\d|0?\.|%)$/g,
+	// 	(match) => ` |${match}`
+	// );
 
 	return { equation };
 }
