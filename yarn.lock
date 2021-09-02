@@ -1139,6 +1139,11 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
+"@expo-google-fonts/nova-mono@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/nova-mono/-/nova-mono-0.2.0.tgz#27da2eb1bd278ac94006a214c01f410b7dff4a4c"
+  integrity sha512-nLPyP8CZ1Ufu62eifAnDO/npHMZ0wvAy2LnTbNpa5A7SQ52pXZ5xe/0qBBJ68v9KHFoD2q/cKyuxRjQOjWG3+Q==
+
 "@expo-google-fonts/poppins@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/poppins/-/poppins-0.2.0.tgz#f6df892909142740b53d3227cb5eb24990ece151"
