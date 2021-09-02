@@ -7,8 +7,8 @@ import { EquationConstant, OperationSymbolMap } from "../../../types/EquationTyp
 import { useThemeContext } from "../../../providers/ThemeProvider";
 
 interface ConstantProps {
-	constant: EquationConstant;
 	color?: string;
+	constant: EquationConstant;
 }
 
 export function Constant({ constant, color }: ConstantProps) {
@@ -69,21 +69,19 @@ export function ConstantVariable({ constant }: ConstantProps) {
 	const { theme } = useThemeContext();
 
 	const variableTextStyle = {
-		color: theme.background.primary,
-		fontFamily: "Poppins_700Bold",
+		fontFamily: "Poppins_600SemiBold",
 	};
 
+	const color = theme.colors[constant.color || "contrast"];
+
 	return (
-		<View style={tw`flex flex-row items-center h-8 px-px`}>
-			<View
-				style={[
-					{ backgroundColor: theme.colors[constant?.color || "contrast"] },
-					tw`flex flex-row items-center py-1 px-1 rounded-md`,
-				]}>
-				<Text style={[variableTextStyle, tw`text-xs pr-1`]}>{`{`}</Text>
-				<Text style={[variableTextStyle, tw`text-xs capitalize`]}>{constant.value}</Text>
-				<Text style={[variableTextStyle, tw`text-xs pl-1`]}>{`}`}</Text>
-			</View>
+		<View style={tw`flex flex-row px-1.5 py-1 mx-1 rounded-md overflow-hidden`}>
+			<View style={[{ backgroundColor: color }, tw`absolute inset-y-0 inset-x-0 opacity-10`]}></View>
+			<Text style={[{ color: color }, variableTextStyle, tw`text-sm pr-1`]}>{`{`}</Text>
+			<Text style={[{ color: theme.text.primary }, variableTextStyle, tw`text-sm capitalize`]}>
+				{constant.value}
+			</Text>
+			<Text style={[{ color: color }, variableTextStyle, tw`text-sm pl-1`]}>{`}`}</Text>
 		</View>
 	);
 }

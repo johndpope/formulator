@@ -20,8 +20,7 @@ export function VariableListSmall({ formula, dispatch }: VariableListSmallProps)
 	const { theme } = useThemeContext();
 
 	const variableTextStyle = {
-		color: theme.background.primary,
-		fontFamily: "Poppins_700Bold",
+		fontFamily: "Poppins_600SemiBold",
 	};
 
 	return (
@@ -39,13 +38,27 @@ export function VariableListSmall({ formula, dispatch }: VariableListSmallProps)
 						})
 					}
 					onLongPress={() => navigation.navigate("Variable", { variable: item })}
-					style={[
-						{ backgroundColor: theme.colors[item.color] },
-						tw`flex flex-row px-1 py-1 mr-3 rounded-md`,
-					]}>
-					<Text style={[variableTextStyle, tw`text-sm pr-1`]}>{`{`}</Text>
-					<Text style={[variableTextStyle, tw`text-sm capitalize`]}>{item.name}</Text>
-					<Text style={[variableTextStyle, tw`text-sm pl-1`]}>{`}`}</Text>
+					style={[tw`flex flex-row px-2 py-2 mr-3 rounded-md overflow-hidden`]}>
+					<View
+						style={[
+							{ backgroundColor: theme.colors[item.color] },
+							tw`absolute inset-y-0 inset-x-0 opacity-10`,
+						]}></View>
+					<Text
+						style={[
+							{ color: theme.colors[item.color] },
+							variableTextStyle,
+							tw`text-sm pr-1`,
+						]}>{`{`}</Text>
+					<Text style={[{ color: theme.text.primary }, variableTextStyle, tw`text-sm capitalize`]}>
+						{item.name}
+					</Text>
+					<Text
+						style={[
+							{ color: theme.colors[item.color] },
+							variableTextStyle,
+							tw`text-sm pl-1`,
+						]}>{`}`}</Text>
 				</Pressable>
 			)}
 		/>

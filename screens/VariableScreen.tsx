@@ -108,7 +108,6 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 
 	const handleSave = () => {
 		if (!variable.result) return;
-		if (nameIsInvalid) return;
 
 		const saveAction = "vid" in variable ? "UPDATE_VARIABLE" : "CREATE_VARIABLE";
 		formulaDispatch({
@@ -119,6 +118,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	};
 
 	const handleNameChange = (n: string) => {
+		if (nameIsInvalid) return;
 		dispatch({ type: "CHANGE_NAME", payload: n.replaceAll("|", "") });
 	};
 
