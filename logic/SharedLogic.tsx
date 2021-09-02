@@ -59,8 +59,8 @@ export function insertNumber(state: Calculable, value?: string) {
 	if (!value) return state;
 
 	// Don't execute if preceeding number is longer than 14 characters
-	const lastNumber = state.equation.match(/(\d)+$/g);
-	if (lastNumber && lastNumber[0].length >= 14) return state;
+	const isNumberTooLong = /\s\d{12}$/g.test(state.equation);
+	if (isNumberTooLong) return state;
 
 	let equation = state.equation;
 
