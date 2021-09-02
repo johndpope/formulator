@@ -246,11 +246,9 @@ export function insertLineBreakBefore(state: Calculable) {
 
 	// const equation = state.equation.replace(/\s+\S*$/g, (match) => ` |${match}`);
 	const equation = state.equation.replace(
-		/\s?(-?)(\{[.+?]*\}|\+|-|\*|\/|\(|\)|\d|0?\.|%)$/g,
+		/\s?(-?)(\{([^{}]+)\}|\+|-|\*|\/|\(|\)|\d|0?\.|%)$/g,
 		(match) => ` |${match}`
 	);
-
-	console.log(equation.replaceAll(" ", "__"));
 
 	return { equation };
 }
@@ -262,7 +260,7 @@ export function clearLast(state: Calculable) {
 
 	// Replace any variables, operations, numbers, decimals, percentages, and linebreaks
 	// at the end of the equation
-	equation = equation.replace(/\s?(-?)(\{[.+?]*\}|\+|-|\*|\/|\(|\)|\d|0?\.|%|\|)$/g, "");
+	equation = equation.replace(/\s?(-?)(\{([^{}]+)\}|\+|-|\*|\/|\(|\)|\d|0?\.|%|\|)$/g, "");
 
 	// Calculate number of open brackets if a bracket is deleted
 	const decrementBracket = state.lastConstantType === "EQ_BRACKET_OPEN";
