@@ -2,9 +2,9 @@ import _ from "lodash";
 import React from "react";
 import tw from "../styles/tailwind";
 import Constants from "expo-constants";
-import Result from "../components/shared/Result";
-import Equation from "../components/shared/Equation";
-import Calculator from "../components/shared/Calculator";
+import Result from "../components/formula/Result";
+import Equation from "../components/equation/Equation";
+import Calculator from "../components/calculator/Calculator";
 import { useAuthContext } from "../providers/AuthProvider";
 import { FormulaScreenProps } from "../types/NavigatorTypes";
 import { View, Text, Pressable, TextInput } from "react-native";
@@ -12,12 +12,18 @@ import { useFormulatorContext } from "../providers/FormulatorProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { FlatList } from "react-native-gesture-handler";
 
-const statusColors = ["red", "yellow", "green"];
-const statusText = ["Unsaved", "Changed", "Saved"];
+import { ScreenView, Header, Title, IconButton, ButtonSecondary } from "../components/ThemeComponents";
+import { theme } from "../tailwind.config";
+import { useThemeContext } from "../providers/ThemeProvider";
+import { VariableListSmall } from "../components/variable/VariableListSmall";
 
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
+	const { theme } = useThemeContext();
 	const { formula, formulaDispatch } = useFormulatorContext();
 	const [changeStatus, setChangeStatus] = React.useState<number>(2);
+
+	const statusColors = [theme.colors.red, theme.colors.yellow, theme.colors.green];
+	const statusText = ["Unsaved", "Changed", "Saved"];
 
 	function handleSave() {
 		if (!formula.result) return;
@@ -27,6 +33,16 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	function handleDelete() {
 		navigation.goBack();
 		formulaDispatch({ type: "DELETE_FORMULA", payload: formula.fid });
+	}
+
+	function handleStatusChange() {
+		let formulaHasFid = "fid" in formula;
+		let formulaHasChanged = !_.isEqual(route.params?.formula, formula);
+
+		// If changeStatus is not already set, check for FID and data changes, then set status
+		if (changeStatus !== 0 && !formulaHasFid) setChangeStatus(0);
+		if (changeStatus !== 1 && formulaHasFid && formulaHasChanged) setChangeStatus(1);
+		if (changeStatus !== 2 && formulaHasFid && !formulaHasChanged) setChangeStatus(2);
 	}
 
 	React.useEffect(() => {
@@ -41,75 +57,47 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	React.useEffect(() => {
 		if (!formula) return;
 
-		let formulaHasFid = "fid" in formula;
-		let formulaHasChanged = !_.isEqual(route.params?.formula, formula);
-
-		// If changeStatus is not already set, check for FID and data changes, then set status
-		if (changeStatus !== 0 && !formulaHasFid) setChangeStatus(0);
-		if (changeStatus !== 1 && formulaHasFid && formulaHasChanged) setChangeStatus(1);
-		if (changeStatus !== 2 && formulaHasFid && !formulaHasChanged) setChangeStatus(2);
+		handleStatusChange();
 	}, [formula, route.params]);
 
 	return (
-		<>
-			{formula && (
+		<ScreenView>
+			<Header>
+				<View style={tw`absolute inset-x-0 top-0 flex flex-row justify-center`}>
+					<View style={[tw`w-1 h-1 rounded-full`, { backgroudColor: statusColors[changeStatus] }]} />
+				</View>
+				<IconButton onPress={() => navigation.goBack()} icon={["fal", "chevron-left"]} />
+				<TextInput
+					selectTextOnFocus
+					value={formula.name}
+					placeholder={formula.name}
+					style={[
+						{
+							color: theme.text.primary,
+							fontFamily: "Poppins_400Regular",
+							backgroundColor: theme.background.secondary,
+						},
+						tw`flex-1 p-1 mx-3 text-center text-base rounded-md`,
+					]}
+					onChangeText={(n) => formulaDispatch({ type: "CHANGE_NAME", payload: n })}
+				/>
+
+				<IconButton onPress={handleSave} icon={["fal", "ellipsis-v"]} size={24} />
+			</Header>
+
+			<View style={tw`flex-1`}>
+				<Equation data={formula.equation} variables={formula.variables} dispatch={formulaDispatch} />
+				<Result data={formula.result} />
+				<Calculator dispatch={formulaDispatch} />
 				<View
 					style={[
-						tw`flex-1 flex-col items-center bg-gray-800`,
-						{ paddingTop: Constants.statusBarHeight },
+						{ borderColor: theme.border },
+						tw`flex flex-row px-5 pt-5 pb-10 items-center justify-end border-t`,
 					]}>
-					<View style={tw`h-14 w-full flex flex-row items-center justify-center px-5`}>
-						<View style={tw`absolute top-0 w-2 h-2 rounded-full bg-${statusColors[changeStatus]}-500`} />
-
-						<Pressable onPress={() => navigation.goBack()} style={tw`w-10 h-10`}>
-							<FontAwesomeIcon icon={["fal", "chevron-left"]} size={20} style={tw`m-auto text-white`} />
-						</Pressable>
-
-						<Pressable onPress={handleDelete} style={tw`w-10 h-10`}>
-							<FontAwesomeIcon icon={["fal", "trash-alt"]} size={16} style={tw`m-auto text-white`} />
-						</Pressable>
-
-						<TextInput
-							selectTextOnFocus
-							value={formula.name}
-							placeholder={formula.name}
-							style={tw`flex-1 mx-3 p-2 text-center text-white`}
-							onChangeText={(n) => formulaDispatch({ type: "CHANGE_NAME", payload: n })}
-						/>
-
-						<Pressable onPress={handleSave} style={tw`flex flex-row w-10 h-10`}>
-							<Text style={tw`text-sm m-auto text-white font-bold`}>Save</Text>
-						</Pressable>
-					</View>
-					<Equation data={formula.equation} variables={formula.variables} dispatch={formulaDispatch} />
-					<Result data={formula.result} />
-					<Calculator dispatch={formulaDispatch} />
-					<View style={tw`flex flex-row px-5 items-center mt-auto mb-10`}>
-						<FlatList
-							horizontal
-							data={formula.variables}
-							keyExtractor={(item) => `variable-chip-${item.name}`}
-							contentContainerStyle={tw`flex flex-row items-center`}
-							renderItem={({ item }) => (
-								<Pressable
-									onPress={() =>
-										formulaDispatch({
-											type: "INSERT_CONSTANT",
-											payload: { constantType: "EQ_VARIABLE", constantValue: `${item.name}` },
-										})
-									}
-									onLongPress={() => navigation.navigate("Variable", { variable: item })}
-									style={tw`px-4 py-2 bg-${item.color}-500 mr-2`}>
-									<Text style={tw`text-white`}>{item.name}</Text>
-								</Pressable>
-							)}
-						/>
-						<Pressable onPress={() => navigation.navigate("Variable")} style={tw`w-10 h-10`}>
-							<FontAwesomeIcon icon={["fal", "plus-circle"]} size={24} style={tw`m-auto text-white`} />
-						</Pressable>
-					</View>
+					<VariableListSmall formula={formula} dispatch={formulaDispatch} />
+					<ButtonSecondary small text="New" onPress={() => navigation.navigate("Variable")} />
 				</View>
-			)}
-		</>
+			</View>
+		</ScreenView>
 	);
 }

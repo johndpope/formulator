@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Formula } from "./FormulatorTypes";
 import { Variable } from "./VariableTypes";
 
-type RootStackParamList = {
+export type RootStackParamList = {
 	Home: undefined;
 	Login: undefined;
 	Signup: undefined;

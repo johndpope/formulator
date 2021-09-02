@@ -6,9 +6,10 @@ import { Variable, VariableAction } from "../types/VariableTypes";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import Result from "../components/shared/Result";
-import Equation from "../components/shared/Equation";
-import Calculator from "../components/shared/Calculator";
+import Result from "../components/formula/Result";
+import Equation from "../components/equation/Equation";
+import Calculator from "../components/calculator/Calculator";
+import ColorPicker from "../components/variable/ColorPicker";
 import {
 	calculateResult,
 	clearVariableAll,
@@ -22,8 +23,8 @@ import {
 	insertVariableLineBreak,
 	insertVariableLineBreakBefore,
 } from "../logic/VariableLogic";
-
-const colors = ["yellow", "blue", "green", "purple", "pink", "red"];
+import { ScreenView, IconButton, Header, ButtonPrimary } from "../components/ThemeComponents";
+import { useThemeContext } from "../providers/ThemeProvider";
 
 const defaultVariableState: Variable = {
 	name: "New Variable",
@@ -94,6 +95,7 @@ const variableReducer = (state: Variable, action: VariableAction): Variable => {
 };
 
 export default function VariableScreen({ route, navigation }: VariableScreenProps) {
+	const { theme } = useThemeContext();
 	const { formula, formulaDispatch } = useFormulatorContext();
 
 	const [variable, dispatch] = React.useReducer(variableReducer, defaultVariableState);
@@ -106,6 +108,8 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 
 	const handleSave = () => {
 		if (!variable.result) return;
+		if (nameIsInvalid) return;
+
 		const saveAction = "vid" in variable ? "UPDATE_VARIABLE" : "CREATE_VARIABLE";
 		formulaDispatch({
 			type: saveAction,
@@ -115,8 +119,11 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	};
 
 	const handleNameChange = (n: string) => {
-		if (!/^[\sa-zA-Z]*$/g.test(n) || nameIsInvalid) return;
-		dispatch({ type: "CHANGE_NAME", payload: n });
+		dispatch({ type: "CHANGE_NAME", payload: n.replaceAll("|", "") });
+	};
+
+	const handleColorChange = (c: string) => {
+		dispatch({ type: "CHANGE_COLOR", payload: c });
 	};
 
 	React.useEffect(() => {
@@ -151,54 +158,56 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	return (
 		<>
 			{variable && dispatch && (
-				<View style={tw`flex-1 flex-col items-center bg-gray-800`}>
-					<SafeAreaView style={tw`flex-1 flex-col items-center bg-${variable.color}-500 bg-opacity-20`}>
-						<View style={tw`w-12 h-1 bg-${variable.color}-500 rounded-full mt-4 mb-3`}></View>
-						{nameIsInvalid && <Text style={tw`px-2 pb-2`}>Name already exists</Text>}
-						<View style={tw`h-14 w-full flex flex-row items-center justify-between px-5`}>
-							{route.params?.variable && (
-								<Pressable onPress={handleDelete} style={tw`w-10 h-10`}>
-									<FontAwesomeIcon
-										icon={["fal", "trash-alt"]}
-										size={20}
-										style={tw`m-auto text-${variable.color}-500`}
-									/>
-								</Pressable>
-							)}
+				<ScreenView noPadding>
+					<View
+						style={[
+							{ backgroundColor: theme.colors[variable.color] },
+							tw`w-12 h-1 mx-auto rounded-full mt-4`,
+						]}></View>
+					{/* {nameIsInvalid && <Text style={tw`px-2 pb-2`}>Name already exists</Text>} */}
+					<Header>
+						{route.params?.variable ? (
+							<IconButton onPress={handleDelete} icon={["fal", "trash-alt"]} />
+						) : (
+							<IconButton onPress={() => navigation.goBack()} icon={["fal", "chevron-down"]} />
+						)}
 
-							<View style={tw`flex-1 mx-3 border border-${variable.color}-500`}>
-								<TextInput
-									selectTextOnFocus
-									value={variable.name}
-									placeholder={variable.name}
-									style={tw`p-2 text-center text-white`}
-									onChangeText={handleNameChange}
-								/>
-							</View>
-
-							<Pressable onPress={handleSave} style={tw`flex flex-row w-10 h-10`}>
-								<Text style={tw`text-sm m-auto text-${variable.color}-500 font-bold`}>Save</Text>
-							</Pressable>
+						<TextInput
+							selectTextOnFocus
+							value={variable.name}
+							placeholder={variable.name}
+							style={[
+								{
+									color: theme.text.primary,
+									borderColor: theme.border,
+									fontFamily: "Poppins_400Regular",
+									backgroundColor: theme.background.secondary,
+								},
+								tw`flex-1 p-1 mx-3 text-center text-base rounded-md border`,
+							]}
+							onChangeText={handleNameChange}
+						/>
+						<View style={tw``}>
+							<ButtonPrimary
+								small
+								text="Save"
+								onPress={handleSave}
+								color={theme.background.primary}
+								backgroundColor={theme.colors[variable.color]}
+							/>
 						</View>
-						<Equation data={variable.equation} color={variable.color} dispatch={dispatch} />
-						<Result data={variable.result} color={variable.color} />
-						<Calculator dispatch={dispatch} />
-						<View style={tw`flex flex-row justify-around px-5 pt-5 w-full`}>
-							{colors.map((c) => (
-								<Pressable
-									key={`variable-color-${c}`}
-									onPress={() => dispatch({ type: "CHANGE_COLOR", payload: c })}
-									style={tw`w-8 h-8 p-1 bg-${c}-500 bg-opacity-25 rounded-full`}>
-									<View style={tw`flex-1 bg-${c}-500 rounded-full`}>
-										{c === variable.color && (
-											<FontAwesomeIcon icon={["fal", "check"]} size={16} style={tw`text-white m-auto`} />
-										)}
-									</View>
-								</Pressable>
-							))}
-						</View>
-					</SafeAreaView>
-				</View>
+					</Header>
+					<Equation data={variable.equation} color={variable.color} dispatch={dispatch} />
+					<Result data={variable.result} color={variable.color} />
+					<Calculator dispatch={dispatch} color={theme.colors[variable.color]} />
+					<View
+						style={[
+							{ borderColor: theme.border, backgroundColor: theme.background.secondary },
+							tw`h-20 px-5 pt-4 w-full border-t`,
+						]}>
+						<ColorPicker selected={variable.color} handleColorChange={handleColorChange} />
+					</View>
+				</ScreenView>
 			)}
 		</>
 	);

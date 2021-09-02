@@ -1,9 +1,10 @@
+import React from "react";
+import tw from "../styles/tailwind";
 import validator from "validator";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
+import { SafeScreenView, ButtonPrimary, ButtonSecondary } from "../components/ThemeComponents";
 
-import React from "react";
-import tw from "../styles/tailwind";
 import {
 	View,
 	Text,
@@ -19,10 +20,11 @@ import {
 } from "react-native";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { HeaderText, LabelText, ButtonText, BodyText } from "../components/Typography";
+import { HeaderText, LabelText, ButtonText, BodyText } from "../components/theme/Typography";
 import { LoginScreenProps } from "../types/NavigatorTypes";
 import { useAuthContext } from "../providers/AuthProvider";
 import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
+
 export default function LoginScreen({ navigation }: LoginScreenProps) {
 	const { signInWithEmail, signInWithGoogle, resetPassword, authError } = useAuthContext();
 	const { fadeOutOnKeyboard, translateOutOnKeyboard, dismissKeyboard } = useKeyboardAnimations();
@@ -76,7 +78,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 	}, [passwordError]);
 
 	return (
-		<SafeAreaView style={[tw`h-full bg-gray-900`, { paddingTop: Constants.statusBarHeight }]}>
+		<SafeScreenView>
 			<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
 				<TouchableWithoutFeedback onPress={dismissKeyboard}>
 					<View style={tw`flex flex-col justify-between px-8 h-full`}>
@@ -140,11 +142,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 							</View>
 
 							<View style={tw`w-full mt-8`}>
-								<Pressable
-									style={tw`flex flex-row items-center px-4 py-3 rounded-full border border-purple-700 bg-purple-700`}
-									onPress={handleSignIn}>
-									<ButtonText style={tw`text-white text-base mx-auto`}>Login</ButtonText>
-								</Pressable>
+								<ButtonPrimary onPress={handleSignIn} text="Login" />
 							</View>
 
 							<View style={tw`absolute w-full top-full flex flex-col justify-center`}>
@@ -155,12 +153,11 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 											<Text style={tw`mx-4 text-gray-700`}>OR</Text>
 											<View style={tw`flex-1 border border-gray-700 border-opacity-50`}></View>
 										</View>
-										<Pressable
-											style={tw`flex flex-row items-center px-4 py-3 rounded-full border border-purple-700 mb-auto`}
-											onPress={signInWithGoogle}>
-											<FontAwesomeIcon icon={["fab", "google"]} size={20} style={tw`text-white`} />
-											<ButtonText style={tw`text-white text-sm mx-auto`}>Signin with Google</ButtonText>
-										</Pressable>
+										<ButtonSecondary
+											onPress={signInWithGoogle}
+											text="Signin with Google"
+											icon={["fab", "google"]}
+										/>
 									</>
 								</Animated.View>
 							</View>
@@ -186,6 +183,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 				</TouchableWithoutFeedback>
 				<StatusBar style="light" />
 			</KeyboardAvoidingView>
-		</SafeAreaView>
+		</SafeScreenView>
 	);
 }

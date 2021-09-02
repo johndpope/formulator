@@ -22,7 +22,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fal } from "@fortawesome/pro-light-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { HeaderText, ButtonText, LabelText, BodyText } from "../components/Typography";
+import { HeaderText, ButtonText, LabelText, BodyText } from "../components/theme/Typography";
 import { SignupScreenProps } from "../types/NavigatorTypes";
 import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
 

@@ -1,4 +1,5 @@
-import React from "react";
+import { Variable } from "../types/VariableTypes";
+import { EquationConstant } from "../types/EquationTypes";
 
 type Calculable = { equation: string; lastConstantType: string; openBrackets: number };
 
@@ -13,9 +14,36 @@ export function checkConstantType(constant: string) {
 			return "EQ_BRACKET_OPEN";
 		case ")":
 			return "EQ_BRACKET_CLOSED";
+		case ".":
+			return "EQ_DECIMAL";
+		case "%":
+			return "EQ_PERCENT";
+		case "-":
+			return "EQ_NEGATIVE";
 		default:
 			return constant?.includes("}") ? "EQ_VARIABLE" : "EQ_NUMBER";
 	}
+}
+
+export function generateConstantsArray(eq: string, variables?: Variable[]): Array<EquationConstant> {
+	let eqSplit = eq.match(/([-.0-9]+)|(%|\+|\/|\*|\(|\)|\|)|(\{([^)]+?)\})/g);
+
+	const constantsArray =
+		eqSplit === null
+			? []
+			: eqSplit.map((constant) => {
+					const constantType = checkConstantType(constant);
+					let c: EquationConstant = {
+						type: constantType,
+						value: constant.replace(/\{|\}/g, ""),
+					};
+					if (variables && constantType === "EQ_VARIABLE") {
+						let match = variables.find((v) => v.name === c.value);
+						c.color = match?.color;
+					}
+					return c;
+			  });
+	return constantsArray;
 }
 
 export function formatNumber(value: string) {
@@ -25,8 +53,8 @@ export function formatNumber(value: string) {
 }
 
 function checkIfNumberShouldBeMultiplied(equation: string) {
-	const preceededByMultiplicable = equation.match(/(\}|\)|%)+(\s\|)?$/g);
-	const preceededByNumberBeforeLineBreak = equation.match(/(\d|\.)+(\s\|)$/g);
+	const preceededByMultiplicable = /(\}|\)|%)+(\s\|)?$/g.test(equation);
+	const preceededByNumberBeforeLineBreak = /(\d|\.)+(\s\|)$/g.test(equation);
 
 	return preceededByMultiplicable || preceededByNumberBeforeLineBreak;
 }
@@ -66,11 +94,11 @@ export function insertOperation(state: Calculable, value?: string) {
 	if (isPreceededByDecimal) equation += "0";
 
 	// If preceeded by previous operation, then remove it
-	const shouldReplaceOpeartion = state.equation.match(/(\+|-|\*|\/)$/g);
+	const shouldReplaceOpeartion = /(\+|-|\*|\/)$/g.test(state.equation);
 	if (shouldReplaceOpeartion) equation = equation.slice(0, -2);
 
 	// If preceeded by previous operation and line break, then remove them both
-	const shouldReplaceWithLineBreak = state.equation.match(/(\+|-|\*|\/)+(\s\|)$/g);
+	const shouldReplaceWithLineBreak = /(\+|-|\*|\/)+(\s\|)$/g.test(state.equation);
 	if (shouldReplaceWithLineBreak) equation = equation.slice(0, -4);
 
 	// Add new operation value, and trailing line break if it was previously removed
@@ -88,7 +116,7 @@ export function insertBracket(state: Calculable, value?: string) {
 	if (value === ")") {
 		if (!state.equation.length) return state;
 		if (state.openBrackets === 0) return state;
-		if (state.equation.match(/(\+|-|\*|\/|\()+(\s\|)?$/g)) return state;
+		if (/(\+|-|\*|\/|\()+(\s\|)?$/g.test(state.equation)) return state;
 	}
 
 	let equation = state.equation;
@@ -98,7 +126,7 @@ export function insertBracket(state: Calculable, value?: string) {
 	if (isPreceededByDecimal) equation += "0";
 
 	// Check if multiplication symbol should be auto inserted before bracket
-	const shouldMultiply = equation.match(/(\d|\}|\)|%)+(\s\|)?$/g);
+	const shouldMultiply = /(\d|\}|\)|%)+(\s\|)?$/g.test(equation);
 	const multiplicationInsertion = value === "(" && equation.length && shouldMultiply ? " *" : "";
 
 	// Final return values for state
@@ -119,7 +147,7 @@ export function insertVariable(state: Calculable, name?: string) {
 	if (isPreceededByDecimal) equation += "0";
 
 	// Check if multiplication symbol should be added before variable
-	const shouldMultiply = state.equation.match(/(\d|\}|\)|%)+(\s\|)?$/g);
+	const shouldMultiply = /(\d|\}|\)|%)+(\s\|)?$/g.test(state.equation);
 	const multiplicationInsertion = state.equation.length && shouldMultiply ? " *" : "";
 
 	// Final values to return for state
@@ -221,7 +249,13 @@ export function insertLineBreakBefore(state: Calculable) {
 	const isAlreadyLineBreak = state.equation.slice(-1) === "|";
 	if (isAlreadyLineBreak) return state;
 
-	const equation = state.equation.replace(/\s+\S*$/g, (match) => ` |${match}`);
+	// const equation = state.equation.replace(/\s+\S*$/g, (match) => ` |${match}`);
+	const equation = state.equation.replace(
+		/\s?(-?)(\{[.+?]*\}|\+|-|\*|\/|\(|\)|\d|0?\.|%)$/g,
+		(match) => ` |${match}`
+	);
+
+	console.log(equation.replaceAll(" ", "__"));
 
 	return { equation };
 }
@@ -233,7 +267,7 @@ export function clearLast(state: Calculable) {
 
 	// Replace any variables, operations, numbers, decimals, percentages, and linebreaks
 	// at the end of the equation
-	equation = equation.replace(/\s?(-?)(\{[\sa-zA-Z]*\}|\+|-|\*|\/|\(|\)|\d|0?\.|%|\|)$/g, "");
+	equation = equation.replace(/\s?(-?)(\{[.+?]*\}|\+|-|\*|\/|\(|\)|\d|0?\.|%|\|)$/g, "");
 
 	// Calculate number of open brackets if a bracket is deleted
 	const decrementBracket = state.lastConstantType === "EQ_BRACKET_OPEN";

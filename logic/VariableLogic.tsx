@@ -15,7 +15,9 @@ import {
 
 export function calculateResult(state: Variable) {
 	let result;
-	let equation = state.equation.replace(/\s|\|/g, "").replace(/[.0-9]+%/, (m) => `${parseInt(m) / 100}`);
+	let equation = state.equation
+		.replaceAll(/\s|\|/g, "")
+		.replaceAll(/[.0-9]+%/g, (m) => `${parseInt(m) / 100}`);
 
 	try {
 		result = mathString(equation);

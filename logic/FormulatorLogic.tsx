@@ -81,9 +81,10 @@ export function updateFormulaVariable(state: Formula, variable: Variable) {
 	let variables: Array<Variable> = [...state.variables];
 	let indexToUpdate: number = variables.findIndex((v: Variable) => v.vid === variable.vid);
 
+	const equation = state.equation.replaceAll(`${variables[indexToUpdate].name}`, variable.name);
 	variables[indexToUpdate] = variable;
 
-	return { ...state, variables };
+	return { ...state, equation, variables };
 }
 
 export function deleteFormulaVariable(state: Formula, variable: Variable) {
@@ -176,22 +177,28 @@ export function clearFormulaAll(state: Formula) {
 
 export function calculateResult(state: Formula) {
 	let result;
-	let equation = state.equation.replace(/\s|\|/g, "").replace(/[.0-9]+%/, (m) => `${parseInt(m) / 100}`);
-
+	let equation = state.equation;
 	// Replace variables if state is an instance of Formula
 	if (state?.variables.length) {
-		equation = equation.replace(/\{([^)]+?)\}/g, (match) => {
-			let variable = state.variables.find((v) => v.name === match.substring(1, match.length - 1));
+		equation = equation.replace(/\{.+?\}/g, (match) => {
+			let variable = state.variables.find((v) => {
+				return v.name === match.substring(1, match.length - 1);
+			});
 			if (!variable) return "";
 			return `${variable.result}`;
 		});
 	}
+
+	// Remove spaces / linebreaks, and replace percentage values
+	equation = equation.replaceAll(/\s|\|/g, "").replaceAll(/[.0-9]+%/g, (m) => `${parseInt(m) / 100}`);
 
 	try {
 		result = mathString(equation);
 	} catch {
 		result = null;
 	}
+
+	// const result = res ? parseInt(res).toFixed(2).toString() : null;
 
 	return { ...state, result };
 }

@@ -2,11 +2,26 @@ export type ColorMap = {
 	[key: string]: string;
 };
 
+export type ThemeElement = {
+	[type: string]: ColorMap;
+};
+
 export type Theme = {
+	brand: string;
+	border: string;
 	colors: ColorMap;
-	text: ColorMap;
-	background: string;
-	foreground: string;
+	text: {
+		primary: string;
+		secondary: string;
+	};
+	button: {
+		primary: string;
+		secondary: string;
+	};
+	background: {
+		primary: string;
+		secondary: string;
+	};
 };
 
 export type ThemeAction = {

@@ -10,6 +10,7 @@ module.exports = {
 				gray: colors.gray,
 				coolGray: colors.coolGray,
 				warmGray: colors.warmGray,
+				brand: "#f78c6c",
 			},
 		},
 	},
