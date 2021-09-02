@@ -55,7 +55,7 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 
 			<Header style={tw`mt-5 mb-2`}>
 				<Title text="My Formulas" />
-				<IconButton onPress={navigateToFormula} icon={["fal", "ellipsis-v-alt"]} />
+				<IconButton onPress={navigateToFormula} icon={["fal", "ellipsis-v"]} />
 			</Header>
 
 			<View style={tw`flex-1 px-5`}>
