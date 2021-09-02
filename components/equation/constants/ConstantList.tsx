@@ -27,16 +27,13 @@ export default function EquationConstantList({ constants, color }: EquationConst
 						<View style={tw`flex flex-row max-w-full items-center`}>
 							{constant.type === "EQ_VARIABLE" && <ConstantVariable constant={constant} />}
 							{constant.type === "EQ_NUMBER" && (
-								<ConstantNumber constant={constant} color={theme.colors.contrast} />
+								<ConstantNumber constant={constant} color={theme.text.secondary} />
 							)}
 							{constant.type === "EQ_OPERATION" && (
 								<ConstantOperation constant={constant} color={theme.colors.purple} />
 							)}
 							{(constant.type === "EQ_BRACKET_OPEN" || constant.type === "EQ_BRACKET_CLOSED") && (
 								<Constant constant={constant} color={theme.colors.blue} />
-							)}
-							{constant.type === "EQ_PERCENT" && (
-								<Constant constant={constant} color={theme.colors.yellow} />
 							)}
 						</View>
 					)}

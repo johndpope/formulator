@@ -14,19 +14,13 @@ export function checkConstantType(constant: string) {
 			return "EQ_BRACKET_OPEN";
 		case ")":
 			return "EQ_BRACKET_CLOSED";
-		case ".":
-			return "EQ_DECIMAL";
-		case "%":
-			return "EQ_PERCENT";
-		case "-":
-			return "EQ_NEGATIVE";
 		default:
 			return constant?.includes("}") ? "EQ_VARIABLE" : "EQ_NUMBER";
 	}
 }
 
 export function generateConstantsArray(eq: string, variables?: Variable[]): Array<EquationConstant> {
-	let eqSplit = eq.match(/([-.0-9]+)|(%|\+|\/|\*|\(|\)|\|)|(\{([^)]+?)\})/g);
+	let eqSplit = eq.match(/([-.0-9%]+)|(\+|\/|\*|\(|\)|\|)|(\{([^)]+?)\})/g);
 
 	const constantsArray =
 		eqSplit === null
@@ -43,6 +37,7 @@ export function generateConstantsArray(eq: string, variables?: Variable[]): Arra
 					}
 					return c;
 			  });
+	console.log(constantsArray);
 	return constantsArray;
 }
 
