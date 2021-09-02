@@ -10,7 +10,6 @@
   "dependencies": {
     "@expo-google-fonts/nova-mono": "^0.2.0",
     "@expo-google-fonts/poppins": "^0.2.0",
-    "@expo-google-fonts/pt-mono": "^0.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/pro-light-svg-icons": "^5.15.4",

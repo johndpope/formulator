@@ -18,7 +18,7 @@ export function Constant({ constant, color }: ConstantProps) {
 				tw`text-xl leading-8 px-px`,
 				{
 					color: color || "",
-					fontFamily: "PTMono_400Regular",
+					fontFamily: "NovaMono_400Regular",
 				},
 			]}>
 			{constant.value.trim()}
@@ -33,7 +33,7 @@ export function ConstantNumber({ constant, color }: ConstantProps) {
 				tw`text-xl leading-8 px-px`,
 				{
 					color: color || "",
-					fontFamily: "PTMono_400Regular",
+					fontFamily: "NovaMono_400Regular",
 				},
 			]}>
 			{formatNumber(constant.value.trim())}

@@ -26,7 +26,7 @@ export default function Result({ data, color }: ResultProps) {
 					style={[
 						{
 							color: data === null ? theme.colors.error : theme.colors.green,
-							fontFamily: "PTMono_400Regular",
+							fontFamily: "NovaMono_400Regular",
 						},
 						tw` text-xl`,
 					]}>

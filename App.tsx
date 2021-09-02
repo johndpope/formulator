@@ -13,7 +13,6 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 library.add(fab, fal);
 
-import { PTMono_400Regular } from "@expo-google-fonts/pt-mono";
 import { NovaMono_400Regular } from "@expo-google-fonts/nova-mono";
 import {
 	useFonts,
@@ -32,7 +31,6 @@ export default function App() {
 		Poppins_700Bold,
 		Poppins_900Black,
 		NovaMono_400Regular,
-		PTMono_400Regular,
 	});
 
 	return (

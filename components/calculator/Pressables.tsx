@@ -14,10 +14,10 @@ type PressableProps = {
 };
 
 const numberModifierStyle = tw`flex-1 flex items-center justify-center p-2`;
-const numberModifierTextStyle = [{ fontFamily: "PTMono_400Regular" }, tw`text-white text-xl`];
+const numberModifierTextStyle = [{ fontFamily: "NovaMono_400Regular" }, tw`text-white text-xl`];
 
 const pressableStyle = tw`flex-1 flex items-center justify-center p-2`;
-const pressableTextStyle = [{ fontFamily: "PTMono_400Regular" }, tw`text-white text-2xl`];
+const pressableTextStyle = [{ fontFamily: "NovaMono_400Regular" }, tw`text-white text-2xl`];
 
 const operationSymbols: OperationSymbolMap = {
 	"+": "plus",
@@ -207,7 +207,7 @@ export function PressableLineBreak({ dispatch }: PressableProps) {
 				]}>
 				<FontAwesomeIcon
 					icon={["fal", "level-down"]}
-					size={24}
+					size={26}
 					style={pressableTextStyle}
 					transform={{ rotate: 90 }}
 				/>
@@ -232,7 +232,7 @@ export function PressableClear({ dispatch }: PressableProps) {
 					},
 					tw`h-full w-full items-center justify-center border rounded-md`,
 				]}>
-				<FontAwesomeIcon icon={["fal", "backspace"]} size={20} style={pressableTextStyle} />
+				<FontAwesomeIcon icon={["fal", "backspace"]} size={26} style={pressableTextStyle} />
 			</View>
 		</Pressable>
 	);
