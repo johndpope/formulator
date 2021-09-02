@@ -18,7 +18,7 @@ export default function Result({ data, color }: ResultProps) {
 					borderColor: theme.border,
 					backgroundColor: theme.background.secondary,
 				},
-				tw`flex flex-row h-10 w-full items-center justify-between pl-2 pr-4 border-b-2`,
+				tw`flex flex-row h-10 w-full items-center justify-between pl-2 pr-4 border-b`,
 			]}>
 			<>
 				<FontAwesomeIcon icon={["fal", "equals"]} size={20} color={theme.text.secondary} />

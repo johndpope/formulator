@@ -43,7 +43,7 @@ export function PressableNumber({ value, dispatch }: PressableProps) {
 			<View
 				style={[
 					{
-						borderColor: theme.border,
+						borderColor: theme.button.secondary,
 						// backgroundColor: theme.button.secondary,
 					},
 					tw`h-full w-full flex items-center justify-center border rounded-md`,

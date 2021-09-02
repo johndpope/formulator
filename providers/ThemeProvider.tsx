@@ -1,5 +1,5 @@
 import React from "react";
-import { darker } from "../styles/Themes";
+import { darker, palenight, oceanic, deep, one, owl } from "../styles/Themes";
 import { ThemeContextProps, ThemeProviderProps, Theme, ThemeAction } from "../types/ThemeTypes";
 
 const ThemeContext = React.createContext<ThemeContextProps>(undefined!);
@@ -17,7 +17,7 @@ const themeReducer = (state: Theme, action: ThemeAction) => {
 };
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-	const [theme, themeDispatch] = React.useReducer(themeReducer, darker);
+	const [theme, themeDispatch] = React.useReducer(themeReducer, one);
 	return <ThemeContext.Provider value={{ theme, themeDispatch }}>{children}</ThemeContext.Provider>;
 };
 
