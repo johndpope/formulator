@@ -77,7 +77,7 @@ export function ConstantVariable({ constant }: ConstantProps) {
 	const color = theme.colors[constant.color || "contrast"];
 
 	return (
-		<View style={tw`flex flex-row items-center`}>
+		<View style={tw`flex flex-row items-center h-${lineHeight}`}>
 			<View
 				style={[
 					{ borderColor: color },

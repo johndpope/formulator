@@ -6,6 +6,7 @@ import { View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import AuthProvider from "./providers/AuthProvider";
 import FormulatorProvider from "./providers/FormulatorProvider";
+import SettingsProvider from "./providers/SettingsProvider";
 import ThemeProvider from "./providers/ThemeProvider";
 
 import { fal } from "@fortawesome/pro-light-svg-icons";
@@ -37,11 +38,13 @@ export default function App() {
 		<View style={tw`h-full flex`}>
 			{fontsLoaded ? (
 				<AuthProvider>
-					<ThemeProvider>
-						<FormulatorProvider>
-							<Navigator />
-						</FormulatorProvider>
-					</ThemeProvider>
+					<SettingsProvider>
+						<ThemeProvider>
+							<FormulatorProvider>
+								<Navigator />
+							</FormulatorProvider>
+						</ThemeProvider>
+					</SettingsProvider>
 				</AuthProvider>
 			) : (
 				<View style={tw`flex-1 bg-purple-200`}></View>

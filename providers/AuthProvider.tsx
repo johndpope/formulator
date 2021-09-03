@@ -51,7 +51,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 				var user = userCredential.user;
 			})
 			.catch((error: any) => {
-				console.log(error.message);
 				setAuthError(error.code.split("/")[1].split("-").join(" "));
 				setTimeout(() => {
 					setAuthError("");
@@ -110,9 +109,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 	};
 
 	const setInitialUserData = (uid: string) => {
-		db.collection("user_settings").doc().set({
-			user: uid,
-			theme: "dark",
+		db.collection("user_settings").doc(uid).set({
+			theme: "oceanic",
 		});
 	};
 

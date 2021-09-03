@@ -46,7 +46,7 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 			<Header>
 				<IconButton onPress={signOut} icon={["fal", "sign-out"]} flip />
 				<Image source={require("../assets/FormulatorLogo.png")} style={{ width: 45, height: 45 }} />
-				<IconButton onPress={navigateToFormula} icon={["fal", "user-circle"]} />
+				<IconButton onPress={() => navigation.navigate("Settings")} icon={["fal", "user-circle"]} />
 			</Header>
 
 			<Header style={tw`mt-5 mb-2`}>

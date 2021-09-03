@@ -1,5 +1,6 @@
 import React from "react";
 import HomeScreen from "./screens/HomeScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 import VariableScreen from "./screens/VariableScreen";
@@ -22,6 +23,7 @@ export default function Navigator() {
 				{user ? (
 					<>
 						<Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+						<Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
 						<Stack.Screen
 							name="Formulator"
 							component={FormulatorScreen}
