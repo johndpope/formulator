@@ -89,7 +89,7 @@ export const ButtonSecondary = ({
 	);
 };
 
-export const TitleButton = ({ text, onPress, onLongPress }: ButtonProps) => {
+export const TitleButton = ({ text, color, backgroundColor, onPress, onLongPress }: ButtonProps) => {
 	const { theme } = useThemeContext();
 	return (
 		<Pressable
@@ -97,14 +97,14 @@ export const TitleButton = ({ text, onPress, onLongPress }: ButtonProps) => {
 			style={[
 				{
 					// borderColor: theme.button.secondary,
-					backgroundColor: theme.button.secondary,
+					backgroundColor: backgroundColor || theme.button.secondary,
 				},
 				tw`flex flex-row items-center rounded-full px-3 h-8`,
 			]}>
 			<Text
 				style={[
 					{
-						color: theme.text.primary,
+						color: color || theme.text.primary,
 						fontFamily: "Poppins_600SemiBold",
 					},
 					tw`text-xs mx-auto`,

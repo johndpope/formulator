@@ -21,7 +21,7 @@ interface CalculatorProps {
 
 export default function Calculator({ dispatch }: CalculatorProps) {
 	return (
-		<View style={tw`flex-1 flex flex-col justify-center flex-wrap py-4 px-4`}>
+		<View style={tw`flex-1 flex flex-col justify-center flex-wrap p-2.5`}>
 			<View style={tw`flex flex-row w-full h-14`}>
 				<PressableBracket value="(" dispatch={dispatch} />
 				<PressableBracket value=")" dispatch={dispatch} />

@@ -232,9 +232,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 								</Text>
 							</View>
 						)}
-						{!colorPickerShown && (
-							<TitleButton text="Save" onPress={handleSave} backgroundColor={theme.background.primary} />
-						)}
+						{!colorPickerShown && <TitleButton text="Save" onPress={handleSave} />}
 					</Header>
 					<View style={tw`mt-1`}></View>
 					<Equation data={variable.equation} dispatch={dispatch} />
@@ -245,16 +243,23 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 							{ borderColor: theme.border, backgroundColor: theme.background.secondary },
 							tw`border-t px-6 pb-8 pt-4 flex flex-row items-center justify-between`,
 						]}>
-						<ButtonSecondary
-							small
-							text="Delete"
-							onPress={handleDelete}
-							backgroundColor={theme.colors.error}
-						/>
-						<Text
-							style={[{ color: theme.text.secondary, fontFamily: "Poppins_400Regular" }, tw`text-sm`]}>
-							Delete and replace all instances?
-						</Text>
+						{route.params?.variable && (
+							<>
+								<TitleButton
+									small
+									text="Delete"
+									onPress={handleDelete}
+									backgroundColor={theme.colors.error}
+								/>
+								<Text
+									style={[
+										{ color: theme.text.secondary, fontFamily: "Poppins_400Regular" },
+										tw`text-sm mx-auto`,
+									]}>
+									Delete and replace all instances?
+								</Text>
+							</>
+						)}
 					</View>
 				</ScreenView>
 			)}

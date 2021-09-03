@@ -37,7 +37,6 @@ export function generateConstantsArray(eq: string, variables?: Variable[]): Arra
 					}
 					return c;
 			  });
-	console.log(constantsArray);
 	return constantsArray;
 }
 
