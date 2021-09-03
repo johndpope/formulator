@@ -7,29 +7,16 @@ import { useSettingsContext } from "./SettingsProvider";
 const ThemeContext = React.createContext<ThemeContextProps>(undefined!);
 export const useThemeContext = () => React.useContext(ThemeContext);
 
-const themeReducer = (state: Theme, action: ThemeAction) => {
-	const { type, payload } = action;
-	switch (type) {
-		case "SET_THEME":
-			if (payload == null || typeof payload !== "string") return state;
-			console.log(payload);
-			return themes[payload];
-		default:
-			return state;
-	}
-};
-
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-	const { user } = useAuthContext();
 	const { settings } = useSettingsContext();
-	const [theme, themeDispatch] = React.useReducer(themeReducer, themes.palenight);
+	const [theme, setTheme] = React.useState<Theme>(themes.darker);
 
 	React.useEffect(() => {
 		if (!settings) return;
-		themeDispatch({ type: "SET_THEME", payload: settings.theme });
+		setTheme(themes[settings.theme]);
 	}, [settings]);
 
-	return <ThemeContext.Provider value={{ theme, themeDispatch }}>{children}</ThemeContext.Provider>;
+	return <ThemeContext.Provider value={{ theme }}>{children}</ThemeContext.Provider>;
 };
 
 export default ThemeProvider;

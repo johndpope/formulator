@@ -31,7 +31,6 @@ export type ThemeAction = {
 
 export interface ThemeContextProps {
 	theme: Theme;
-	themeDispatch: React.Dispatch<ThemeAction>;
 }
 
 export interface ThemeProviderProps {
