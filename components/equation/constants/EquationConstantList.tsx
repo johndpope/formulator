@@ -21,7 +21,7 @@ export default function EquationConstantList({ constants, color }: EquationConst
 	const { theme } = useThemeContext();
 
 	return (
-		<View style={tw`flex-1 flex flex-row flex-wrap justify-end pt-1.5 mr-4 ml-12`}>
+		<View style={tw`flex-1 flex flex-row flex-wrap justify-end pt-2 mr-4 ml-12`}>
 			{constants.map((constant, index) => (
 				<React.Fragment key={`equation-constant-${index}`}>
 					{constant.value === "|" ? (

@@ -15,7 +15,7 @@ export default function EquationsLines({ numLines, initialLineHeight }: Equation
 	return (
 		<View
 			key={`equation-lines`}
-			style={tw`absolute left-0 top-0 w-9 pt-1.5`}
+			style={tw`absolute left-0 top-0 w-9 pt-2`}
 			onLayout={(e) => {
 				initialLineHeight.current = e.nativeEvent.layout.height;
 			}}>
