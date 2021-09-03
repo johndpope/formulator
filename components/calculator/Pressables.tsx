@@ -12,10 +12,10 @@ type PressableProps = {
 	dispatch: React.Dispatch<FormulaAction> | React.Dispatch<VariableAction>;
 };
 
-const numberModifierStyle = tw`flex-1 flex items-center justify-center p-2`;
+const numberModifierStyle = tw`flex-1 flex items-center justify-center p-1.5`;
 const numberModifierTextStyle = [{ fontFamily: "NovaMono_400Regular" }, tw`text-white text-xl`];
 
-const pressableStyle = tw`flex-1 flex items-center justify-center p-2`;
+const pressableStyle = tw`flex-1 flex items-center justify-center p-1.5`;
 const pressableTextStyle = [{ fontFamily: "NovaMono_400Regular" }, tw`text-white text-2xl`];
 
 const operationSymbols: OperationSymbolMap = {
