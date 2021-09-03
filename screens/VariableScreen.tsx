@@ -112,7 +112,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 							<View
 								style={[
 									{ borderColor: theme.colors[variable.color] },
-									tw`h-9 ml-11 mr-5 flex-1 flex flex-row items-center border rounded-md px-4`,
+									tw`h-9 ml-11 mr-5 flex-1 flex flex-row items-center border rounded-md px-2`,
 								]}>
 								<View
 									style={[
@@ -131,7 +131,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 											color: theme.text.primary,
 											fontFamily: "Poppins_400Regular",
 										},
-										tw`flex-1 p-1 px-3 text-center text-base rounded-md`,
+										tw`flex-1 p-1 text-center text-base rounded-md`,
 									]}
 									onChangeText={handleNameChange}
 								/>
