@@ -8,7 +8,6 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useThemeContext } from "../../providers/ThemeProvider";
 
 import { Formula, FormulaAction } from "../../types/FormulatorTypes";
-import { theme } from "../../tailwind.config";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 interface VariableListSmallProps {

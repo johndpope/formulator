@@ -1,4 +1,4 @@
-import { Theme, ThemeElement, ColorMap } from "../types/ThemeTypes";
+import { Theme } from "../types/ThemeTypes";
 
 export const darker: Theme = {
 	brand: "#F78C6C",

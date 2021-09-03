@@ -1,5 +1,5 @@
 import mathString from "math-string";
-import { Variable } from "../types/VariableTypes";
+import { Variable, VariableAction } from "../types/VariableTypes";
 import {
 	clearAll,
 	clearLast,
@@ -12,6 +12,74 @@ import {
 	insertLineBreak,
 	insertLineBreakBefore,
 } from "./SharedLogic";
+
+export const defaultVariableState: Variable = {
+	name: "New Variable",
+	color: "green",
+	equation: "",
+	result: null,
+	openBrackets: 0,
+	lastConstantType: "",
+};
+
+export const variableReducer = (state: Variable, action: VariableAction): Variable => {
+	const { type, payload } = action;
+
+	switch (type) {
+		case "INIT":
+			// Check if payload is an instance of Variable
+			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
+			return payload;
+		case "RESET":
+			return defaultVariableState;
+
+		case "CHANGE_NAME":
+			if (typeof payload !== "string") return state;
+			return { ...state, name: payload };
+
+		case "CHANGE_COLOR":
+			if (typeof payload !== "string") return state;
+			return { ...state, color: payload };
+
+		case "CLEAR_LAST_CONSTANT":
+			return clearVariableLast(state);
+
+		case "CLEAR_ALL_CONSTANTS":
+			return clearVariableAll(state);
+
+		case "CALCULATE_RESULT":
+			return calculateResult(state);
+
+		case "INSERT_LINE_BREAK":
+			return insertVariableLineBreak(state);
+
+		case "INSERT_LINE_BREAK_BEFORE":
+			return insertVariableLineBreakBefore(state);
+
+		case "INSERT_CONSTANT":
+			if (!payload || typeof payload === "string" || !("constantType" in payload)) return state;
+
+			switch (payload?.constantType) {
+				case "EQ_NUMBER":
+					return insertVariableNumber(state, payload.constantValue);
+				case "EQ_OPERATION":
+					return insertVariableOperation(state, payload.constantValue);
+				case "EQ_BRACKET":
+					return insertVariableBracket(state, payload.constantValue);
+				case "EQ_PERCENT":
+					return insertVariablePercent(state);
+				case "EQ_NEGATIVE":
+					return insertVariableNegative(state);
+				case "EQ_DECIMAL":
+					return insertVariableDecimal(state);
+				default:
+					return state;
+			}
+
+		default:
+			return state;
+	}
+};
 
 export function calculateResult(state: Variable) {
 	let result;

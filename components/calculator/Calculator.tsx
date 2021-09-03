@@ -1,9 +1,8 @@
 import React from "react";
 import tw from "../../styles/tailwind";
-import { Pressable, View, Text } from "react-native";
+import { View } from "react-native";
 import { FormulaAction } from "../../types/FormulatorTypes";
 import { VariableAction } from "../../types/VariableTypes";
-import { OperationSymbolMap } from "../../types/EquationTypes";
 import {
 	PressableClear,
 	PressableNumber,

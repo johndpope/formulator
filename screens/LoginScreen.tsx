@@ -3,29 +3,30 @@ import tw from "../styles/tailwind";
 import validator from "validator";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
-import { SafeScreenView, ButtonPrimary, ButtonSecondary } from "../components/ThemeComponents";
+import { Button } from "../components/theme/buttons/Button";
+import { IconButton } from "../components/theme/buttons/IconButton";
 
 import {
 	View,
 	Text,
-	Keyboard,
 	Animated,
-	Pressable,
 	TextInput,
 	Platform,
-	SafeAreaView,
 	TouchableOpacity,
 	KeyboardAvoidingView,
 	TouchableWithoutFeedback,
 } from "react-native";
+
+import { SafeScreenView } from "../components/theme/views/SafeScreenView";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { HeaderText, LabelText, ButtonText, BodyText } from "../components/theme/Typography";
 import { LoginScreenProps } from "../types/NavigatorTypes";
 import { useAuthContext } from "../providers/AuthProvider";
 import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
-
+import { useThemeContext } from "../providers/ThemeProvider";
 export default function LoginScreen({ navigation }: LoginScreenProps) {
+	const { theme } = useThemeContext();
 	const { signInWithEmail, signInWithGoogle, resetPassword, authError } = useAuthContext();
 	const { fadeOutOnKeyboard, translateOutOnKeyboard, dismissKeyboard } = useKeyboardAnimations();
 
@@ -125,24 +126,21 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 										onChangeText={onChangePassword}
 										style={[
 											{ fontFamily: "Poppins_400Regular" },
-											tw`flex-1 px-4 py-2 rounded-md bg-gray-800 text-white text-base flex flex-row items-center`,
+											tw`flex-1 px-4 py-2 mr-2 rounded-md bg-gray-800 text-white text-base flex flex-row items-center`,
 										]}
 										secureTextEntry={passwordHidden}
 									/>
-									<Pressable
-										style={tw`ml-2 flex flex-row items-center px-4 h-full rounded-md`}
-										onPress={() => setPasswordHidden((p) => !p)}>
-										<FontAwesomeIcon
-											size={20}
-											style={tw`text-gray-700`}
-											icon={["fal", passwordHidden ? "eye-slash" : "eye"]}
-										/>
-									</Pressable>
+
+									<IconButton
+										color={theme.brand}
+										icon={["fal", passwordHidden ? "eye-slash" : "eye"]}
+										onPress={() => setPasswordHidden((p) => !p)}
+									/>
 								</View>
 							</View>
 
 							<View style={tw`w-full mt-8`}>
-								<ButtonPrimary onPress={handleSignIn} text="Login" />
+								<Button onPress={handleSignIn} text="Login" />
 							</View>
 
 							<View style={tw`absolute w-full top-full flex flex-col justify-center`}>
@@ -153,10 +151,11 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 											<Text style={tw`mx-4 text-gray-700`}>OR</Text>
 											<View style={tw`flex-1 border border-gray-700 border-opacity-50`}></View>
 										</View>
-										<ButtonSecondary
+										<Button
 											onPress={signInWithGoogle}
 											text="Signin with Google"
 											icon={["fab", "google"]}
+											backgroundColor={theme.button.secondary}
 										/>
 									</>
 								</Animated.View>
@@ -174,7 +173,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 							</View>
 						) : (
 							<TouchableOpacity style={tw`p-4`} onPress={() => navigation.navigate("Signup")}>
-								<BodyText style={tw`underline text-center text-purple-700 text-sm`}>
+								<BodyText style={tw.style(`underline text-center text-sm`, { color: theme.brand })}>
 									Don't have an account?
 								</BodyText>
 							</TouchableOpacity>

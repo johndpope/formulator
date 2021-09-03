@@ -93,3 +93,12 @@ export function ConstantVariable({ constant }: ConstantProps) {
 		</View>
 	);
 }
+
+interface ConstantLineBreakProps {
+	index: number;
+	numConstants: number;
+}
+
+export function ConstantLineBreak({ index, numConstants }: ConstantLineBreakProps) {
+	return <View style={[tw`w-full h-${index === numConstants ? lineHeight : "0"}`]}></View>;
+}

@@ -1,22 +1,19 @@
 import React from "react";
 import tw from "../styles/tailwind";
 import validator from "validator";
-import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import {
 	Text,
 	View,
 	Animated,
-	Keyboard,
 	Platform,
-	Pressable,
 	TextInput,
-	SafeAreaView,
 	TouchableOpacity,
 	KeyboardAvoidingView,
 	TouchableWithoutFeedback,
 } from "react-native";
 import { useAuthContext } from "../providers/AuthProvider";
+import { useThemeContext } from "../providers/ThemeProvider";
 
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fal } from "@fortawesome/pro-light-svg-icons";
@@ -26,9 +23,14 @@ import { HeaderText, ButtonText, LabelText, BodyText } from "../components/theme
 import { SignupScreenProps } from "../types/NavigatorTypes";
 import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
 
+import { Button } from "../components/theme/buttons/Button";
+import { IconButton } from "../components/theme/buttons/IconButton";
+import { SafeScreenView } from "../components/theme/views/SafeScreenView";
+
 library.add(fab, fal);
 
 export default function SignUp({ navigation }: SignupScreenProps) {
+	const { theme } = useThemeContext();
 	const { signInWithGoogle, signUpWithEmail, authError } = useAuthContext();
 	const { fadeOutOnKeyboard, translateOutOnKeyboard, dismissKeyboard } = useKeyboardAnimations();
 
@@ -73,7 +75,7 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 	}, [passwordError]);
 
 	return (
-		<SafeAreaView style={[tw`h-full bg-purple-700`, { paddingTop: Constants.statusBarHeight }]}>
+		<SafeScreenView>
 			<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
 				<TouchableWithoutFeedback onPress={dismissKeyboard}>
 					<View style={tw`flex flex-col justify-between px-8 h-full`}>
@@ -115,28 +117,31 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 										onChangeText={onChangePassword}
 										style={[
 											{ fontFamily: "Poppins_400Regular" },
-											tw`flex-1 px-4 py-2 rounded-md bg-gray-900 bg-opacity-20 text-white text-base flex flex-row items-center`,
+											tw`flex-1 px-4 py-2 mr-2 rounded-md bg-gray-900 bg-opacity-20 text-white text-base flex flex-row items-center`,
 										]}
 										secureTextEntry={passwordHidden}
 									/>
-									<Pressable
-										style={tw`ml-2 flex flex-row items-center px-4 h-full rounded-md`}
-										onPress={() => setPasswordHidden((p) => !p)}>
-										<FontAwesomeIcon
-											size={20}
-											style={tw`text-white`}
-											icon={["fal", passwordHidden ? "eye-slash" : "eye"]}
-										/>
-									</Pressable>
+									<IconButton
+										color={theme.brand}
+										icon={["fal", passwordHidden ? "eye-slash" : "eye"]}
+										onPress={() => setPasswordHidden((p) => !p)}
+									/>
 								</View>
 							</View>
 
 							<View style={tw`w-full mt-8`}>
-								<Pressable
+								<Button
+									onPress={handleSignUp}
+									text="Create Account"
+									textColor={theme.brand}
+									backgroundColor={theme.text.primary}
+								/>
+
+								{/* <Pressable
 									style={tw`flex flex-row items-center px-4 py-3 rounded-full border border-white bg-white`}
 									onPress={handleSignUp}>
 									<ButtonText style={tw`text-purple-700 text-base mx-auto`}>Create Account</ButtonText>
-								</Pressable>
+								</Pressable> */}
 							</View>
 
 							<View style={tw`absolute w-full top-full flex flex-col justify-center`}>
@@ -147,12 +152,12 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 										<View style={tw`flex-1 border border-white border-opacity-10`}></View>
 									</View>
 
-									<Pressable
-										style={tw`flex flex-row items-center px-4 py-3 rounded-full border border-white`}
-										onPress={signInWithGoogle}>
-										<FontAwesomeIcon icon={["fab", "google"]} size={20} style={tw`text-white`} />
-										<ButtonText style={tw`text-white text-sm mx-auto`}>Sign up with Google</ButtonText>
-									</Pressable>
+									<Button
+										onPress={signInWithGoogle}
+										text="Signup with Google"
+										icon={["fab", "google"]}
+										backgroundColor={theme.button.secondary}
+									/>
 								</Animated.View>
 							</View>
 						</View>
@@ -179,6 +184,6 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 				</TouchableWithoutFeedback>
 				<StatusBar style="light" />
 			</KeyboardAvoidingView>
-		</SafeAreaView>
+		</SafeScreenView>
 	);
 }

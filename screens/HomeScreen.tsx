@@ -1,21 +1,17 @@
 import React from "react";
 import tw from "../styles/tailwind";
-import Constants from "expo-constants";
 import FormulaList from "../components/formula/FormulaList";
 import { useAuthContext } from "../providers/AuthProvider";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 import { HomeScreenProps } from "../types/NavigatorTypes";
-import { SafeAreaView, View, Text, Pressable, Image, ScrollView } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { View, Image } from "react-native";
 import { useThemeContext } from "../providers/ThemeProvider";
-import {
-	Title,
-	Header,
-	IconButton,
-	ButtonPrimary,
-	ButtonSecondary,
-	ScreenView,
-} from "../components/ThemeComponents";
+
+import { Title } from "../components/theme/titles/Title";
+import { IconButton } from "../components/theme/buttons/IconButton";
+import { ScreenView } from "../components/theme/views/ScreenView";
+import { Button } from "../components/theme/buttons/Button";
+import { Header } from "../components/theme/headers/Header";
 
 export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 	const { theme } = useThemeContext();
@@ -55,7 +51,7 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 
 			<Header style={tw`mt-5 mb-2`}>
 				<Title text="My Formulas" />
-				<IconButton onPress={navigateToFormula} icon={["fal", "ellipsis-v"]} />
+				<IconButton size="lg" icon={["fal", "ellipsis-v"]} onPress={navigateToFormula} />
 			</Header>
 
 			<View style={tw`flex-1 px-5`}>
@@ -63,7 +59,7 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 			</View>
 
 			<View style={[tw`p-8 pb-10`, { backgroundColor: theme.background.secondary }]}>
-				<ButtonPrimary text="New Formula" onPress={navigateToFormula} />
+				<Button text="New Formula" size={"md"} onPress={navigateToFormula} />
 			</View>
 		</ScreenView>
 	);

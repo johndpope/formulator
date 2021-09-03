@@ -1,12 +1,11 @@
-import tw from "../../styles/tailwind";
 import React from "react";
-import { ScrollView, View, Text } from "react-native";
-import { checkConstantType, generateConstantsArray } from "../../logic/SharedLogic";
-import { EquationProps, EquationConstant, OperationSymbolMap } from "../../types/EquationTypes";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import tw from "../../styles/tailwind";
+import EquationLines from "./EquationLines";
+import { ScrollView, View } from "react-native";
+import { generateConstantsArray } from "../../logic/SharedLogic";
 import { useThemeContext } from "../../providers/ThemeProvider";
-import EquationLines from "./Lines";
-import EquationConstantList from "./constants/ConstantList";
+import EquationConstantList from "./constants/EquationConstantList";
+import { EquationProps, EquationConstant } from "../../types/EquationTypes";
 
 export default function Equation({ data, variables, dispatch }: EquationProps) {
 	const { theme } = useThemeContext();

@@ -1,7 +1,7 @@
 import React from "react";
-import tw from "../../styles/tailwind";
+import tw from "../../../styles/tailwind";
 import { StyleSheet, Text, View } from "react-native";
-import { useThemeContext } from "../../providers/ThemeProvider";
+import { useThemeContext } from "../../../providers/ThemeProvider";
 import { ViewStyle } from "react-native";
 
 interface HeaderProps {

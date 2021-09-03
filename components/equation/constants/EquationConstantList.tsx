@@ -1,13 +1,16 @@
 import tw from "../../../styles/tailwind";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { EquationProps, EquationConstant, OperationSymbolMap } from "../../../types/EquationTypes";
+import { View } from "react-native";
+import { EquationConstant } from "../../../types/EquationTypes";
 import { useThemeContext } from "../../../providers/ThemeProvider";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import LineBreak from "./LineBreak";
-
-import { Constant, ConstantNumber, ConstantVariable, ConstantOperation } from "./Constants";
+import {
+	Constant,
+	ConstantNumber,
+	ConstantVariable,
+	ConstantOperation,
+	ConstantLineBreak,
+} from "./EquationConstants";
 
 interface EquationConstantListProps {
 	constants: Array<EquationConstant>;
@@ -22,7 +25,7 @@ export default function EquationConstantList({ constants, color }: EquationConst
 			{constants.map((constant, index) => (
 				<React.Fragment key={`equation-constant-${index}`}>
 					{constant.value === "|" ? (
-						<LineBreak index={index} numConstants={constants.length - 1} />
+						<ConstantLineBreak index={index} numConstants={constants.length - 1} />
 					) : (
 						<View style={tw`flex flex-row max-w-full items-center`}>
 							{constant.type === "EQ_VARIABLE" && <ConstantVariable constant={constant} />}

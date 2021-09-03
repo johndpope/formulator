@@ -1,9 +1,8 @@
 import React from "react";
 import tw from "../../styles/tailwind";
-import { View, Pressable } from "react-native";
+import { View } from "react-native";
 import { useThemeContext } from "../../providers/ThemeProvider";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { VariableAction } from "../../types/VariableTypes";
+import { IconButton } from "../../components/theme/buttons/IconButton";
 
 interface ColorPickerProps {
 	selected: string;
@@ -19,24 +18,14 @@ export default function ColorPicker({ selected, handleColorChange }: ColorPicker
 					c !== "orange" &&
 					c !== "error" &&
 					c !== "gray" && (
-						<Pressable
+						<IconButton
+							size="sm"
 							key={`variable-color-${c}`}
+							icon={["fal", "check"]}
+							backgroundColor={theme.colors[c]}
 							onPress={() => handleColorChange(c)}
-							style={[tw`w-8 h-8 rounded-full`]}>
-							<View
-								style={[
-									tw`flex-1 flex flex-row items-center justify-center rounded-full`,
-									{ backgroundColor: theme.colors[c] },
-								]}>
-								{c === selected && (
-									<FontAwesomeIcon
-										size={20}
-										icon={["fal", "check"]}
-										style={{ color: theme.background.primary }}
-									/>
-								)}
-							</View>
-						</Pressable>
+							color={c === selected ? theme.background.primary : theme.colors[c]}
+						/>
 					)
 			)}
 		</View>

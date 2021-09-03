@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import mathString from "math-string";
 import "firebase/firestore";
 import firebase from "firebase";
-import { Formula } from "../types/FormulatorTypes";
+import { Formula, FormulaAction } from "../types/FormulatorTypes";
 import { Variable } from "../types/VariableTypes";
 import {
 	clearAll,
@@ -17,6 +17,95 @@ import {
 	insertLineBreak,
 	insertLineBreakBefore,
 } from "./SharedLogic";
+
+export const defaultFormulaState = {
+	name: "New Formula",
+	equation: "",
+	result: null,
+	openBrackets: 0,
+	lastConstantType: "",
+	variables: [],
+};
+
+export const formulaReducer = (state: Formula, action: FormulaAction): Formula => {
+	const { type, payload } = action;
+
+	switch (type) {
+		case "INIT":
+			// Check if payload is an instance of Formula
+			if (payload == null || typeof payload === "string" || !("variables" in payload)) return state;
+			return payload;
+
+		case "RESET":
+			return defaultFormulaState;
+
+		case "CHANGE_NAME":
+			if (typeof payload !== "string") return state;
+			return { ...state, name: payload };
+
+		case "SAVE_FORMULA":
+			return saveFormula(state);
+
+		case "DELETE_FORMULA":
+			if (typeof payload !== "string") return state;
+			return deleteFormula(state, payload);
+
+		case "CREATE_VARIABLE":
+			// Check if payload is an instance of Variable
+			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
+			return createFormulaVariable(state, payload);
+
+		case "UPDATE_VARIABLE":
+			// Check if payload is an instance of Variable
+			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
+			return updateFormulaVariable(state, payload);
+
+		case "DELETE_VARIABLE":
+			// Check if payload is an instance of Variable
+			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
+			return deleteFormulaVariable(state, payload);
+
+		case "CALCULATE_RESULT":
+			return calculateResult(state);
+
+		case "CLEAR_LAST_CONSTANT":
+			return clearFormulaLast(state);
+
+		case "CLEAR_ALL_CONSTANTS":
+			return clearFormulaAll(state);
+
+		case "INSERT_LINE_BREAK":
+			return insertFormulaLineBreak(state);
+
+		case "INSERT_LINE_BREAK_BEFORE":
+			return insertFormulaLineBreakBefore(state);
+
+		case "INSERT_CONSTANT":
+			if (!payload || typeof payload === "string" || !("constantType" in payload)) return state;
+
+			switch (payload?.constantType) {
+				case "EQ_NUMBER":
+					return insertFormulaNumber(state, payload.constantValue);
+				case "EQ_VARIABLE":
+					return insertFormulaVariable(state, payload.constantValue);
+				case "EQ_OPERATION":
+					return insertFormulaOperation(state, payload.constantValue);
+				case "EQ_BRACKET":
+					return insertFormulaBracket(state, payload.constantValue);
+				case "EQ_PERCENT":
+					return insertFormulaPercent(state);
+				case "EQ_NEGATIVE":
+					return insertFormulaNegative(state);
+				case "EQ_DECIMAL":
+					return insertFormulaDecimal(state);
+				default:
+					return state;
+			}
+
+		default:
+			return state;
+	}
+};
 
 export function saveFormula(state: Formula) {
 	if ("fid" in state) {

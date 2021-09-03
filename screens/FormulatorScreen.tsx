@@ -1,21 +1,20 @@
 import _ from "lodash";
 import React from "react";
 import tw from "../styles/tailwind";
-import Constants from "expo-constants";
-import Result from "../components/formula/Result";
+import EquationResult from "../components/equation/EquationResult";
 import Equation from "../components/equation/Equation";
 import Calculator from "../components/calculator/Calculator";
-import { useAuthContext } from "../providers/AuthProvider";
 import { FormulaScreenProps } from "../types/NavigatorTypes";
-import { View, Text, Pressable, TextInput } from "react-native";
+import { View, TextInput } from "react-native";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { FlatList } from "react-native-gesture-handler";
 
-import { ScreenView, Header, Title, IconButton, ButtonSecondary } from "../components/ThemeComponents";
-import { theme } from "../tailwind.config";
 import { useThemeContext } from "../providers/ThemeProvider";
-import { VariableListSmall } from "../components/variable/VariableListSmall";
+import { VariableListSmall } from "../components/variable/VariableChipList";
+
+import { Button } from "../components/theme/buttons/Button";
+import { IconButton } from "../components/theme/buttons/IconButton";
+import { ScreenView } from "../components/theme/views/ScreenView";
+import { Header } from "../components/theme/headers/Header";
 
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
 	const { theme } = useThemeContext();
@@ -87,20 +86,20 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 					onChangeText={(n) => formulaDispatch({ type: "CHANGE_NAME", payload: n })}
 				/>
 
-				<IconButton onPress={handleSave} icon={["fal", "ellipsis-v"]} size={24} />
+				<IconButton onPress={handleSave} icon={["fal", "ellipsis-v"]} size={"lg"} />
 			</Header>
 
 			<View style={tw`flex-1`}>
 				<Equation data={formula.equation} variables={formula.variables} dispatch={formulaDispatch} />
-				<Result data={formula.result} />
+				<EquationResult data={formula.result} />
 				<Calculator dispatch={formulaDispatch} />
 				<View
 					style={[
 						{ borderColor: theme.border },
-						tw`flex flex-row px-5 pt-5 pb-10 items-center justify-end border-t`,
+						tw`flex flex-row px-6 pt-5 pb-10 items-center justify-end border-t`,
 					]}>
 					<VariableListSmall formula={formula} dispatch={formulaDispatch} />
-					<ButtonSecondary small text="New" onPress={() => navigation.navigate("Variable")} />
+					<Button size="sm" text="New" onPress={() => navigation.navigate("Variable")} />
 				</View>
 			</View>
 		</ScreenView>

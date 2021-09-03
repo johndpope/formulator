@@ -8,7 +8,7 @@ interface ResultProps {
 	data: string | null;
 }
 
-export default function Result({ data }: ResultProps) {
+export default function EquationResult({ data }: ResultProps) {
 	const { theme } = useThemeContext();
 	return (
 		<View

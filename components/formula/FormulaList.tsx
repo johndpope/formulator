@@ -4,11 +4,13 @@ import tw from "../../styles/tailwind";
 import { Formula } from "../../types/FormulatorTypes";
 import { useThemeContext } from "../../providers/ThemeProvider";
 import { useAuthContext } from "../../providers/AuthProvider";
-import { ListTitle, ListSubtitle } from "../theme/Titles";
 import { useFormulas } from "../../hooks/useFormulas";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../types/NavigatorTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
+
+import { ListTitle } from "../theme/titles/ListTitle";
+import { ListSubtitle } from "../theme/titles/ListSubtitle";
 
 interface FormulaListProps {}
 

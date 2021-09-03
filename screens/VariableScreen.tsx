@@ -2,104 +2,20 @@ import React from "react";
 import tw from "../styles/tailwind";
 import { View, Text, TextInput } from "react-native";
 import { VariableScreenProps } from "../types/NavigatorTypes";
-import { Variable, VariableAction } from "../types/VariableTypes";
+import { Variable } from "../types/VariableTypes";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import Result from "../components/formula/Result";
+import EquationResult from "../components/equation/EquationResult";
 import Equation from "../components/equation/Equation";
 import Calculator from "../components/calculator/Calculator";
 import ColorPicker from "../components/variable/ColorPicker";
-import {
-	calculateResult,
-	clearVariableAll,
-	clearVariableLast,
-	insertVariableBracket,
-	insertVariableDecimal,
-	insertVariableNegative,
-	insertVariableNumber,
-	insertVariableOperation,
-	insertVariablePercent,
-	insertVariableLineBreak,
-	insertVariableLineBreakBefore,
-} from "../logic/VariableLogic";
-import {
-	ScreenView,
-	IconButton,
-	Header,
-	ButtonPrimary,
-	ButtonSecondary,
-	TitleButton,
-} from "../components/ThemeComponents";
+import { defaultVariableState, variableReducer } from "../logic/VariableLogic";
 import { useThemeContext } from "../providers/ThemeProvider";
 
-const defaultVariableState: Variable = {
-	name: "New Variable",
-	color: "green",
-	equation: "",
-	result: null,
-	openBrackets: 0,
-	lastConstantType: "",
-};
-
-const variableReducer = (state: Variable, action: VariableAction): Variable => {
-	const { type, payload } = action;
-
-	switch (type) {
-		case "INIT":
-			// Check if payload is an instance of Variable
-			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
-			return payload;
-		case "RESET":
-			return defaultVariableState;
-
-		case "CHANGE_NAME":
-			if (typeof payload !== "string") return state;
-			return { ...state, name: payload };
-
-		case "CHANGE_COLOR":
-			if (typeof payload !== "string") return state;
-			return { ...state, color: payload };
-
-		case "CLEAR_LAST_CONSTANT":
-			return clearVariableLast(state);
-
-		case "CLEAR_ALL_CONSTANTS":
-			return clearVariableAll(state);
-
-		case "CALCULATE_RESULT":
-			return calculateResult(state);
-
-		case "INSERT_LINE_BREAK":
-			return insertVariableLineBreak(state);
-
-		case "INSERT_LINE_BREAK_BEFORE":
-			return insertVariableLineBreakBefore(state);
-
-		case "INSERT_CONSTANT":
-			if (!payload || typeof payload === "string" || !("constantType" in payload)) return state;
-
-			switch (payload?.constantType) {
-				case "EQ_NUMBER":
-					return insertVariableNumber(state, payload.constantValue);
-				case "EQ_OPERATION":
-					return insertVariableOperation(state, payload.constantValue);
-				case "EQ_BRACKET":
-					return insertVariableBracket(state, payload.constantValue);
-				case "EQ_PERCENT":
-					return insertVariablePercent(state);
-				case "EQ_NEGATIVE":
-					return insertVariableNegative(state);
-				case "EQ_DECIMAL":
-					return insertVariableDecimal(state);
-				default:
-					return state;
-			}
-
-		default:
-			return state;
-	}
-};
+import { Button } from "../components/theme/buttons/Button";
+import { IconButton } from "../components/theme/buttons/IconButton";
+import { ScreenView } from "../components/theme/views/ScreenView";
+import { Header } from "../components/theme/headers/Header";
 
 export default function VariableScreen({ route, navigation }: VariableScreenProps) {
 	const { theme } = useThemeContext();
@@ -167,7 +83,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	return (
 		<>
 			{variable && dispatch && (
-				<ScreenView noPadding>
+				<ScreenView padded={false}>
 					<View
 						style={[
 							{ backgroundColor: theme.border },
@@ -179,22 +95,14 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 						</Text>
 					)}
 					<Header>
-						<View
-							style={[
-								{
-									backgroundColor: colorPickerShown
-										? theme.background.secondary
-										: theme.colors[variable.color],
-								},
-								tw`h-8 w-12 rounded-full flex flex-row items-center justify-center`,
-							]}>
-							<IconButton
-								size={18}
-								onPress={() => setColorPickerShown((b) => !b)}
-								icon={["fal", colorPickerShown ? "times" : "fill"]}
-								color={colorPickerShown ? theme.text.primary : theme.background.primary}
-							/>
-						</View>
+						<IconButton
+							icon={["fal", colorPickerShown ? "times" : "fill"]}
+							size="sm"
+							color={colorPickerShown ? theme.text.primary : theme.background.primary}
+							backgroundColor={colorPickerShown ? theme.button.secondary : theme.colors[variable.color]}
+							onPress={() => setColorPickerShown((b) => !b)}
+						/>
+
 						{colorPickerShown && (
 							<View style={tw`flex flex-row items-center flex-1 ml-4`}>
 								<ColorPicker selected={variable.color} handleColorChange={handleColorChange} />
@@ -204,7 +112,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 							<View
 								style={[
 									{ borderColor: theme.colors[variable.color] },
-									tw`h-9 mx-5 flex-1 flex flex-row items-center border rounded-md px-4`,
+									tw`h-9 ml-11 mr-5 flex-1 flex flex-row items-center border rounded-md px-4`,
 								]}>
 								<View
 									style={[
@@ -232,11 +140,18 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 								</Text>
 							</View>
 						)}
-						{!colorPickerShown && <TitleButton text="Save" onPress={handleSave} />}
+						{!colorPickerShown && (
+							<Button
+								size="sm"
+								text="save"
+								onPress={handleSave}
+								backgroundColor={theme.button.secondary}
+							/>
+						)}
 					</Header>
 					<View style={tw`mt-1`}></View>
 					<Equation data={variable.equation} dispatch={dispatch} />
-					<Result data={variable.result} />
+					<EquationResult data={variable.result} />
 					<Calculator dispatch={dispatch} />
 					<View
 						style={[
@@ -245,8 +160,8 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 						]}>
 						{route.params?.variable && (
 							<>
-								<TitleButton
-									small
+								<Button
+									size="sm"
 									text="Delete"
 									onPress={handleDelete}
 									backgroundColor={theme.colors.error}
