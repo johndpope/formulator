@@ -17,6 +17,8 @@ import { Header } from "../components/theme/headers/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { themes } from "../styles/Themes";
 import { useSettingsContext } from "../providers/SettingsProvider";
+import "firebase/firestore";
+import firebase from "firebase";
 
 export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 	const { theme } = useThemeContext();
@@ -26,6 +28,9 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 	const handleThemePress = (t: string) => {
 		settingsDispatch({ type: "SET_THEME", payload: t });
 	};
+	const handleShapePress = (s: string) => {
+		settingsDispatch({ type: "SET_SHAPE", payload: s });
+	};
 
 	return (
 		<ScreenView>
@@ -34,12 +39,37 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 				<Title padded text="Settings" align="right" />
 			</Header>
 			<ScrollView>
-				<SettingsTitle text="theme" />
+				<SettingsTitle text="Theme" />
 				{Object.entries(themes).map(([t, v]) => (
 					<SettingsAction text={t} onPress={() => handleThemePress(t)}>
-						{settings.theme === t && <FontAwesomeIcon icon={["fal", "check"]} color={theme.brand} />}
+						{settings?.theme === t && <FontAwesomeIcon icon={["fal", "check"]} color={theme.brand} />}
 					</SettingsAction>
 				))}
+				<SettingsTitle text="Button Shape" />
+				<SettingsAction
+					text={"Square"}
+					icon={["fal", "square-full"]}
+					onPress={() => handleShapePress("square")}>
+					{settings?.shape === "square" && (
+						<FontAwesomeIcon icon={["fal", "check"]} color={theme.brand} />
+					)}
+				</SettingsAction>
+				<SettingsAction
+					text={"Rounded"}
+					icon={["fal", "square"]}
+					onPress={() => handleShapePress("rounded")}>
+					{settings?.shape === "rounded" && (
+						<FontAwesomeIcon icon={["fal", "check"]} color={theme.brand} />
+					)}
+				</SettingsAction>
+				<SettingsAction
+					text={"Circular"}
+					icon={["fal", "circle"]}
+					onPress={() => handleShapePress("circular")}>
+					{settings?.shape === "circular" && (
+						<FontAwesomeIcon icon={["fal", "check"]} color={theme.brand} />
+					)}
+				</SettingsAction>
 			</ScrollView>
 		</ScreenView>
 	);

@@ -1,5 +1,6 @@
 export type SettingsMap = {
 	theme: string;
+	shape: string;
 };
 
 export type SettingsAction = {
@@ -8,8 +9,8 @@ export type SettingsAction = {
 };
 
 export interface SettingsContextProps {
-	settings: SettingsMap;
-	settingsDispatch: React.Dispatch<SettingsAction>;
+	settings: SettingsMap | undefined;
+	settingsDispatch: (action: SettingsAction) => void;
 }
 
 export interface SettingsProviderProps {
