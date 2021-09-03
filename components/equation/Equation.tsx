@@ -8,7 +8,7 @@ import { useThemeContext } from "../../providers/ThemeProvider";
 import EquationLines from "./Lines";
 import EquationConstantList from "./constants/ConstantList";
 
-export default function Equation({ data, color, variables, dispatch }: EquationProps) {
+export default function Equation({ data, variables, dispatch }: EquationProps) {
 	const { theme } = useThemeContext();
 
 	const [loaded, setLoaded] = React.useState<boolean>(false);
@@ -57,7 +57,7 @@ export default function Equation({ data, color, variables, dispatch }: EquationP
 				onContentSizeChange={handleContentSizeChange}
 				contentContainerStyle={[tw`flex flex-row`]}>
 				<EquationLines numLines={numLines} lineHeight={lineHeight} />
-				<EquationConstantList constants={constants} color={color} />
+				<EquationConstantList constants={constants} />
 			</ScrollView>
 		</View>
 	);

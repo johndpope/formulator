@@ -22,7 +22,7 @@ export default function EquationsLines({ numLines, lineHeight }: EquationLinesPr
 					<Text
 						style={[
 							tw`m-auto text-sm leading-9`,
-							{ color: theme.button.secondary, fontFamily: "NovaMono_400Regular" },
+							{ color: theme.text.secondary, fontFamily: "NovaMono_400Regular" },
 						]}>
 						{lineNum + 1}
 					</Text>

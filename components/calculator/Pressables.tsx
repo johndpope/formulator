@@ -9,7 +9,6 @@ import { useThemeContext } from "../../providers/ThemeProvider";
 
 type PressableProps = {
 	value?: string;
-	color?: string;
 	dispatch: React.Dispatch<FormulaAction> | React.Dispatch<VariableAction>;
 };
 
@@ -54,7 +53,7 @@ export function PressableNumber({ value, dispatch }: PressableProps) {
 	);
 }
 
-export function PressableOperation({ value, color, dispatch }: PressableProps) {
+export function PressableOperation({ value, dispatch }: PressableProps) {
 	const { theme } = useThemeContext();
 
 	return (
@@ -72,7 +71,7 @@ export function PressableOperation({ value, color, dispatch }: PressableProps) {
 			<View
 				style={[
 					{
-						borderColor: color || theme.brand,
+						borderColor: theme.button.secondary,
 						// backgroundColor: theme.button.secondary,
 					},
 					tw`h-full w-full flex items-center justify-center border rounded-md`,
@@ -81,7 +80,8 @@ export function PressableOperation({ value, color, dispatch }: PressableProps) {
 					<FontAwesomeIcon
 						icon={["fal", operationSymbols[value]]}
 						size={24}
-						style={pressableTextStyle}
+						// style={pressableTextStyle}
+						color={theme.brand}
 					/>
 				)}
 			</View>
@@ -111,7 +111,7 @@ export function PressableBracket({ value, dispatch }: PressableProps) {
 					},
 					tw`w-full h-full flex items-center justify-center border rounded-md`,
 				]}>
-				<Text style={numberModifierTextStyle}>{value}</Text>
+				<Text style={[numberModifierTextStyle, { color: theme.brand }]}>{value}</Text>
 			</View>
 		</Pressable>
 	);

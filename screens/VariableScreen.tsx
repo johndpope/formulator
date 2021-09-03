@@ -1,8 +1,7 @@
 import React from "react";
 import tw from "../styles/tailwind";
-import { SafeAreaView, View, Text, TextInput, Pressable } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import { VariableScreenProps } from "../types/NavigatorTypes";
-import { Theme } from "../types/ThemeTypes";
 import { Variable, VariableAction } from "../types/VariableTypes";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -24,12 +23,19 @@ import {
 	insertVariableLineBreak,
 	insertVariableLineBreakBefore,
 } from "../logic/VariableLogic";
-import { ScreenView, IconButton, Header, ButtonPrimary } from "../components/ThemeComponents";
+import {
+	ScreenView,
+	IconButton,
+	Header,
+	ButtonPrimary,
+	ButtonSecondary,
+	TitleButton,
+} from "../components/ThemeComponents";
 import { useThemeContext } from "../providers/ThemeProvider";
 
 const defaultVariableState: Variable = {
 	name: "New Variable",
-	color: "yellow",
+	color: "green",
 	equation: "",
 	result: null,
 	openBrackets: 0,
@@ -101,6 +107,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 
 	const [variable, dispatch] = React.useReducer(variableReducer, defaultVariableState);
 	const [nameIsInvalid, setNameIsInvalid] = React.useState<boolean>(false);
+	const [colorPickerShown, setColorPickerShown] = React.useState<boolean>(false);
 
 	const handleDelete = () => {
 		navigation.goBack();
@@ -124,6 +131,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	};
 
 	const handleColorChange = (c: string) => {
+		setColorPickerShown(false);
 		dispatch({ type: "CHANGE_COLOR", payload: c });
 	};
 
@@ -162,55 +170,91 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 				<ScreenView noPadding>
 					<View
 						style={[
-							{ backgroundColor: theme.colors[variable.color] },
-							tw`w-12 h-1 mx-auto rounded-full mt-4`,
+							{ backgroundColor: theme.border },
+							tw`w-12 h-1 mx-auto rounded-full mt-3 mb-1`,
 						]}></View>
 					{nameIsInvalid && (
-						<Text style={[{ color: theme.colors.error }, tw`px-2 pt-2 text-xs mx-auto`]}>
-							! A Variable with this name already exists
+						<Text style={[{ color: theme.colors.error }, tw`px-2 pb-1 text-xs mx-auto`]}>
+							! A variable with this name already exists
 						</Text>
 					)}
 					<Header>
-						{route.params?.variable ? (
-							<IconButton onPress={handleDelete} icon={["fal", "trash-alt"]} />
-						) : (
-							<IconButton onPress={() => navigation.goBack()} icon={["fal", "chevron-down"]} />
-						)}
-
-						<TextInput
-							selectTextOnFocus
-							value={variable.name}
-							placeholder={variable.name}
+						<View
 							style={[
 								{
-									color: theme.text.primary,
-									borderColor: theme.border,
-									fontFamily: "Poppins_400Regular",
-									backgroundColor: theme.background.secondary,
+									backgroundColor: colorPickerShown
+										? theme.background.secondary
+										: theme.colors[variable.color],
 								},
-								tw`flex-1 p-1 mx-3 text-center text-base rounded-md border`,
-							]}
-							onChangeText={handleNameChange}
-						/>
-						<View style={tw``}>
-							<ButtonPrimary
-								small
-								text="Save"
-								onPress={handleSave}
-								color={theme.background.primary}
-								backgroundColor={theme.colors[variable.color]}
+								tw`h-8 w-12 rounded-full flex flex-row items-center justify-center`,
+							]}>
+							<IconButton
+								size={18}
+								onPress={() => setColorPickerShown((b) => !b)}
+								icon={["fal", colorPickerShown ? "times" : "fill"]}
+								color={colorPickerShown ? theme.text.primary : theme.background.primary}
 							/>
 						</View>
+						{colorPickerShown && (
+							<View style={tw`flex flex-row items-center flex-1 ml-4`}>
+								<ColorPicker selected={variable.color} handleColorChange={handleColorChange} />
+							</View>
+						)}
+						{!colorPickerShown && (
+							<View
+								style={[
+									{ borderColor: theme.colors[variable.color] },
+									tw`h-9 mx-5 flex-1 flex flex-row items-center border rounded-md px-4`,
+								]}>
+								<View
+									style={[
+										{ backgroundColor: theme.colors[variable.color] },
+										tw`absolute inset-x-0 inset-y-0 rounded-md opacity-25`,
+									]}></View>
+								<Text style={{ color: theme.colors[variable.color], fontFamily: "Poppins_600SemiBold" }}>
+									{"{"}
+								</Text>
+								<TextInput
+									selectTextOnFocus
+									value={variable.name}
+									placeholder={variable.name}
+									style={[
+										{
+											color: theme.text.primary,
+											fontFamily: "Poppins_400Regular",
+										},
+										tw`flex-1 p-1 px-3 text-center text-base rounded-md`,
+									]}
+									onChangeText={handleNameChange}
+								/>
+								<Text style={{ color: theme.colors[variable.color], fontFamily: "Poppins_600SemiBold" }}>
+									{"}"}
+								</Text>
+							</View>
+						)}
+						{!colorPickerShown && (
+							<TitleButton text="Save" onPress={handleSave} backgroundColor={theme.background.primary} />
+						)}
 					</Header>
-					<Equation data={variable.equation} color={variable.color} dispatch={dispatch} />
-					<Result data={variable.result} color={variable.color} />
-					<Calculator dispatch={dispatch} color={theme.colors[variable.color]} />
+					<View style={tw`mt-1`}></View>
+					<Equation data={variable.equation} dispatch={dispatch} />
+					<Result data={variable.result} />
+					<Calculator dispatch={dispatch} />
 					<View
 						style={[
 							{ borderColor: theme.border, backgroundColor: theme.background.secondary },
-							tw`h-20 px-5 pt-4 w-full border-t`,
+							tw`border-t px-6 pb-8 pt-4 flex flex-row items-center justify-between`,
 						]}>
-						<ColorPicker selected={variable.color} handleColorChange={handleColorChange} />
+						<ButtonSecondary
+							small
+							text="Delete"
+							onPress={handleDelete}
+							backgroundColor={theme.colors.error}
+						/>
+						<Text
+							style={[{ color: theme.text.secondary, fontFamily: "Poppins_400Regular" }, tw`text-sm`]}>
+							Delete and replace all instances?
+						</Text>
 					</View>
 				</ScreenView>
 			)}

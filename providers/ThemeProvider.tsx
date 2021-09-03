@@ -17,7 +17,7 @@ const themeReducer = (state: Theme, action: ThemeAction) => {
 };
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-	const [theme, themeDispatch] = React.useReducer(themeReducer, one);
+	const [theme, themeDispatch] = React.useReducer(themeReducer, oceanic);
 	return <ThemeContext.Provider value={{ theme, themeDispatch }}>{children}</ThemeContext.Provider>;
 };
 

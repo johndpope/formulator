@@ -20,7 +20,7 @@ export function VariableListSmall({ formula, dispatch }: VariableListSmallProps)
 	const { theme } = useThemeContext();
 
 	const variableTextStyle = {
-		fontFamily: "Poppins_600SemiBold",
+		fontFamily: "Poppins_400Regular",
 	};
 
 	return (
@@ -38,7 +38,10 @@ export function VariableListSmall({ formula, dispatch }: VariableListSmallProps)
 						})
 					}
 					onLongPress={() => navigation.navigate("Variable", { variable: item })}
-					style={[tw`flex flex-row px-2 py-2 mr-3 rounded-md overflow-hidden`]}>
+					style={[
+						{ borderColor: theme.colors[item.color] },
+						tw`flex flex-row px-2 py-1.5 mr-3 rounded-md overflow-hidden border`,
+					]}>
 					<View
 						style={[
 							{ backgroundColor: theme.colors[item.color] },

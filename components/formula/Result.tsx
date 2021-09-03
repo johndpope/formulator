@@ -6,10 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 interface ResultProps {
 	data: string | null;
-	color?: string;
 }
 
-export default function Result({ data, color }: ResultProps) {
+export default function Result({ data }: ResultProps) {
 	const { theme } = useThemeContext();
 	return (
 		<View

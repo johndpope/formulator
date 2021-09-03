@@ -50,7 +50,7 @@ const operationSymbols: OperationSymbolMap = {
 
 export function ConstantOperation({ constant, color }: ConstantProps) {
 	return (
-		<View style={tw`flex-none flex flex-row items-center px-2`}>
+		<View style={tw`h-9 flex-none flex flex-row items-center px-2`}>
 			<FontAwesomeIcon
 				icon={["fal", `${operationSymbols[constant.value]}`]}
 				size={18}
@@ -69,19 +69,25 @@ export function ConstantVariable({ constant }: ConstantProps) {
 	const { theme } = useThemeContext();
 
 	const variableTextStyle = {
-		fontFamily: "Poppins_600SemiBold",
+		fontFamily: "Poppins_400Regular",
 	};
 
 	const color = theme.colors[constant.color || "contrast"];
 
 	return (
-		<View style={tw`flex flex-row px-1.5 py-1 mx-1 rounded-md overflow-hidden`}>
-			<View style={[{ backgroundColor: color }, tw`absolute inset-y-0 inset-x-0 opacity-10`]}></View>
-			<Text style={[{ color: color }, variableTextStyle, tw`text-sm pr-1`]}>{`{`}</Text>
-			<Text style={[{ color: theme.text.primary }, variableTextStyle, tw`text-sm capitalize`]}>
-				{constant.value}
-			</Text>
-			<Text style={[{ color: color }, variableTextStyle, tw`text-sm pl-1`]}>{`}`}</Text>
+		<View style={tw`h-9 flex flex-row items-center`}>
+			<View
+				style={[
+					{ borderColor: color },
+					tw`flex flex-row px-1.5 py-1 items-center mx-1 rounded-md overflow-hidden border`,
+				]}>
+				<View style={[{ backgroundColor: color }, tw`absolute inset-y-0 inset-x-0 opacity-10`]}></View>
+				<Text style={[{ color: color }, variableTextStyle, tw`text-sm pr-1`]}>{`{`}</Text>
+				<Text style={[{ color: theme.text.primary }, variableTextStyle, tw`text-sm capitalize`]}>
+					{constant.value}
+				</Text>
+				<Text style={[{ color: color }, variableTextStyle, tw`text-sm pl-1`]}>{`}`}</Text>
+			</View>
 		</View>
 	);
 }

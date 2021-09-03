@@ -22,7 +22,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	const { formula, formulaDispatch } = useFormulatorContext();
 	const [changeStatus, setChangeStatus] = React.useState<number>(2);
 
-	const statusColors = [theme.colors.red, theme.colors.yellow, theme.colors.green];
+	const statusColors = ["red", "yellow", "green"];
 	const statusText = ["Unsaved", "Changed", "Saved"];
 
 	function handleSave() {
@@ -64,7 +64,12 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 		<ScreenView>
 			<Header>
 				<View style={tw`absolute inset-x-0 top-0 flex flex-row justify-center`}>
-					<View style={[tw`w-1 h-1 rounded-full`, { backgroudColor: statusColors[changeStatus] }]} />
+					<View
+						style={[
+							tw`w-2 h-2 rounded-full`,
+							{ backgroundColor: theme.colors[statusColors[changeStatus]] },
+						]}
+					/>
 				</View>
 				<IconButton onPress={() => navigation.goBack()} icon={["fal", "chevron-left"]} />
 				<TextInput
@@ -75,7 +80,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 						{
 							color: theme.text.primary,
 							fontFamily: "Poppins_400Regular",
-							backgroundColor: theme.background.secondary,
+							// backgroundColor: theme.background.secondary,
 						},
 						tw`flex-1 p-1 mx-3 text-center text-base rounded-md`,
 					]}

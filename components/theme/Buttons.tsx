@@ -13,6 +13,7 @@ interface ButtonProps {
 	onPress: () => void;
 	onLongPress?: () => void;
 	color?: string;
+	borderColor?: string;
 	backgroundColor?: string;
 }
 
@@ -21,6 +22,7 @@ export const ButtonPrimary = ({
 	icon,
 	small,
 	color,
+	borderColor,
 	backgroundColor,
 	onPress,
 	onLongPress,
@@ -31,19 +33,19 @@ export const ButtonPrimary = ({
 			onPress={onPress}
 			style={[
 				{
-					borderColor: backgroundColor || theme.brand,
+					borderColor: borderColor || backgroundColor || theme.brand,
 					backgroundColor: backgroundColor || theme.brand,
 				},
 				tw`flex flex-row items-center rounded-full border-2 ${small ? `px-3 py-1` : `px-4 py-2`}`,
 			]}>
-			{icon && <FontAwesomeIcon icon={icon} size={20} style={tw`${theme.text.primary}`} />}
+			{icon && <FontAwesomeIcon icon={icon} size={20} style={{ color: theme.text.primary }} />}
 			<Text
 				style={[
 					{
 						color: color || theme.text.primary,
 						fontFamily: "Poppins_600SemiBold",
 					},
-					tw`text-base mx-auto`,
+					tw`text-${small ? "base" : "sm"} mx-auto`,
 				]}>
 				{text}
 			</Text>
@@ -51,15 +53,24 @@ export const ButtonPrimary = ({
 	);
 };
 
-export const ButtonSecondary = ({ icon, text, small, onPress, onLongPress }: ButtonProps) => {
+export const ButtonSecondary = ({
+	icon,
+	text,
+	small,
+	onPress,
+	onLongPress,
+	color,
+	borderColor,
+	backgroundColor,
+}: ButtonProps) => {
 	const { theme } = useThemeContext();
 	return (
 		<Pressable
 			onPress={onPress}
 			style={[
 				{
-					borderColor: theme.button.secondary,
-					backgroundColor: theme.button.secondary,
+					borderColor: borderColor || backgroundColor || theme.button.secondary,
+					backgroundColor: backgroundColor || theme.button.secondary,
 				},
 				tw`flex flex-row items-center rounded-full border-2 ${small ? `px-3 py-1` : `px-4 py-2`}`,
 			]}>
@@ -70,7 +81,33 @@ export const ButtonSecondary = ({ icon, text, small, onPress, onLongPress }: But
 						color: theme.text.primary,
 						fontFamily: "Poppins_600SemiBold",
 					},
-					tw`text-base mx-auto`,
+					tw`text-${small ? "base" : "sm"} mx-auto`,
+				]}>
+				{text}
+			</Text>
+		</Pressable>
+	);
+};
+
+export const TitleButton = ({ text, onPress, onLongPress }: ButtonProps) => {
+	const { theme } = useThemeContext();
+	return (
+		<Pressable
+			onPress={onPress}
+			style={[
+				{
+					// borderColor: theme.button.secondary,
+					backgroundColor: theme.button.secondary,
+				},
+				tw`flex flex-row items-center rounded-full px-3 h-8`,
+			]}>
+			<Text
+				style={[
+					{
+						color: theme.text.primary,
+						fontFamily: "Poppins_600SemiBold",
+					},
+					tw`text-xs mx-auto`,
 				]}>
 				{text}
 			</Text>

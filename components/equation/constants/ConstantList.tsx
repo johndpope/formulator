@@ -30,10 +30,10 @@ export default function EquationConstantList({ constants, color }: EquationConst
 								<ConstantNumber constant={constant} color={theme.text.secondary} />
 							)}
 							{constant.type === "EQ_OPERATION" && (
-								<ConstantOperation constant={constant} color={theme.colors.purple} />
+								<ConstantOperation constant={constant} color={theme.brand} />
 							)}
 							{(constant.type === "EQ_BRACKET_OPEN" || constant.type === "EQ_BRACKET_CLOSED") && (
-								<Constant constant={constant} color={theme.colors.blue} />
+								<Constant constant={constant} color={theme.brand} />
 							)}
 						</View>
 					)}
