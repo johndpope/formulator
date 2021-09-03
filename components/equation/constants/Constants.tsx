@@ -11,11 +11,13 @@ interface ConstantProps {
 	constant: EquationConstant;
 }
 
+const lineHeight = 10;
+
 export function Constant({ constant, color }: ConstantProps) {
 	return (
 		<Text
 			style={[
-				tw`text-xl leading-9 px-px`,
+				tw`text-xl leading-${lineHeight} px-px`,
 				{
 					color: color || "",
 					fontFamily: "NovaMono_400Regular",
@@ -30,7 +32,7 @@ export function ConstantNumber({ constant, color }: ConstantProps) {
 	return (
 		<Text
 			style={[
-				tw`text-xl leading-9 px-px`,
+				tw`text-xl leading-${lineHeight} px-px`,
 				{
 					color: color || "",
 					fontFamily: "NovaMono_400Regular",
@@ -50,7 +52,7 @@ const operationSymbols: OperationSymbolMap = {
 
 export function ConstantOperation({ constant, color }: ConstantProps) {
 	return (
-		<View style={tw`h-9 flex-none flex flex-row items-center px-2`}>
+		<View style={tw`h-${lineHeight} flex-none flex flex-row items-center px-2`}>
 			<FontAwesomeIcon
 				icon={["fal", `${operationSymbols[constant.value]}`]}
 				size={18}
@@ -58,7 +60,7 @@ export function ConstantOperation({ constant, color }: ConstantProps) {
 					{
 						color: color || "",
 					},
-					tw`leading-9`,
+					tw`leading-${lineHeight}`,
 				]}
 			/>
 		</View>
@@ -75,11 +77,11 @@ export function ConstantVariable({ constant }: ConstantProps) {
 	const color = theme.colors[constant.color || "contrast"];
 
 	return (
-		<View style={tw`h-9 flex flex-row items-center`}>
+		<View style={tw`flex flex-row items-center`}>
 			<View
 				style={[
 					{ borderColor: color },
-					tw`flex flex-row px-1.5 py-1 items-center mx-1 rounded-md overflow-hidden border`,
+					tw`flex flex-row px-1 py-1 items-center mx-1 rounded-md overflow-hidden border`,
 				]}>
 				<View style={[{ backgroundColor: color }, tw`absolute inset-y-0 inset-x-0 opacity-10`]}></View>
 				<Text style={[{ color: color }, variableTextStyle, tw`text-sm pr-1`]}>{`{`}</Text>

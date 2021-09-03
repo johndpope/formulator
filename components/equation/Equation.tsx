@@ -15,7 +15,7 @@ export default function Equation({ data, variables, dispatch }: EquationProps) {
 	const [constants, setConstants] = React.useState<Array<EquationConstant>>([]);
 	const [numLines, setNumLines] = React.useState<number>(0);
 	const scrollViewRef = React.useRef<ScrollView>(null);
-	const lineHeight = React.useRef<number>(0);
+	const initialLineHeight = React.useRef<number>(0);
 
 	function generateLineBreaks(eq: string) {
 		let lines = eq.match(/\|/g);
@@ -24,7 +24,7 @@ export default function Equation({ data, variables, dispatch }: EquationProps) {
 
 	const handleContentSizeChange = (w: number, h: number) => {
 		if (!loaded) return;
-		if (Math.round(h) > lineHeight.current) {
+		if (Math.round(h) > initialLineHeight.current) {
 			dispatch({ type: "INSERT_LINE_BREAK_BEFORE" });
 		}
 
@@ -32,8 +32,8 @@ export default function Equation({ data, variables, dispatch }: EquationProps) {
 	};
 
 	React.useEffect(() => {
-		if (lineHeight.current > 0) setLoaded(true);
-	}, [lineHeight.current]);
+		if (initialLineHeight.current > 0) setLoaded(true);
+	}, [initialLineHeight.current]);
 
 	React.useEffect(() => {
 		setConstants(generateConstantsArray(data, variables));
@@ -47,7 +47,7 @@ export default function Equation({ data, variables, dispatch }: EquationProps) {
 					borderColor: theme.border,
 					backgroundColor: theme.background.secondary,
 				},
-				tw`h-48 w-full flex flex-row border-t border-b`,
+				tw`h-52 w-full flex flex-row border-t border-b`,
 			]}>
 			<View style={[{ borderColor: theme.border }, tw`absolute w-9 left-0 inset-y-0 border-r`]}></View>
 			<ScrollView
@@ -56,7 +56,7 @@ export default function Equation({ data, variables, dispatch }: EquationProps) {
 				showsVerticalScrollIndicator={false}
 				onContentSizeChange={handleContentSizeChange}
 				contentContainerStyle={[tw`flex flex-row`]}>
-				<EquationLines numLines={numLines} lineHeight={lineHeight} />
+				<EquationLines numLines={numLines} initialLineHeight={initialLineHeight} />
 				<EquationConstantList constants={constants} />
 			</ScrollView>
 		</View>
