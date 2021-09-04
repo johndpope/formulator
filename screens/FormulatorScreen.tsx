@@ -15,6 +15,7 @@ import { Button } from "../components/theme/buttons/Button";
 import { IconButton } from "../components/theme/buttons/IconButton";
 import { ScreenView } from "../components/theme/views/ScreenView";
 import { Header } from "../components/theme/headers/Header";
+import { DropDownMenu, DropDownItem } from "../components/theme/menus/DropDownMenu";
 
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
 	const { theme } = useThemeContext();
@@ -61,35 +62,46 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 
 	return (
 		<ScreenView>
-			<Header>
-				<View style={tw`absolute inset-x-0 top-0 flex flex-row justify-center`}>
-					<View
+			<View style={tw`z-50`}>
+				<Header>
+					<View style={tw`absolute inset-x-0 top-0 flex flex-row justify-center`}>
+						<View
+							style={[
+								tw`w-2 h-2 rounded-full`,
+								{ backgroundColor: theme.colors[statusColors[changeStatus]] },
+							]}
+						/>
+					</View>
+					<IconButton onPress={() => navigation.goBack()} icon={["fal", "chevron-left"]} />
+					<TextInput
+						selectTextOnFocus
+						value={formula.name}
+						placeholder={formula.name}
 						style={[
-							tw`w-2 h-2 rounded-full`,
-							{ backgroundColor: theme.colors[statusColors[changeStatus]] },
+							{
+								color: theme.text.primary,
+								fontFamily: "Poppins_400Regular",
+								// backgroundColor: theme.background.secondary,
+							},
+							tw`flex-1 p-1 mx-3 text-center text-base rounded-md`,
 						]}
+						onChangeText={(n) => formulaDispatch({ type: "CHANGE_NAME", payload: n })}
 					/>
-				</View>
-				<IconButton onPress={() => navigation.goBack()} icon={["fal", "chevron-left"]} />
-				<TextInput
-					selectTextOnFocus
-					value={formula.name}
-					placeholder={formula.name}
-					style={[
-						{
-							color: theme.text.primary,
-							fontFamily: "Poppins_400Regular",
-							// backgroundColor: theme.background.secondary,
-						},
-						tw`flex-1 p-1 mx-3 text-center text-base rounded-md`,
-					]}
-					onChangeText={(n) => formulaDispatch({ type: "CHANGE_NAME", payload: n })}
-				/>
 
-				<IconButton onPress={handleSave} icon={["fal", "ellipsis-v"]} size={"lg"} />
-			</Header>
+					<DropDownMenu
+						toggle={({ opened, setOpened }) => (
+							<IconButton
+								icon={["fal", opened ? "times" : "ellipsis-v"]}
+								onPress={() => setOpened((o) => !o)}
+							/>
+						)}>
+						<DropDownItem text="Save" icon={["fal", "upload"]} onPress={handleSave} />
+						<DropDownItem text="Delete" icon={["fal", "trash-alt"]} onPress={handleDelete} />
+					</DropDownMenu>
+				</Header>
+			</View>
 
-			<View style={tw`flex-1`}>
+			<View style={tw`flex-1 z-10`}>
 				<Equation data={formula.equation} variables={formula.variables} dispatch={formulaDispatch} />
 				<EquationResult data={formula.result} />
 				<Calculator dispatch={formulaDispatch} />

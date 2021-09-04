@@ -97,7 +97,6 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 					<Header>
 						<IconButton
 							icon={["fal", colorPickerShown ? "times" : "fill"]}
-							size="sm"
 							color={colorPickerShown ? theme.text.primary : theme.background.primary}
 							backgroundColor={colorPickerShown ? theme.button.secondary : theme.colors[variable.color]}
 							onPress={() => setColorPickerShown((b) => !b)}

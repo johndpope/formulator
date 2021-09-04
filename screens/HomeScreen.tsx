@@ -4,7 +4,7 @@ import FormulaList from "../components/formula/FormulaList";
 import { useAuthContext } from "../providers/AuthProvider";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 import { HomeScreenProps } from "../types/NavigatorTypes";
-import { View, Image } from "react-native";
+import { View, Image, Text } from "react-native";
 import { useThemeContext } from "../providers/ThemeProvider";
 
 import { Title } from "../components/theme/titles/Title";
@@ -48,10 +48,8 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 				<Image source={require("../assets/FormulatorLogo.png")} style={{ width: 45, height: 45 }} />
 				<IconButton onPress={() => navigation.navigate("Settings")} icon={["fal", "user-circle"]} />
 			</Header>
-
-			<Header style={tw`mt-5 mb-2`}>
+			<Header style={tw`mt-5 mb-2 z-50`}>
 				<Title text="My Formulas" />
-				<IconButton size="lg" icon={["fal", "ellipsis-v"]} onPress={navigateToFormula} />
 			</Header>
 
 			<View style={tw`flex-1 px-5`}>

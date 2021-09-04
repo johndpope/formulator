@@ -26,7 +26,7 @@ export default function FormulaList(props: FormulaListProps) {
 	const { formulas, error, loading } = useFormulas();
 
 	return (
-		<ScrollView>
+		<ScrollView contentContainerStyle={tw.style(`z-10`)}>
 			{!loading &&
 				formulas.map((formula) => (
 					<FormulaListItem

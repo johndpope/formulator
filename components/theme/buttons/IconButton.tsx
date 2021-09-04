@@ -16,8 +16,8 @@ interface IconButtonProps {
 }
 
 export const IconButton = ({
-	icon,
 	size = "md",
+	icon,
 	flip,
 	color,
 	backgroundColor,
@@ -29,7 +29,12 @@ export const IconButton = ({
 	return (
 		<Pressable
 			onPress={onPress}
-			style={tw.style(`p-2`, theme.shape, { backgroundColor: backgroundColor || "transparent" })}>
+			style={tw.style(theme.shape, {
+				backgroundColor: backgroundColor || "transparent",
+				"w-6 h-6": size === "sm",
+				"w-8 h-8": size === "md",
+				"w-12 h-12": size === "lg",
+			})}>
 			{({ pressed }) => (
 				<FontAwesomeIcon
 					color={pressed ? theme.brand : color || theme.text.primary}

@@ -19,7 +19,6 @@ export default function ColorPicker({ selected, handleColorChange }: ColorPicker
 					c !== "error" &&
 					c !== "gray" && (
 						<IconButton
-							size="sm"
 							key={`variable-color-${c}`}
 							icon={["fal", "check"]}
 							backgroundColor={theme.colors[c]}
