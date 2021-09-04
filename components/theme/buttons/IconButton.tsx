@@ -29,7 +29,7 @@ export const IconButton = ({
 	return (
 		<Pressable
 			onPress={onPress}
-			style={tw.style(`p-2 rounded-full`, { backgroundColor: backgroundColor || "transparent" })}>
+			style={tw.style(`p-2`, theme.shape, { backgroundColor: backgroundColor || "transparent" })}>
 			{({ pressed }) => (
 				<FontAwesomeIcon
 					color={pressed ? theme.brand : color || theme.text.primary}

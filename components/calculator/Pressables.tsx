@@ -40,13 +40,11 @@ export function PressableNumber({ value, dispatch }: PressableProps) {
 				})
 			}>
 			<View
-				style={[
-					{
-						borderColor: theme.button.secondary,
-						// backgroundColor: theme.button.secondary,
-					},
-					tw`h-full w-full flex items-center justify-center border rounded-md`,
-				]}>
+				style={tw.style(
+					theme.shape,
+					{ borderColor: theme.button.secondary },
+					`h-full w-full flex items-center justify-center border`
+				)}>
 				<Text style={pressableTextStyle}>{value}</Text>
 			</View>
 		</Pressable>
@@ -69,20 +67,13 @@ export function PressableOperation({ value, dispatch }: PressableProps) {
 				})
 			}>
 			<View
-				style={[
-					{
-						borderColor: theme.button.secondary,
-						// backgroundColor: theme.button.secondary,
-					},
-					tw`h-full w-full flex items-center justify-center border rounded-md`,
-				]}>
+				style={tw.style(
+					theme.shape,
+					{ borderColor: theme.button.secondary },
+					`h-full w-full flex items-center justify-center border`
+				)}>
 				{value && (
-					<FontAwesomeIcon
-						icon={["fal", operationSymbols[value]]}
-						size={24}
-						// style={pressableTextStyle}
-						color={theme.brand}
-					/>
+					<FontAwesomeIcon icon={["fal", operationSymbols[value]]} size={24} color={theme.brand} />
 				)}
 			</View>
 		</Pressable>
@@ -104,13 +95,11 @@ export function PressableBracket({ value, dispatch }: PressableProps) {
 				})
 			}>
 			<View
-				style={[
-					{
-						borderColor: theme.button.secondary,
-						// backgroundColor: theme.button.secondary,
-					},
-					tw`w-full h-full flex items-center justify-center border rounded-md`,
-				]}>
+				style={tw.style(
+					theme.shape,
+					{ borderColor: theme.button.secondary },
+					`h-full w-full flex items-center justify-center border`
+				)}>
 				<Text style={[numberModifierTextStyle, { color: theme.brand }]}>{value}</Text>
 			</View>
 		</Pressable>
@@ -130,12 +119,11 @@ export function PressablePercent({ dispatch }: PressableProps) {
 				})
 			}>
 			<View
-				style={[
-					{
-						borderColor: theme.button.secondary,
-					},
-					tw`w-full h-full items-center justify-center border rounded-md`,
-				]}>
+				style={tw.style(
+					theme.shape,
+					{ borderColor: theme.button.secondary },
+					`h-full w-full flex items-center justify-center border`
+				)}>
 				<Text style={numberModifierTextStyle}>%</Text>
 			</View>
 		</Pressable>
@@ -155,12 +143,11 @@ export function PressableNegative({ dispatch }: PressableProps) {
 				})
 			}>
 			<View
-				style={[
-					{
-						borderColor: theme.button.secondary,
-					},
-					tw`w-full h-full items-center justify-center border rounded-md`,
-				]}>
+				style={tw.style(
+					theme.shape,
+					{ borderColor: theme.button.secondary },
+					`h-full w-full flex items-center justify-center border`
+				)}>
 				<Text style={pressableTextStyle}>+/-</Text>
 			</View>
 		</Pressable>
@@ -180,12 +167,11 @@ export function PressableDecimal({ dispatch }: PressableProps) {
 				})
 			}>
 			<View
-				style={[
-					{
-						borderColor: theme.button.secondary,
-					},
-					tw`w-full h-full items-center justify-center border rounded-md`,
-				]}>
+				style={tw.style(
+					theme.shape,
+					{ borderColor: theme.button.secondary },
+					`h-full w-full flex items-center justify-center border`
+				)}>
 				<Text style={pressableTextStyle}>.</Text>
 			</View>
 		</Pressable>
@@ -198,13 +184,14 @@ export function PressableLineBreak({ dispatch }: PressableProps) {
 	return (
 		<Pressable style={[numberModifierStyle]} onPress={() => dispatch({ type: "INSERT_LINE_BREAK" })}>
 			<View
-				style={[
+				style={tw.style(
+					theme.shape,
 					{
 						borderColor: theme.button.secondary,
 						backgroundColor: theme.button.secondary,
 					},
-					tw`w-full h-full flex flex-row items-center justify-center border rounded-md`,
-				]}>
+					`h-full w-full flex flex-row items-center justify-center border`
+				)}>
 				<FontAwesomeIcon
 					icon={["fal", "level-down"]}
 					size={26}
@@ -225,13 +212,14 @@ export function PressableClear({ dispatch }: PressableProps) {
 			onPress={() => dispatch({ type: "CLEAR_LAST_CONSTANT" })}
 			onLongPress={() => dispatch({ type: "CLEAR_ALL_CONSTANTS" })}>
 			<View
-				style={[
+				style={tw.style(
+					theme.shape,
 					{
 						borderColor: theme.button.secondary,
 						backgroundColor: theme.button.secondary,
 					},
-					tw`h-full w-full items-center justify-center border rounded-md`,
-				]}>
+					`h-full w-full flex flex-row items-center justify-center border`
+				)}>
 				<FontAwesomeIcon icon={["fal", "backspace"]} size={26} style={pressableTextStyle} />
 			</View>
 		</Pressable>

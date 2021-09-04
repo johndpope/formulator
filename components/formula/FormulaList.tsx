@@ -52,10 +52,10 @@ function FormulaListItem({ formula, onPress, onLongPress }: FormulaListItemProps
 		<Pressable
 			onPress={onPress}
 			onLongPress={onLongPress}
-			style={[
-				tw`flex-1 flex flex-row px-4 py-4 mb-4 border rounded-md`,
-				{ backgroundColor: theme.background.secondary, borderColor: theme.border },
-			]}>
+			style={tw.style(`flex-1 flex flex-row px-4 py-4 mb-4 border`, theme.shape, {
+				backgroundColor: theme.background.secondary,
+				borderColor: theme.border,
+			})}>
 			<View style={tw`flex-1 flex flex-col`}>
 				<ListTitle text={formula?.name} />
 				<ListSubtitle text={formula?.equation.replaceAll("|", "")} />

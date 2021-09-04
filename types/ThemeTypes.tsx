@@ -7,6 +7,7 @@ export type ThemeElement = {
 };
 
 export type Theme = {
+	shape?: string;
 	brand: string;
 	border: string;
 	colors: ColorMap;

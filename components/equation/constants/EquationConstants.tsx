@@ -79,10 +79,11 @@ export function ConstantVariable({ constant }: ConstantProps) {
 	return (
 		<View style={tw`flex flex-row items-center h-${lineHeight}`}>
 			<View
-				style={[
+				style={tw.style(
+					theme.shape,
 					{ borderColor: color },
-					tw`flex flex-row px-1 py-1 items-center mx-1 rounded-md overflow-hidden border`,
-				]}>
+					`flex flex-row px-2 py-1 items-center mx-1 overflow-hidden border`
+				)}>
 				<View style={[{ backgroundColor: color }, tw`absolute inset-y-0 inset-x-0 opacity-10`]}></View>
 				<Text style={[{ color: color }, variableTextStyle, tw`text-sm pr-1`]}>{`{`}</Text>
 				<Text style={[{ color: theme.text.primary }, variableTextStyle, tw`text-sm capitalize`]}>

@@ -38,7 +38,7 @@ export const Button = ({
 	return (
 		<Pressable
 			onPress={onPress}
-			style={tw.style(`flex flex-row items-center rounded-full border-2`, {
+			style={tw.style(`flex flex-row items-center border-2`, theme.shape, {
 				borderColor: borderColor || backgroundColor || theme.brand,
 				backgroundColor: backgroundColor || theme.brand,
 				"flex-row-reverse": iconPosition === "right",

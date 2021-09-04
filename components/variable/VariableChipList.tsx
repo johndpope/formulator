@@ -40,10 +40,11 @@ export function VariableListSmall({ formula, dispatch }: VariableListSmallProps)
 								})
 							}
 							onLongPress={() => navigation.navigate("Variable", { variable: item })}
-							style={[
+							style={tw.style(
+								theme.shape,
 								{ borderColor: theme.colors[item.color] },
-								tw`flex flex-row px-2 py-1.5 mr-3 rounded-md overflow-hidden border`,
-							]}>
+								`flex flex-row px-2 py-1.5 mr-3 overflow-hidden border`
+							)}>
 							<View
 								style={[
 									{ backgroundColor: theme.colors[item.color] },

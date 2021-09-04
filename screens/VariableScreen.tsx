@@ -110,15 +110,17 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 						)}
 						{!colorPickerShown && (
 							<View
-								style={[
+								style={tw.style(
+									theme.shape,
 									{ borderColor: theme.colors[variable.color] },
-									tw`h-9 ml-11 mr-5 flex-1 flex flex-row items-center border rounded-md px-2`,
-								]}>
+									`h-9 ml-11 mr-5 flex-1 flex flex-row items-center border px-2`
+								)}>
 								<View
-									style={[
+									style={tw.style(
+										theme.shape,
 										{ backgroundColor: theme.colors[variable.color] },
-										tw`absolute inset-x-0 inset-y-0 rounded-md opacity-25`,
-									]}></View>
+										`absolute inset-x-0 inset-y-0 rounded-md opacity-25`
+									)}></View>
 								<Text style={{ color: theme.colors[variable.color], fontFamily: "Poppins_600SemiBold" }}>
 									{"{"}
 								</Text>
