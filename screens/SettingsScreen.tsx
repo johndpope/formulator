@@ -41,7 +41,7 @@ export default function HomeScreen({ route, navigation }: HomeScreenProps) {
 			<ScrollView>
 				<SettingsTitle text="Theme" />
 				{Object.entries(themes).map(([t, v]) => (
-					<SettingsAction text={t} onPress={() => handleThemePress(t)}>
+					<SettingsAction key={`theme-${t}`} text={t} onPress={() => handleThemePress(t)}>
 						{settings?.theme === t && <FontAwesomeIcon icon={["fal", "check"]} color={theme.brand} />}
 					</SettingsAction>
 				))}
