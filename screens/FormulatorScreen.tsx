@@ -14,6 +14,7 @@ import { VariableListSmall } from "../components/variable/VariableChipList";
 import { Button } from "../components/theme/buttons/Button";
 import { IconButton } from "../components/theme/buttons/IconButton";
 import { ScreenView } from "../components/theme/views/ScreenView";
+import { ViewWithBottomSheet } from "../components/theme/views/ViewWithBottomSheet";
 import { Header } from "../components/theme/headers/Header";
 import { DropDownMenu, DropDownItem } from "../components/theme/menus/DropDownMenu";
 
@@ -107,7 +108,10 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 				<Calculator dispatch={formulaDispatch} />
 				<View
 					style={[
-						{ borderColor: theme.border },
+						{
+							borderColor: theme.border,
+							backgroundColor: theme.background.primary,
+						},
 						tw`flex flex-row px-6 pt-5 pb-10 items-center justify-end border-t`,
 					]}>
 					<VariableListSmall formula={formula} dispatch={formulaDispatch} />
