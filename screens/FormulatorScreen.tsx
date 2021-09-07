@@ -105,19 +105,19 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 				<EquationResult data={formula.result} />
 				<ViewWithBottomSheet
 					bottomSheetCollapsedHeight={100}
-					bottomSheet={({ sheetAnimations }) => (
-						<>
-							<VariableListCollapsed
-								formula={formula}
-								dispatch={formulaDispatch}
-								sheetAnimations={sheetAnimations}
-							/>
-							<VariableListExpanded
-								formula={formula}
-								dispatch={formulaDispatch}
-								sheetAnimations={sheetAnimations}
-							/>
-						</>
+					bottomSheetHeader={({ sheetAnimations }) => (
+						<VariableListCollapsed
+							formula={formula}
+							dispatch={formulaDispatch}
+							sheetAnimations={sheetAnimations}
+						/>
+					)}
+					bottomSheetContent={({ sheetAnimations }) => (
+						<VariableListExpanded
+							formula={formula}
+							dispatch={formulaDispatch}
+							sheetAnimations={sheetAnimations}
+						/>
 					)}>
 					<Calculator dispatch={formulaDispatch} />
 				</ViewWithBottomSheet>

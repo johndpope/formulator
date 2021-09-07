@@ -22,45 +22,55 @@ export interface BottomSheetCallbackProps {
 
 interface BottomSheetProps {
 	expandHeight: number;
-	collapsedHeight: number;
-	children: ({ sheetAnimations }: BottomSheetCallbackProps) => React.ReactNode | React.ReactNodeArray;
+	collapseHeight: number;
+	bottomSheetHeader: ({
+		sheetAnimations,
+	}: BottomSheetCallbackProps) => React.ReactNode | React.ReactNodeArray;
+	bottomSheetContent: ({
+		sheetAnimations,
+	}: BottomSheetCallbackProps) => React.ReactNode | React.ReactNodeArray;
 }
 
-export const BottomSheet = ({ collapsedHeight, expandHeight = 1, children }: BottomSheetProps) => {
+export const BottomSheet = ({
+	collapseHeight,
+	expandHeight = 1,
+	bottomSheetHeader,
+	bottomSheetContent,
+}: BottomSheetProps) => {
 	const panY = React.useRef<any>(new Animated.Value(0)).current;
 	const _close = Animated.timing(panY, { toValue: 0, duration: 100, useNativeDriver: false });
 	const _open = Animated.timing(panY, {
-		toValue: -expandHeight + collapsedHeight,
-		duration: collapsedHeight,
+		toValue: -expandHeight + collapseHeight,
+		duration: collapseHeight,
 		useNativeDriver: false,
 	});
 
 	const panTranslate = panY.interpolate({
-		inputRange: [-expandHeight + collapsedHeight, 0],
-		outputRange: [-expandHeight + collapsedHeight, 0],
+		inputRange: [-expandHeight + collapseHeight, 0],
+		outputRange: [-expandHeight + collapseHeight, 0],
 		extrapolate: "clamp",
 	});
 
 	const fadeIn = panY.interpolate({
-		inputRange: [-expandHeight + collapsedHeight, 0],
+		inputRange: [-expandHeight + collapseHeight, 0],
 		outputRange: [1, 0],
 		extrapolate: "clamp",
 	});
 
 	const fadeOut = panY.interpolate({
-		inputRange: [-expandHeight + collapsedHeight, 0],
+		inputRange: [-expandHeight + collapseHeight, 0],
 		outputRange: [0, 1],
 		extrapolate: "clamp",
 	});
 
 	const translateIn = panY.interpolate({
-		inputRange: [-expandHeight + collapsedHeight, 0],
+		inputRange: [-expandHeight + collapseHeight, 0],
 		outputRange: [0, 100],
 		extrapolate: "clamp",
 	});
 
 	const translateOut = panY.interpolate({
-		inputRange: [-expandHeight + collapsedHeight, 0],
+		inputRange: [-expandHeight + collapseHeight, 0],
 		outputRange: [100, 0],
 		extrapolate: "clamp",
 	});
@@ -85,7 +95,7 @@ export const BottomSheet = ({ collapsedHeight, expandHeight = 1, children }: Bot
 	const panResponder = React.useRef(
 		PanResponder.create({
 			onMoveShouldSetPanResponder: (e, gst) => {
-				return gst.dy < -collapsedHeight || gst.dy > collapsedHeight;
+				return gst.dy < -collapseHeight / 2 || gst.dy > collapseHeight / 2;
 			},
 			onStartShouldSetPanResponder: (e, gst) => true,
 			onPanResponderGrant: (e, gst) => panY.extractOffset(),
@@ -101,20 +111,16 @@ export const BottomSheet = ({ collapsedHeight, expandHeight = 1, children }: Bot
 
 	return (
 		<Animated.View
-			{...panResponder.panHandlers}
 			style={{
-				height: collapsedHeight,
+				height: collapseHeight,
+				backgroundColor: "red",
 				transform: [{ translateY: panTranslate }],
 			}}>
-			<View
-				style={{
-					height: expandHeight,
-					width: "100%",
-					display: "flex",
-					position: "absolute",
-					flexDirection: "column",
-				}}>
-				{children({ sheetAnimations: { fadeIn, fadeOut, translateIn, translateOut } })}
+			<View {...panResponder.panHandlers} style={{ height: collapseHeight }}>
+				{bottomSheetHeader({ sheetAnimations: { fadeIn, fadeOut, translateIn, translateOut } })}
+			</View>
+			<View style={{ height: expandHeight - collapseHeight }}>
+				{bottomSheetContent({ sheetAnimations: { fadeIn, fadeOut, translateIn, translateOut } })}
 			</View>
 		</Animated.View>
 	);

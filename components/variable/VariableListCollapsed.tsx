@@ -30,9 +30,9 @@ export const VariableListCollapsed = ({
 			style={[
 				{
 					borderColor: theme.border,
-					// backgroundColor: theme.background.primary,
+					backgroundColor: theme.background.primary,
 				},
-				tw`flex flex-col items-center justify-start border-t overflow-hidden px-5`,
+				tw`flex-1 flex flex-col items-center justify-start border-t overflow-hidden px-5`,
 			]}>
 			<View
 				style={tw.style(`h-1 w-10 mt-3 rounded-full`, {
