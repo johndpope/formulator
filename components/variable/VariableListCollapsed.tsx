@@ -37,7 +37,7 @@ export const VariableListCollapsed = ({
 				style={tw.style(`h-1 w-10 mt-3 rounded-full`, {
 					backgroundColor: theme.button.secondary,
 				})}></View>
-			<View style={tw.style(`flex flex-row mt-6 mb-8`)}>
+			<View style={tw.style(`flex flex-row mt-4 mb-8`)}>
 				<View style={tw.style(`flex-1 flex flex-col justify-center`)}>
 					<Animated.View
 						style={[

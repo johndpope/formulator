@@ -84,7 +84,6 @@ export const BottomSheet = ({ collapsedHeight, expandHeight = 1, children }: Bot
 	const panResponder = React.useRef(
 		PanResponder.create({
 			onMoveShouldSetPanResponder: (e, gst) => {
-				console.log(gst.dy < -20 || gst.dy > 20);
 				return gst.dy < -20 || gst.dy > 20;
 			},
 			onStartShouldSetPanResponder: () => true,

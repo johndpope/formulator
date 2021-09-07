@@ -104,7 +104,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 				<Equation data={formula.equation} variables={formula.variables} dispatch={formulaDispatch} />
 				<EquationResult data={formula.result} />
 				<ViewWithBottomSheet
-					bottomSheetCollapsedHeight={110}
+					bottomSheetCollapsedHeight={100}
 					bottomSheet={({ sheetAnimations }) => (
 						<>
 							<VariableListCollapsed
