@@ -27,7 +27,7 @@ export default function Navigator() {
 						<Stack.Screen
 							name="Formulator"
 							component={FormulatorScreen}
-							options={{ headerShown: false }}
+							options={{ headerShown: false, gestureEnabled: false }}
 						/>
 						<Stack.Screen
 							name="Variable"
