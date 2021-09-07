@@ -1,6 +1,6 @@
 import React from "react";
 import tw from "../../../styles/tailwind";
-import { Pressable, Text } from "react-native";
+import { GestureResponderEvent, Pressable, Text } from "react-native";
 import { useThemeContext } from "../../../providers/ThemeProvider";
 import { IconProp, text } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -14,7 +14,7 @@ interface ButtonProps {
 	textColor?: string;
 	borderColor?: string;
 	backgroundColor?: string;
-	onPress: () => void;
+	onPress: (e: GestureResponderEvent) => void;
 	onLongPress?: () => void;
 }
 
@@ -38,14 +38,16 @@ export const Button = ({
 	return (
 		<Pressable
 			onPress={onPress}
-			style={tw.style(`flex flex-row items-center border-2`, theme.shape, {
-				borderColor: borderColor || backgroundColor || theme.brand,
-				backgroundColor: backgroundColor || theme.brand,
-				"flex-row-reverse": iconPosition === "right",
-				"px-3 py-1": size === "sm",
-				"px-3 py-2.5": size === "md",
-				"px-3 py-3": size === "lg",
-			})}>
+			style={({ pressed }) =>
+				tw.style(`flex flex-row items-center border-2`, theme.shape, {
+					borderColor: borderColor || backgroundColor || theme.brand,
+					backgroundColor: pressed ? theme.button.secondary : backgroundColor || theme.brand,
+					"flex-row-reverse": iconPosition === "right",
+					"px-3 py-1": size === "sm",
+					"px-3 py-2.5": size === "md",
+					"px-3 py-3": size === "lg",
+				})
+			}>
 			{icon && (
 				<FontAwesomeIcon icon={icon} size={iconSizes[size]} color={textColor || theme.text.primary} />
 			)}
