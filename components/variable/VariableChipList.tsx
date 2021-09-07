@@ -44,7 +44,7 @@ export function VariableChipList({ formula, dispatch }: VariableChipListProps) {
 							style={tw.style(
 								theme.shape,
 								{ borderColor: theme.colors[item.color] },
-								`flex flex-row px-2 py-1.5 mr-3 overflow-hidden border`
+								`flex flex-row px-2 py-1.5 mr-2 overflow-hidden border`
 							)}>
 							<View
 								style={[
@@ -55,16 +55,16 @@ export function VariableChipList({ formula, dispatch }: VariableChipListProps) {
 								style={[
 									{ color: theme.colors[item.color] },
 									variableTextStyle,
-									tw`text-sm pr-1`,
+									tw`text-xs pr-1`,
 								]}>{`{`}</Text>
-							<Text style={[{ color: theme.text.primary }, variableTextStyle, tw`text-sm capitalize`]}>
+							<Text style={[{ color: theme.text.primary }, variableTextStyle, tw`text-xs capitalize`]}>
 								{item.name}
 							</Text>
 							<Text
 								style={[
 									{ color: theme.colors[item.color] },
 									variableTextStyle,
-									tw`text-sm pl-1`,
+									tw`text-xs pl-1`,
 								]}>{`}`}</Text>
 						</Pressable>
 					)}

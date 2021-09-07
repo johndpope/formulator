@@ -41,7 +41,7 @@ export const VariableListCollapsed = ({
 				<View style={tw.style(`flex-1 flex flex-col justify-center`)}>
 					<Animated.View
 						style={[
-							tw.style(`absolute top-0 flex-1 overflow-hidden mr-2`, theme.shape),
+							tw.style(`absolute top-0 flex-1 overflow-hidden mr-4`, theme.shape),
 							{
 								opacity: sheetAnimations.fadeOut,
 								transform: [{ translateY: sheetAnimations.translateOut }],
