@@ -95,24 +95,16 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 						</Text>
 					)}
 					<Header>
-						<IconButton
-							icon={["fal", colorPickerShown ? "times" : "fill"]}
-							color={colorPickerShown ? theme.text.primary : theme.background.primary}
-							backgroundColor={colorPickerShown ? theme.button.secondary : theme.colors[variable.color]}
-							onPress={() => setColorPickerShown((b) => !b)}
-						/>
-
-						{colorPickerShown && (
-							<View style={tw`flex flex-row items-center flex-1 ml-4`}>
-								<ColorPicker selected={variable.color} handleColorChange={handleColorChange} />
-							</View>
+						{!colorPickerShown && (
+							<IconButton icon={["fal", "chevron-down"]} onPress={() => navigation.goBack()} />
 						)}
+
 						{!colorPickerShown && (
 							<View
 								style={tw.style(
 									theme.shape,
 									{ borderColor: theme.colors[variable.color] },
-									`h-9 ml-11 mr-5 flex-1 flex flex-row items-center border px-2`
+									`h-9 mx-5 flex-1 flex flex-row items-center border px-2`
 								)}>
 								<View
 									style={tw.style(
@@ -141,14 +133,18 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 								</Text>
 							</View>
 						)}
-						{!colorPickerShown && (
-							<Button
-								size="sm"
-								text="save"
-								onPress={handleSave}
-								backgroundColor={theme.button.secondary}
-							/>
+						{colorPickerShown && (
+							<View style={tw`flex flex-row items-center flex-1 mr-4`}>
+								<ColorPicker selected={variable.color} handleColorChange={handleColorChange} />
+							</View>
 						)}
+
+						<IconButton
+							icon={["fal", colorPickerShown ? "times" : "fill"]}
+							color={colorPickerShown ? theme.text.primary : theme.background.primary}
+							backgroundColor={colorPickerShown ? theme.button.secondary : theme.colors[variable.color]}
+							onPress={() => setColorPickerShown((b) => !b)}
+						/>
 					</Header>
 					<View style={tw`mt-1`}></View>
 					<Equation data={variable.equation} dispatch={dispatch} />
@@ -159,23 +155,24 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 							{ borderColor: theme.border, backgroundColor: theme.background.secondary },
 							tw`border-t px-6 pb-8 pt-4 flex flex-row items-center justify-between`,
 						]}>
-						{route.params?.variable && (
-							<>
+						{"vid" in variable && (
+							<View style={tw.style(`mr-4`)}>
 								<Button
-									size="sm"
+									size="md"
 									text="Delete"
 									onPress={handleDelete}
 									backgroundColor={theme.colors.error}
 								/>
-								<Text
-									style={[
-										{ color: theme.text.secondary, fontFamily: "Poppins_400Regular" },
-										tw`text-sm mx-auto`,
-									]}>
-									Delete and replace all instances?
-								</Text>
-							</>
+							</View>
 						)}
+						<View style={tw.style(`flex-1`)}>
+							<Button
+								size="md"
+								text="save"
+								onPress={handleSave}
+								backgroundColor={theme.colors[variable.color]}
+							/>
+						</View>
 					</View>
 				</ScreenView>
 			)}
