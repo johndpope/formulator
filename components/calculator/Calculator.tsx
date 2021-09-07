@@ -20,7 +20,7 @@ interface CalculatorProps {
 
 export default function Calculator({ dispatch }: CalculatorProps) {
 	return (
-		<View style={tw`flex-1 flex flex-col justify-center flex-wrap p-2.5`}>
+		<View style={tw`flex-1 flex flex-col justify-center items-end flex-wrap p-2.5`}>
 			<View style={tw`flex flex-row w-full h-14`}>
 				<PressableBracket value="(" dispatch={dispatch} />
 				<PressableBracket value=")" dispatch={dispatch} />
@@ -51,7 +51,7 @@ export default function Calculator({ dispatch }: CalculatorProps) {
 				<PressableDecimal dispatch={dispatch} />
 				<PressableOperation value="/" dispatch={dispatch} />
 			</View>
-			<View style={tw` flex flex-row w-full h-14`}>
+			<View style={tw`flex flex-row w-full h-14 w-1/2`}>
 				<PressableLineBreak dispatch={dispatch} />
 			</View>
 		</View>

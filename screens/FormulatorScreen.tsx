@@ -5,18 +5,17 @@ import EquationResult from "../components/equation/EquationResult";
 import Equation from "../components/equation/Equation";
 import Calculator from "../components/calculator/Calculator";
 import { FormulaScreenProps } from "../types/NavigatorTypes";
-import { View, TextInput } from "react-native";
+import { View, TextInput, Animated } from "react-native";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 
 import { useThemeContext } from "../providers/ThemeProvider";
-import { VariableListSmall } from "../components/variable/VariableChipList";
-
-import { Button } from "../components/theme/buttons/Button";
-import { IconButton } from "../components/theme/buttons/IconButton";
-import { ScreenView } from "../components/theme/views/ScreenView";
-import { ViewWithBottomSheet } from "../components/theme/views/ViewWithBottomSheet";
 import { Header } from "../components/theme/headers/Header";
+import { ScreenView } from "../components/theme/views/ScreenView";
+import { IconButton } from "../components/theme/buttons/IconButton";
 import { DropDownMenu, DropDownItem } from "../components/theme/menus/DropDownMenu";
+import { ViewWithBottomSheet } from "../components/theme/views/ViewWithBottomSheet";
+import { VariableListCollapsed } from "../components/variable/VariableListCollapsed";
+import { VariableListExpanded } from "../components/variable/VariableListExpanded";
 
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
 	const { theme } = useThemeContext();
@@ -82,7 +81,6 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 							{
 								color: theme.text.primary,
 								fontFamily: "Poppins_400Regular",
-								// backgroundColor: theme.background.secondary,
 							},
 							tw`flex-1 p-1 mx-3 text-center text-base rounded-md`,
 						]}
@@ -105,18 +103,24 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 			<View style={tw`flex-1 z-10`}>
 				<Equation data={formula.equation} variables={formula.variables} dispatch={formulaDispatch} />
 				<EquationResult data={formula.result} />
-				<Calculator dispatch={formulaDispatch} />
-				<View
-					style={[
-						{
-							borderColor: theme.border,
-							backgroundColor: theme.background.primary,
-						},
-						tw`flex flex-row px-6 pt-5 pb-10 items-center justify-end border-t`,
-					]}>
-					<VariableListSmall formula={formula} dispatch={formulaDispatch} />
-					<Button size="sm" text="New" onPress={() => navigation.navigate("Variable")} />
-				</View>
+				<ViewWithBottomSheet
+					bottomSheetCollapsedHeight={110}
+					bottomSheet={({ sheetAnimations }) => (
+						<>
+							<VariableListCollapsed
+								formula={formula}
+								dispatch={formulaDispatch}
+								sheetAnimations={sheetAnimations}
+							/>
+							<VariableListExpanded
+								formula={formula}
+								dispatch={formulaDispatch}
+								sheetAnimations={sheetAnimations}
+							/>
+						</>
+					)}>
+					<Calculator dispatch={formulaDispatch} />
+				</ViewWithBottomSheet>
 			</View>
 		</ScreenView>
 	);

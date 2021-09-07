@@ -10,12 +10,12 @@ import { useThemeContext } from "../../providers/ThemeProvider";
 import { Formula, FormulaAction } from "../../types/FormulatorTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-interface VariableListSmallProps {
+interface VariableChipListProps {
 	formula: Formula;
 	dispatch: React.Dispatch<FormulaAction>;
 }
 
-export function VariableListSmall({ formula, dispatch }: VariableListSmallProps) {
+export function VariableChipList({ formula, dispatch }: VariableChipListProps) {
 	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 	const { theme } = useThemeContext();
 
@@ -29,6 +29,7 @@ export function VariableListSmall({ formula, dispatch }: VariableListSmallProps)
 				<FlatList
 					horizontal
 					data={formula.variables}
+					showsHorizontalScrollIndicator={false}
 					keyExtractor={(item) => `variable-chip-${item.name}`}
 					contentContainerStyle={tw`flex flex-row items-center`}
 					renderItem={({ item }) => (
