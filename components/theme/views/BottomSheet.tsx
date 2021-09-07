@@ -5,6 +5,7 @@ import {
 	Animated,
 	PanResponder,
 	GestureResponderEvent,
+	Dimensions,
 	PanResponderGestureState,
 } from "react-native";
 
@@ -84,9 +85,9 @@ export const BottomSheet = ({ collapsedHeight, expandHeight = 1, children }: Bot
 	const panResponder = React.useRef(
 		PanResponder.create({
 			onMoveShouldSetPanResponder: (e, gst) => {
-				return gst.dy < -20 || gst.dy > 20;
+				return gst.dy < -collapsedHeight || gst.dy > collapsedHeight;
 			},
-			onStartShouldSetPanResponder: () => true,
+			onStartShouldSetPanResponder: (e, gst) => true,
 			onPanResponderGrant: (e, gst) => panY.extractOffset(),
 			onPanResponderRelease: (e, gst) => handlePanRelease(e, gst),
 			onPanResponderMove: Animated.event([null, { dy: panY }], { useNativeDriver: false }),

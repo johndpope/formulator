@@ -1,6 +1,6 @@
 import React from "react";
 import tw from "../../styles/tailwind";
-import { Animated, View, Text } from "react-native";
+import { Animated, View, Text, PanResponder } from "react-native";
 import { VariableChipList } from "../../components/variable/VariableChipList";
 import { Button } from "../../components/theme/buttons/Button";
 import { useThemeContext } from "../../providers/ThemeProvider";
@@ -24,12 +24,13 @@ export const VariableListCollapsed = ({
 }: VariableListCollapsedProps) => {
 	const { theme } = useThemeContext();
 	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
 	return (
 		<View
 			style={[
 				{
 					borderColor: theme.border,
-					backgroundColor: theme.background.primary,
+					// backgroundColor: theme.background.primary,
 				},
 				tw`flex flex-col items-center justify-start border-t overflow-hidden px-5`,
 			]}>

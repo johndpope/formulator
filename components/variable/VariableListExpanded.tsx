@@ -26,7 +26,7 @@ export const VariableListExpanded = ({
 	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 	return (
 		<View
-			style={tw.style(`flex-1 px-5`, {
+			style={tw.style(`flex-1`, {
 				backgroundColor: theme.background.primary,
 			})}>
 			<Animated.View style={{ flex: 1, opacity: sheetAnimations.fadeIn }}>
@@ -35,38 +35,40 @@ export const VariableListExpanded = ({
 					showsVerticalScrollIndicator={false}
 					keyExtractor={(item) => `variable-chip-${item.name}`}
 					renderItem={({ item }) => (
-						<Pressable
-							onPress={() =>
-								dispatch({
-									type: "INSERT_CONSTANT",
-									payload: { constantType: "EQ_VARIABLE", constantValue: `${item.name}` },
-								})
-							}
-							onLongPress={() => navigation.navigate("Variable", { variable: item })}
-							style={tw.style(
-								theme.shape,
-								{ borderColor: theme.colors[item.color] },
-								`w-full flex flex-col items-start px-5 py-3 mb-4 overflow-hidden border`
-							)}>
-							<View
-								style={tw.style(`absolute inset-y-0 inset-x-0 opacity-25`, {
-									backgroundColor: theme.colors[item.color],
-								})}></View>
-							<Text
-								style={tw.style(`text-lg`, {
-									fontFamily: "Poppins_400Regular",
-									color: theme.text.primary,
-								})}>
-								{item.name}
-							</Text>
-							<Text
-								style={tw.style(`text-sm`, {
-									fontFamily: "Poppins_400Regular",
-									color: theme.colors[item.color],
-								})}>
-								{item.equation.trim().replaceAll("|", "")}
-							</Text>
-						</Pressable>
+						<View style={tw.style(`px-5 py-2`)}>
+							<Pressable
+								onPress={() =>
+									dispatch({
+										type: "INSERT_CONSTANT",
+										payload: { constantType: "EQ_VARIABLE", constantValue: `${item.name}` },
+									})
+								}
+								onLongPress={() => navigation.navigate("Variable", { variable: item })}
+								style={tw.style(
+									theme.shape,
+									{ borderColor: theme.colors[item.color] },
+									`w-full flex flex-col items-start px-5 py-3 overflow-hidden border`
+								)}>
+								<View
+									style={tw.style(`absolute inset-y-0 inset-x-0 opacity-25`, {
+										backgroundColor: theme.colors[item.color],
+									})}></View>
+								<Text
+									style={tw.style(`text-lg`, {
+										fontFamily: "Poppins_400Regular",
+										color: theme.text.primary,
+									})}>
+									{item.name}
+								</Text>
+								<Text
+									style={tw.style(`text-sm`, {
+										fontFamily: "Poppins_400Regular",
+										color: theme.colors[item.color],
+									})}>
+									{item.equation.trim().replaceAll("|", "")}
+								</Text>
+							</Pressable>
+						</View>
 					)}
 				/>
 			</Animated.View>
