@@ -39,10 +39,10 @@ export const VariableListCollapsed = ({
 					backgroundColor: theme.button.secondary,
 				})}></View>
 			<View style={tw.style(`flex flex-row mt-4 mb-8`)}>
-				<View style={tw.style(`flex-1 flex flex-col justify-center`)}>
+				<View style={tw.style(`flex-1 w-full mr-2 flex flex-col justify-center`)}>
 					<Animated.View
 						style={[
-							tw.style(`absolute top-0 flex-1 overflow-hidden mr-4`, theme.shape),
+							tw.style(`absolute top-0 w-full overflow-hidden mr-4`, theme.shape),
 							{
 								opacity: sheetAnimations.fadeOut,
 								transform: [{ translateY: sheetAnimations.translateOut }],

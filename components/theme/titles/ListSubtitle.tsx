@@ -12,8 +12,9 @@ export const ListSubtitle = ({ text }: TitleProps) => {
 	const { theme } = useThemeContext();
 	return (
 		<Text
+			numberOfLines={1}
 			style={[
-				tw`flex-1 text-xs mt-2`,
+				tw`text-xs mt-2 overflow-hidden`,
 				{
 					color: theme.brand,
 					fontFamily: "Poppins_400Regular",

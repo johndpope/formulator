@@ -10,6 +10,7 @@ import { SheetAnimationsMap } from "../theme/views/BottomSheet";
 import { FlatList } from "react-native-gesture-handler";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Button } from "../../components/theme/buttons/Button";
+import { IconButton } from "../theme/buttons/IconButton";
 
 interface VariableListExpandedProps {
 	formula: Formula;
@@ -47,26 +48,35 @@ export const VariableListExpanded = ({
 								style={tw.style(
 									theme.shape,
 									{ borderColor: theme.colors[item.color] },
-									`w-full flex flex-col items-start px-5 py-3 overflow-hidden border`
+									`w-full flex flex-row items-center px-4 py-2 overflow-hidden border`
 								)}>
 								<View
 									style={tw.style(`absolute inset-y-0 inset-x-0 opacity-25`, {
 										backgroundColor: theme.colors[item.color],
 									})}></View>
-								<Text
-									style={tw.style(`text-lg`, {
-										fontFamily: "Poppins_400Regular",
-										color: theme.text.primary,
-									})}>
-									{item.name}
-								</Text>
-								<Text
-									style={tw.style(`text-sm`, {
-										fontFamily: "Poppins_400Regular",
-										color: theme.colors[item.color],
-									})}>
-									{item.equation.trim().replaceAll("|", "")}
-								</Text>
+								<View style={tw.style(`flex-1 flex flex-col`)}>
+									<Text
+										style={tw.style(`text-base`, {
+											fontFamily: "Poppins_400Regular",
+											color: theme.text.primary,
+										})}>
+										{item.name}
+									</Text>
+									<Text
+										numberOfLines={1}
+										style={tw.style(`text-sm`, {
+											fontFamily: "Poppins_400Regular",
+											color: theme.colors[item.color],
+										})}>
+										{item.equation.trim().replaceAll("|", "")}
+									</Text>
+								</View>
+								<IconButton
+									size={"md"}
+									icon={["fal", "cog"]}
+									color={theme.colors[item.color]}
+									onPress={() => navigation.navigate("Variable", { variable: item })}
+								/>
 							</Pressable>
 						</View>
 					)}
