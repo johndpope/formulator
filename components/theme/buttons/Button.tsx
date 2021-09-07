@@ -40,7 +40,7 @@ export const Button = ({
 			onPress={onPress}
 			style={({ pressed }) =>
 				tw.style(`flex flex-row items-center border-2`, theme.shape, {
-					borderColor: borderColor || backgroundColor || theme.brand,
+					borderColor: pressed ? theme.button.secondary : borderColor || backgroundColor || theme.brand,
 					backgroundColor: pressed ? theme.button.secondary : backgroundColor || theme.brand,
 					"flex-row-reverse": iconPosition === "right",
 					"px-3 py-1": size === "sm",
