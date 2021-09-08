@@ -138,7 +138,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 							sheetAnimations={sheetAnimations}
 						/>
 					)}>
-					<Calculator dispatch={formulaDispatch} />
+					<Calculator isFormula dispatch={formulaDispatch} />
 				</ViewWithBottomSheet>
 			</Animated.View>
 		</ScreenView>

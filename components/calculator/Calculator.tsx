@@ -1,7 +1,7 @@
 import React from "react";
 import tw from "../../styles/tailwind";
 import { View } from "react-native";
-import { FormulaAction } from "../../types/FormulatorTypes";
+import { Formula, FormulaAction } from "../../types/FormulatorTypes";
 import { VariableAction } from "../../types/VariableTypes";
 import {
 	PressableClear,
@@ -12,13 +12,15 @@ import {
 	PressableDecimal,
 	PressableNegative,
 	PressableLineBreak,
+	PressableSaveAsVariable,
 } from "./Pressables";
 
 interface CalculatorProps {
+	isFormula?: boolean;
 	dispatch: React.Dispatch<FormulaAction> | React.Dispatch<VariableAction>;
 }
 
-export default function Calculator({ dispatch }: CalculatorProps) {
+export default function Calculator({ isFormula = false, dispatch }: CalculatorProps) {
 	return (
 		<View style={tw`flex-1 flex flex-col justify-center items-end flex-wrap p-2.5`}>
 			<View style={tw`flex flex-row w-full h-14`}>
@@ -51,7 +53,8 @@ export default function Calculator({ dispatch }: CalculatorProps) {
 				<PressableDecimal dispatch={dispatch} />
 				<PressableOperation value="/" dispatch={dispatch} />
 			</View>
-			<View style={tw`flex flex-row w-full h-14 w-1/2`}>
+			<View style={tw`flex flex-row w-full h-14`}>
+				{isFormula && <PressableSaveAsVariable />}
 				<PressableLineBreak dispatch={dispatch} />
 			</View>
 		</View>

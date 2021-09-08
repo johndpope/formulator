@@ -15,7 +15,7 @@ import {
 
 export const defaultVariableState: Variable = {
 	name: "New Variable",
-	color: "green",
+	color: "purple",
 	equation: "",
 	result: null,
 	openBrackets: 0,
