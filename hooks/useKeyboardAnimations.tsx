@@ -25,7 +25,10 @@ export default function useKeyboardAnimations() {
 		}).start();
 		setKeyboardVibility(false);
 	};
-	const dismissKeyboard = () => Keyboard.dismiss();
+	const dismissKeyboard = () => {
+		Keyboard.dismiss();
+		setKeyboardVibility(false);
+	};
 
 	React.useEffect(() => {
 		const showKeyboard = Keyboard.addListener(

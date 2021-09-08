@@ -1,6 +1,6 @@
 import React from "react";
 import tw from "../styles/tailwind";
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, Pressable, Animated } from "react-native";
 import { VariableScreenProps } from "../types/NavigatorTypes";
 import { Variable } from "../types/VariableTypes";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
@@ -16,10 +16,12 @@ import { Button } from "../components/theme/buttons/Button";
 import { IconButton } from "../components/theme/buttons/IconButton";
 import { ScreenView } from "../components/theme/views/ScreenView";
 import { Header } from "../components/theme/headers/Header";
+import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
 
 export default function VariableScreen({ route, navigation }: VariableScreenProps) {
 	const { theme } = useThemeContext();
 	const { formula, formulaDispatch } = useFormulatorContext();
+	const { dismissKeyboard, isKeyboardVisible, fadeOutOnKeyboard } = useKeyboardAnimations();
 
 	const [variable, dispatch] = React.useReducer(variableReducer, defaultVariableState);
 	const [nameIsInvalid, setNameIsInvalid] = React.useState<boolean>(false);
@@ -84,6 +86,13 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 		<>
 			{variable && dispatch && (
 				<ScreenView padded={false}>
+					{isKeyboardVisible && (
+						<Pressable
+							onPress={() => dismissKeyboard()}
+							style={tw.style(`absolute w-full h-full z-50`)}
+						/>
+					)}
+
 					<View
 						style={[
 							{ backgroundColor: theme.border },
@@ -94,7 +103,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 							! A variable with this name already exists
 						</Text>
 					)}
-					<Header>
+					<Header style={tw`z-50 mb-1`}>
 						{!colorPickerShown && (
 							<IconButton icon={["fal", "chevron-down"]} onPress={() => navigation.goBack()} />
 						)}
@@ -110,7 +119,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 									style={tw.style(
 										theme.shape,
 										{ backgroundColor: theme.colors[variable.color] },
-										`absolute inset-x-0 inset-y-0 rounded-md opacity-25`
+										`absolute inset-x-0 inset-y-0 opacity-25`
 									)}></View>
 								<Text style={{ color: theme.colors[variable.color], fontFamily: "Poppins_600SemiBold" }}>
 									{"{"}
@@ -146,34 +155,35 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 							onPress={() => setColorPickerShown((b) => !b)}
 						/>
 					</Header>
-					<View style={tw`mt-1`}></View>
-					<Equation data={variable.equation} dispatch={dispatch} />
-					<EquationResult data={variable.result} />
-					<Calculator dispatch={dispatch} />
-					<View
-						style={[
-							{ borderColor: theme.border, backgroundColor: theme.background.secondary },
-							tw`border-t px-6 pb-8 pt-4 flex flex-row items-center justify-between`,
-						]}>
-						{"vid" in variable && (
-							<View style={tw.style(`mr-4`)}>
+					<Animated.View style={[tw`flex-1`, { opacity: fadeOutOnKeyboard }]}>
+						<Equation data={variable.equation} dispatch={dispatch} />
+						<EquationResult data={variable.result} />
+						<Calculator dispatch={dispatch} />
+						<View
+							style={[
+								{ borderColor: theme.border, backgroundColor: theme.background.secondary },
+								tw`border-t px-6 pb-8 pt-4 flex flex-row items-center justify-between`,
+							]}>
+							{"vid" in variable && (
+								<View style={tw.style(`mr-4`)}>
+									<Button
+										size="md"
+										text="Delete"
+										onPress={handleDelete}
+										backgroundColor={theme.colors.error}
+									/>
+								</View>
+							)}
+							<View style={tw.style(`flex-1`)}>
 								<Button
 									size="md"
-									text="Delete"
-									onPress={handleDelete}
-									backgroundColor={theme.colors.error}
+									text="save"
+									onPress={handleSave}
+									backgroundColor={theme.colors[variable.color]}
 								/>
 							</View>
-						)}
-						<View style={tw.style(`flex-1`)}>
-							<Button
-								size="md"
-								text="save"
-								onPress={handleSave}
-								backgroundColor={theme.colors[variable.color]}
-							/>
 						</View>
-					</View>
+					</Animated.View>
 				</ScreenView>
 			)}
 		</>

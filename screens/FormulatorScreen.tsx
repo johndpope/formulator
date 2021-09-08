@@ -5,7 +5,7 @@ import EquationResult from "../components/equation/EquationResult";
 import Equation from "../components/equation/Equation";
 import Calculator from "../components/calculator/Calculator";
 import { FormulaScreenProps } from "../types/NavigatorTypes";
-import { View, TextInput, Animated } from "react-native";
+import { View, TextInput, Animated, Pressable } from "react-native";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 
 import { useThemeContext } from "../providers/ThemeProvider";
@@ -16,10 +16,13 @@ import { DropDownMenu, DropDownItem } from "../components/theme/menus/DropDownMe
 import { ViewWithBottomSheet } from "../components/theme/views/ViewWithBottomSheet";
 import { VariableListCollapsed } from "../components/variable/VariableListCollapsed";
 import { VariableListExpanded } from "../components/variable/VariableListExpanded";
+import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
 
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
 	const { theme } = useThemeContext();
 	const { formula, formulaDispatch } = useFormulatorContext();
+	const { dismissKeyboard, isKeyboardVisible, fadeOutOnKeyboard } = useKeyboardAnimations();
+
 	const [changeStatus, setChangeStatus] = React.useState<number>(2);
 
 	const statusColors = ["red", "yellow", "green"];
@@ -50,42 +53,58 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	}, []);
 
 	React.useEffect(() => {
-		if (!formula?.fid) return;
+		if (!formula.fid) return;
 		navigation.setParams({ formula });
-	}, [formula?.fid, formula?.timestamp]);
+	}, [formula.fid, formula.timestamp]);
 
 	React.useEffect(() => {
 		if (!formula) return;
-
 		handleStatusChange();
 	}, [formula, route.params]);
 
 	return (
 		<ScreenView>
+			{isKeyboardVisible && (
+				<Pressable onPress={() => dismissKeyboard()} style={tw.style(`absolute w-full h-full z-50`)} />
+			)}
 			<View style={tw`z-50`}>
 				<Header>
 					<View style={tw`absolute inset-x-0 top-0 flex flex-row justify-center`}>
-						<View
+						<Animated.View
 							style={[
-								tw`w-2 h-2 rounded-full`,
-								{ backgroundColor: theme.colors[statusColors[changeStatus]] },
+								tw`w-1.5 h-1.5 rounded-full`,
+								{
+									opacity: fadeOutOnKeyboard,
+									backgroundColor: theme.colors[statusColors[changeStatus]],
+								},
 							]}
 						/>
 					</View>
 					<IconButton onPress={() => navigation.goBack()} icon={["fal", "chevron-left"]} />
-					<TextInput
-						selectTextOnFocus
-						value={formula.name}
-						placeholder={formula.name}
-						style={[
+					<View
+						style={tw.style(
+							theme.shape,
 							{
-								color: theme.text.primary,
-								fontFamily: "Poppins_400Regular",
+								backgroundColor: isKeyboardVisible
+									? theme.background.secondary
+									: theme.background.primary,
 							},
-							tw`flex-1 p-1 mx-3 text-center text-base rounded-md`,
-						]}
-						onChangeText={(n) => formulaDispatch({ type: "CHANGE_NAME", payload: n })}
-					/>
+							`flex-1 flex flex-row items-center mx-5 h-10`
+						)}>
+						<TextInput
+							selectTextOnFocus
+							value={formula.name}
+							placeholder={formula.name}
+							style={[
+								{
+									color: theme.text.primary,
+									fontFamily: "Poppins_400Regular",
+								},
+								tw`w-full p-1 text-center text-base rounded-md`,
+							]}
+							onChangeText={(n) => formulaDispatch({ type: "CHANGE_NAME", payload: n })}
+						/>
+					</View>
 
 					<DropDownMenu
 						toggle={({ opened, setOpened }) => (
@@ -100,7 +119,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 				</Header>
 			</View>
 
-			<View style={tw`flex-1 z-10`}>
+			<Animated.View style={[tw`flex-1 z-10`, { opacity: fadeOutOnKeyboard }]}>
 				<Equation data={formula.equation} variables={formula.variables} dispatch={formulaDispatch} />
 				<EquationResult data={formula.result} />
 				<ViewWithBottomSheet
@@ -121,7 +140,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 					)}>
 					<Calculator dispatch={formulaDispatch} />
 				</ViewWithBottomSheet>
-			</View>
+			</Animated.View>
 		</ScreenView>
 	);
 }
