@@ -1,8 +1,8 @@
 import React from "react";
 import "firebase/firestore";
 import firebase from "firebase";
-import { useAuthContext } from "../providers/AuthProvider";
 import { SettingsMap } from "../types/SettingsTypes";
+import { useAuthContext } from "../providers/AuthProvider";
 
 export function useSettings() {
 	const { user } = useAuthContext();
