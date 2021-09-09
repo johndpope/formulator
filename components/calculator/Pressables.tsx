@@ -256,7 +256,9 @@ export function PressableSaveAsVariable() {
 				return `${variable.result}`;
 			});
 		}
-		navigation.navigate("Variable", { variable: { ...defaultVariableState, equation } });
+		navigation.navigate("Variable", {
+			variable: { ...defaultVariableState, equation, lastConstantType: "EQ_NUMBER" },
+		});
 	}
 
 	return (
