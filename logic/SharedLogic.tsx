@@ -241,15 +241,16 @@ export function insertLineBreak(state: Calculable) {
 }
 
 export function insertLineBreakBefore(state: Calculable) {
+	// console.log(state.equation);
+
 	// Don't execute if previous chracter is already line break
 	const isAlreadyLineBreak = state.equation.slice(-1) === "|";
 	if (isAlreadyLineBreak) return state;
 
-	const equation = state.equation.replace(/\s+\S*$/g, (match) => ` |${match}`);
-	// const equation = state.equation.replace(
-	// 	/\s?(\{([^{}]+)\}|\+|-|\*|\/|\(|\)|-?\d|0?\.|%)$/g,
-	// 	(match) => ` |${match}`
-	// );
+	const equation = state.equation.replace(
+		/\s([*\s]+)?(\w|\+|-|\/|\*|\(|\)|\{([^{}]+)\})+$/g,
+		(match) => ` |${match}`
+	);
 
 	return { equation };
 }

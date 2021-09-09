@@ -15,6 +15,7 @@ export default function Equation({ data, variables, dispatch }: EquationProps) {
 	const [numLines, setNumLines] = React.useState<number>(0);
 	const scrollViewRef = React.useRef<ScrollView>(null);
 	const initialLineHeight = React.useRef<number>(0);
+	const previousEquation = React.useRef<string>();
 
 	function generateLineBreaks(eq: string) {
 		let lines = eq.match(/\|/g);
@@ -23,10 +24,7 @@ export default function Equation({ data, variables, dispatch }: EquationProps) {
 
 	const handleContentSizeChange = (w: number, h: number) => {
 		if (!loaded) return;
-		if (Math.round(h) > initialLineHeight.current) {
-			dispatch({ type: "INSERT_LINE_BREAK_BEFORE" });
-		}
-
+		if (Math.round(h) > initialLineHeight.current) dispatch({ type: "INSERT_LINE_BREAK_BEFORE" });
 		scrollViewRef?.current?.scrollToEnd?.({ animated: true });
 	};
 

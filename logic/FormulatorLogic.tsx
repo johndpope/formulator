@@ -66,13 +66,8 @@ export const formulaReducer = (state: Formula, action: FormulaAction): Formula =
 			return deleteFormulaVariable(state, payload);
 
 		case "REPLACE_NUM_WITH_VARIABLE":
-			if (
-				payload == null ||
-				typeof payload === "string" ||
-				!("variable" in payload) ||
-				!("replacement" in payload)
-			)
-				return state;
+			// Check if payload is an instance of VariableReplacement
+			if (payload == null || typeof payload === "string" || !("replacement" in payload)) return state;
 			return replaceNumWithVariable(state, payload);
 
 		case "CALCULATE_RESULT":
