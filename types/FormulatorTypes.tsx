@@ -7,6 +7,11 @@ export type Constant = {
 	constantValue?: string;
 };
 
+export type VariableWithReplacement = {
+	variable: Variable;
+	replacement: string;
+};
+
 export type Formula = {
 	fid?: string;
 	user?: string;
@@ -21,7 +26,7 @@ export type Formula = {
 
 export type FormulaAction = {
 	type: string;
-	payload?: string | Constant | Formula | Variable;
+	payload?: string | Constant | Formula | Variable | VariableWithReplacement;
 };
 
 export interface FormulatorProviderProps {

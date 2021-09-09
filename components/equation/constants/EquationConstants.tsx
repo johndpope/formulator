@@ -1,6 +1,6 @@
 import React from "react";
 import tw from "../../../styles/tailwind";
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { formatNumber } from "../../../logic/SharedLogic";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { EquationConstant, OperationSymbolMap } from "../../../types/EquationTypes";

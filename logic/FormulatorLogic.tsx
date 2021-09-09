@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import mathString from "math-string";
 import "firebase/firestore";
 import firebase from "firebase";
-import { Formula, FormulaAction } from "../types/FormulatorTypes";
+import { Formula, FormulaAction, VariableWithReplacement } from "../types/FormulatorTypes";
 import { Variable } from "../types/VariableTypes";
 import {
 	clearAll,
@@ -64,6 +64,16 @@ export const formulaReducer = (state: Formula, action: FormulaAction): Formula =
 			// Check if payload is an instance of Variable
 			if (payload == null || typeof payload === "string" || !("color" in payload)) return state;
 			return deleteFormulaVariable(state, payload);
+
+		case "REPLACE_NUM_WITH_VARIABLE":
+			if (
+				payload == null ||
+				typeof payload === "string" ||
+				!("variable" in payload) ||
+				!("replacement" in payload)
+			)
+				return state;
+			return replaceNumWithVariable(state, payload);
 
 		case "CALCULATE_RESULT":
 			return calculateResult(state);
@@ -188,6 +198,17 @@ export function deleteFormulaVariable(state: Formula, variable: Variable) {
 	return { ...state, equation, variables };
 }
 
+export function replaceNumWithVariable(state: Formula, variableReplacement: VariableWithReplacement) {
+	const { variable, replacement } = variableReplacement;
+	if (!variable || !("variables" in state) || !Array.isArray(state.variables)) return state;
+	const equation = replacement.replace("{___REPLACEMENT___}", ` {${variable.name}}`);
+	const variables: Array<Variable> = [...state.variables];
+	const vid = uuid();
+	variables.push({ ...variable, vid });
+
+	return { ...state, equation, variables };
+}
+
 export function insertFormulaNumber(state: Formula, value?: string) {
 	const { equation, lastConstantType, openBrackets } = state;
 	const updated = insertNumber({ equation, lastConstantType, openBrackets }, value);
@@ -286,8 +307,6 @@ export function calculateResult(state: Formula) {
 	} catch {
 		result = null;
 	}
-
-	// const result = res ? parseInt(res).toFixed(2).toString() : null;
 
 	return { ...state, result };
 }

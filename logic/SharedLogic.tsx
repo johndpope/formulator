@@ -14,6 +14,8 @@ export function checkConstantType(constant: string) {
 			return "EQ_BRACKET_OPEN";
 		case ")":
 			return "EQ_BRACKET_CLOSED";
+		case "|":
+			return "EQ_LINE_BREAK";
 		default:
 			return constant?.includes("}") ? "EQ_VARIABLE" : "EQ_NUMBER";
 	}

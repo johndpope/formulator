@@ -44,6 +44,18 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 		navigation.goBack();
 	};
 
+	const handleSaveAndReplace = () => {
+		if (!variable.result) return;
+		if (nameIsInvalid) return;
+
+		formulaDispatch({
+			type: "REPLACE_NUM_WITH_VARIABLE",
+			payload: { variable, replacement: route.params?.replacement || "" },
+		});
+
+		navigation.goBack();
+	};
+
 	const handleNameChange = (n: string) => {
 		dispatch({ type: "CHANGE_NAME", payload: n.replaceAll("|", "") });
 	};
@@ -178,7 +190,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 								<Button
 									size="md"
 									text="save"
-									onPress={handleSave}
+									onPress={route.params?.replacement ? handleSaveAndReplace : handleSave}
 									backgroundColor={theme.colors[variable.color]}
 								/>
 							</View>
