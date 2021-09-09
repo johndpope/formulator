@@ -6,16 +6,17 @@ import { useThemeContext } from "../../../providers/ThemeProvider";
 
 interface SafeScreenViewProps {
 	padded?: boolean;
+	backgroundColor?: string;
 	children?: React.ReactNode | Array<React.ReactNode>;
 }
 
-export function SafeScreenView({ children }: SafeScreenViewProps) {
+export function SafeScreenView({ children, backgroundColor }: SafeScreenViewProps) {
 	const { theme } = useThemeContext();
 	return (
 		<SafeAreaView
 			style={[
 				{
-					backgroundColor: theme.background.primary,
+					backgroundColor: backgroundColor || theme.background.primary,
 					paddingTop: Constants.statusBarHeight,
 				},
 				tw`flex-1`,

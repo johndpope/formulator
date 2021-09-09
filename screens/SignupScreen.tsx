@@ -2,6 +2,7 @@ import React from "react";
 import tw from "../styles/tailwind";
 import validator from "validator";
 import { StatusBar } from "expo-status-bar";
+
 import {
 	Text,
 	View,
@@ -23,6 +24,10 @@ import { HeaderText, ButtonText, LabelText, BodyText } from "../components/theme
 import { SignupScreenProps } from "../types/NavigatorTypes";
 import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
 
+import { FormLabel } from "../components/theme/forms/FormLabel";
+import { FormHeader } from "../components/theme/forms/FormHeader";
+import { FormLink } from "../components/theme/forms/FormLink";
+import { FormText } from "../components/theme/forms/FormText";
 import { Button } from "../components/theme/buttons/Button";
 import { IconButton } from "../components/theme/buttons/IconButton";
 import { SafeScreenView } from "../components/theme/views/SafeScreenView";
@@ -75,7 +80,7 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 	}, [passwordError]);
 
 	return (
-		<SafeScreenView>
+		<SafeScreenView backgroundColor={theme.background.secondary}>
 			<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
 				<TouchableWithoutFeedback onPress={dismissKeyboard}>
 					<View style={tw`flex flex-col justify-between px-8 h-full`}>
@@ -84,44 +89,51 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 								tw`absolute px-8 pt-5`,
 								{ opacity: fadeOutOnKeyboard, transform: [{ translateY: translateOutOnKeyboard }] },
 							]}>
-							<HeaderText style={tw`text-3xl text-white`}>Signup for an Account</HeaderText>
+							<FormHeader color={theme.text.primary}>Signup for an Account</FormHeader>
 						</Animated.View>
 
 						{/* LOGIN FORM */}
 						<View style={tw`my-auto flex flex-col justify-center z-50`}>
 							<View style={tw`w-full`}>
-								{!emailError ? (
-									<LabelText style={tw`text-white p-2 py-3`}>Email</LabelText>
-								) : (
-									<LabelText style={tw`text-yellow-400 p-2 py-3`}>! {emailError}</LabelText>
-								)}
+								<FormLabel color={emailError ? theme.colors.error : theme.text.primary}>
+									{emailError || "Email"}
+								</FormLabel>
 								<TextInput
 									value={email}
 									onChangeText={onChangeEmail}
 									style={[
-										{ fontFamily: "Poppins_400Regular" },
-										tw`px-4 py-2 rounded-md bg-gray-900 bg-opacity-20 text-white text-base flex flex-row items-center`,
+										{
+											color: theme.text.primary,
+											borderColor: theme.border,
+											backgroundColor: theme.background.primary,
+											fontFamily: "Poppins_400Regular",
+										},
+										tw`px-4 py-2 rounded-md text-base flex flex-row items-center border`,
 									]}
 								/>
 							</View>
 
 							<View style={tw`w-full`}>
-								{!passwordError ? (
-									<LabelText style={tw`text-white p-2 py-3`}>Password</LabelText>
-								) : (
-									<LabelText style={tw`text-yellow-400 p-2 py-3`}>! {passwordError}</LabelText>
-								)}
+								<FormLabel color={passwordError ? theme.colors.error : theme.text.primary}>
+									{passwordError || "Password"}
+								</FormLabel>
 								<View style={tw`flex flex-row w-full `}>
 									<TextInput
 										value={password}
 										onChangeText={onChangePassword}
-										style={[
-											{ fontFamily: "Poppins_400Regular" },
-											tw`flex-1 px-4 py-2 mr-2 rounded-md bg-gray-900 bg-opacity-20 text-white text-base flex flex-row items-center`,
-										]}
 										secureTextEntry={passwordHidden}
+										style={[
+											{
+												color: theme.text.primary,
+												borderColor: theme.border,
+												backgroundColor: theme.background.primary,
+												fontFamily: "Poppins_400Regular",
+											},
+											tw`flex-1 px-4 py-2 mr-2  rounded-md text-base flex flex-row items-center border`,
+										]}
 									/>
 									<IconButton
+										size="lg"
 										color={theme.brand}
 										icon={["fal", passwordHidden ? "eye-slash" : "eye"]}
 										onPress={() => setPasswordHidden((p) => !p)}
@@ -130,33 +142,24 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 							</View>
 
 							<View style={tw`w-full mt-8`}>
-								<Button
-									onPress={handleSignUp}
-									text="Create Account"
-									textColor={theme.brand}
-									backgroundColor={theme.text.primary}
-								/>
-
-								{/* <Pressable
-									style={tw`flex flex-row items-center px-4 py-3 rounded-full border border-white bg-white`}
-									onPress={handleSignUp}>
-									<ButtonText style={tw`text-purple-700 text-base mx-auto`}>Create Account</ButtonText>
-								</Pressable> */}
+								<Button onPress={handleSignUp} text="Create Account" />
 							</View>
 
 							<View style={tw`absolute w-full top-full flex flex-col justify-center`}>
 								<Animated.View style={[{ opacity: fadeOutOnKeyboard }]}>
 									<View style={tw`flex flex-row h-20 items-center`}>
-										<View style={tw`flex-1 border border-white border-opacity-10`}></View>
-										<Text style={tw`mx-4 text-white`}>OR</Text>
-										<View style={tw`flex-1 border border-white border-opacity-10`}></View>
+										<View style={tw.style(`flex-1 border`, { borderColor: theme.border })} />
+										<View style={tw.style(`mx-4`)}>
+											<FormText color={theme.text.secondary}>OR</FormText>
+										</View>
+										<View style={tw.style(`flex-1 border`, { borderColor: theme.border })} />
 									</View>
 
 									<Button
 										onPress={signInWithGoogle}
 										text="Signup with Google"
 										icon={["fab", "google"]}
-										backgroundColor={theme.button.secondary}
+										backgroundColor={theme.background.primary}
 									/>
 								</Animated.View>
 							</View>
@@ -169,16 +172,14 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 									style={tw`text-white mr-2`}
 									icon={["fal", "exclamation-square"]}
 								/>
-								<BodyText style={tw`text-base text-yellow-400 text-center mx-auto`}>
-									{authError}
-								</BodyText>
+								<FormText color={theme.colors.error}>{authError}</FormText>
 							</View>
 						) : (
-							<TouchableOpacity style={tw`p-4`} onPress={() => navigation.navigate("Login")}>
-								<BodyText style={tw`underline text-center text-white text-sm`}>
+							<View style={tw`flex flex-row justify-center`}>
+								<FormLink onPress={() => navigation.navigate("Login")} color={theme.brand}>
 									Already signed up? Sign in here.
-								</BodyText>
-							</TouchableOpacity>
+								</FormLink>
+							</View>
 						)}
 					</View>
 				</TouchableWithoutFeedback>

@@ -5,26 +5,27 @@ import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import { Button } from "../components/theme/buttons/Button";
 import { IconButton } from "../components/theme/buttons/IconButton";
+import { FormLabel } from "../components/theme/forms/FormLabel";
+import { FormHeader } from "../components/theme/forms/FormHeader";
+import { FormLink } from "../components/theme/forms/FormLink";
+import { FormText } from "../components/theme/forms/FormText";
 
 import {
 	View,
-	Text,
 	Animated,
 	TextInput,
 	Platform,
-	TouchableOpacity,
 	KeyboardAvoidingView,
 	TouchableWithoutFeedback,
 } from "react-native";
 
+import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
 import { SafeScreenView } from "../components/theme/views/SafeScreenView";
-
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { HeaderText, LabelText, ButtonText, BodyText } from "../components/theme/Typography";
 import { LoginScreenProps } from "../types/NavigatorTypes";
 import { useAuthContext } from "../providers/AuthProvider";
-import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
 import { useThemeContext } from "../providers/ThemeProvider";
+
 export default function LoginScreen({ navigation }: LoginScreenProps) {
 	const { theme } = useThemeContext();
 	const { signInWithEmail, signInWithGoogle, resetPassword, authError } = useAuthContext();
@@ -88,50 +89,59 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 								tw`absolute px-8 pt-5`,
 								{ opacity: fadeOutOnKeyboard, transform: [{ translateY: translateOutOnKeyboard }] },
 							]}>
-							<HeaderText style={tw`text-3xl text-white`}>Login to your Account</HeaderText>
+							<FormHeader color={theme.text.primary}>Login to your account</FormHeader>
 						</Animated.View>
 
 						{/* LOGIN FORM */}
 						<View style={tw`my-auto flex flex-col justify-center z-50`}>
 							<View style={tw`w-full`}>
-								{!emailError ? (
-									<LabelText style={tw`text-white p-2 py-3`}>Email</LabelText>
-								) : (
-									<LabelText style={tw`text-red-500 p-2 py-3`}>{emailError}</LabelText>
-								)}
+								<FormLabel color={emailError ? theme.colors.error : theme.text.primary}>
+									{emailError || "Email"}
+								</FormLabel>
 								<TextInput
 									value={email}
 									onChangeText={onChangeEmail}
 									style={[
-										{ fontFamily: "Poppins_400Regular" },
-										tw`px-4 py-2 rounded-md bg-gray-800 text-white text-base flex flex-row items-center`,
+										{
+											color: theme.text.primary,
+											borderColor: theme.border,
+											backgroundColor: theme.background.secondary,
+											fontFamily: "Poppins_400Regular",
+										},
+										tw`px-4 py-2 rounded-md text-base flex flex-row items-center border`,
 									]}
 								/>
 							</View>
 
 							<View style={tw`w-full`}>
-								<View style={tw`flex flex-row items-center`}>
-									<LabelText style={tw`text-${passwordError ? "red-500" : "white"} p-2 py-3`}>
+								<View style={tw`flex flex-row items-center justify-between`}>
+									<FormLabel color={passwordError ? theme.colors.error : theme.text.primary}>
 										{passwordError || "Password"}
-									</LabelText>
+									</FormLabel>
 									{!passwordError && (
-										<TouchableOpacity onPress={handlePasswordReset} style={tw` ml-auto px-2 mr-16`}>
-											<BodyText style={tw`text-gray-600 underline`}>Forgot?</BodyText>
-										</TouchableOpacity>
+										<FormLink color={theme.text.secondary} onPress={handlePasswordReset}>
+											Forgot?
+										</FormLink>
 									)}
 								</View>
 								<View style={tw`flex flex-row w-full `}>
 									<TextInput
 										value={password}
 										onChangeText={onChangePassword}
-										style={[
-											{ fontFamily: "Poppins_400Regular" },
-											tw`flex-1 px-4 py-2 mr-2 rounded-md bg-gray-800 text-white text-base flex flex-row items-center`,
-										]}
 										secureTextEntry={passwordHidden}
+										style={[
+											{
+												color: theme.text.primary,
+												borderColor: theme.border,
+												backgroundColor: theme.background.secondary,
+												fontFamily: "Poppins_400Regular",
+											},
+											tw`flex-1 px-4 py-2 mr-2  rounded-md text-base flex flex-row items-center border`,
+										]}
 									/>
 
 									<IconButton
+										size="lg"
 										color={theme.brand}
 										icon={["fal", passwordHidden ? "eye-slash" : "eye"]}
 										onPress={() => setPasswordHidden((p) => !p)}
@@ -145,19 +155,19 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
 							<View style={tw`absolute w-full top-full flex flex-col justify-center`}>
 								<Animated.View style={[{ opacity: fadeOutOnKeyboard }]}>
-									<>
-										<View style={tw`flex flex-row h-20 items-center`}>
-											<View style={tw`flex-1 border border-gray-700 border-opacity-50`}></View>
-											<Text style={tw`mx-4 text-gray-700`}>OR</Text>
-											<View style={tw`flex-1 border border-gray-700 border-opacity-50`}></View>
+									<View style={tw`flex flex-row h-20 items-center`}>
+										<View style={tw.style(`flex-1 border`, { borderColor: theme.border })} />
+										<View style={tw.style(`mx-4`)}>
+											<FormText color={theme.text.secondary}>OR</FormText>
 										</View>
-										<Button
-											onPress={signInWithGoogle}
-											text="Signin with Google"
-											icon={["fab", "google"]}
-											backgroundColor={theme.button.secondary}
-										/>
-									</>
+										<View style={tw.style(`flex-1 border`, { borderColor: theme.border })} />
+									</View>
+									<Button
+										onPress={signInWithGoogle}
+										text="Signin with Google"
+										icon={["fab", "google"]}
+										backgroundColor={theme.button.secondary}
+									/>
 								</Animated.View>
 							</View>
 						</View>
@@ -166,17 +176,18 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 							<View style={tw`flex flex-row items-center justify-center p-4`}>
 								<FontAwesomeIcon
 									size={20}
-									style={tw`text-red-500 mr-2`}
+									color={theme.colors.error}
+									style={tw.style(`mr-2`)}
 									icon={["fal", "exclamation-square"]}
 								/>
-								<BodyText style={tw`text-base text-red-500 text-center`}>{authError}</BodyText>
+								<FormText color={theme.colors.error}>{authError}</FormText>
 							</View>
 						) : (
-							<TouchableOpacity style={tw`p-4`} onPress={() => navigation.navigate("Signup")}>
-								<BodyText style={tw.style(`underline text-center text-sm`, { color: theme.brand })}>
+							<View style={tw.style(`flex flex-row justify-center`)}>
+								<FormLink color={theme.brand} onPress={() => navigation.navigate("Signup")}>
 									Don't have an account?
-								</BodyText>
-							</TouchableOpacity>
+								</FormLink>
+							</View>
 						)}
 					</View>
 				</TouchableWithoutFeedback>

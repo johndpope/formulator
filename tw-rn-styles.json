@@ -7566,6 +7566,9 @@
   "leading-10": {
     "lineHeight": 40
   },
+  "leading-12": {
+    "lineHeight": 44
+  },
   "tracking-tighter": {
     "letterSpacing": "-0.05em"
   },
