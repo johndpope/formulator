@@ -1,7 +1,7 @@
 import React from "react";
 import { themes } from "../styles/Themes";
-import { ThemeContextProps, ThemeProviderProps, Theme } from "../types/ThemeTypes";
 import { useSettingsContext } from "./SettingsProvider";
+import { ThemeContextProps, ThemeProviderProps, Theme } from "../types/ThemeTypes";
 
 interface ShapesMap {
 	[key: string]: string;
