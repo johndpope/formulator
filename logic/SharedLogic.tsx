@@ -42,6 +42,24 @@ export function generateConstantsArray(eq: string, variables?: Variable[]): Arra
 	return constantsArray;
 }
 
+export function generateConstantReplacements(constants: Array<EquationConstant>, index: number) {
+	let before = 0;
+	let after = 0;
+	const reduced = constants?.reduce((a, c, idx) => {
+		if (idx === index) {
+			before = a.length;
+			after = a.length + c.value.length + 1;
+		}
+		return c.type !== "EQ_VARIABLE" ? `${a} ${c.value}` : `${a} {${c.value}}`;
+	}, "");
+	const start = reduced?.slice(0, before) || "";
+	const end = reduced?.slice(after, reduced.length) || "";
+	const singleReplacement = start + "{___REPLACEMENT___}" + end;
+	const fullReplacement = reduced.replaceAll(constants[index].value, "{___REPLACEMENT___}");
+
+	return [singleReplacement, fullReplacement];
+}
+
 export function formatNumber(value: string) {
 	return value.includes(".")
 		? value.replace(/(.*)\./, (match) => match.replace(/\B(?=(\d{3})+(?!\d))/g, ","))

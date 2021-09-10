@@ -1,6 +1,6 @@
 import React from "react";
 import tw from "../styles/tailwind";
-import { View, Text, Pressable, Animated } from "react-native";
+import { View, Text, Pressable, Animated, Dimensions, InteractionManager } from "react-native";
 import { useThemeContext } from "../providers/ThemeProvider";
 
 interface AlertButtonProps {
@@ -24,8 +24,10 @@ interface AlertState {
 
 export function useAlert() {
 	const { theme } = useThemeContext();
+	const viewRef = React.useRef<View>(null);
 	const [isShown, setIsShown] = React.useState<boolean>(false);
 	const [state, setState] = React.useState<AlertState>();
+
 	const fade = React.useRef(new Animated.Value(0)).current;
 
 	const showAlert = (alertState?: AlertState) => {
@@ -65,6 +67,7 @@ export function useAlert() {
 			<>
 				{state != null && isShown && (
 					<Animated.View
+						ref={viewRef}
 						style={[
 							{ opacity: fade },
 							tw.style(`absolute inset-y-0 inset-x-0 flex flex-row`, {

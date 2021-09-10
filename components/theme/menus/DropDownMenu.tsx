@@ -27,7 +27,7 @@ export const DropDownMenu = ({ toggle, children, position = "right" }: DropDownM
 	useFocusEffect(
 		React.useCallback(() => {
 			const task = InteractionManager.runAfterInteractions(() => {
-				viewRef.current?.measureInWindow((x, y, width, height) => {
+				viewRef.current?.measureInWindow((x, y) => {
 					setOffset({ x, y });
 				});
 			});

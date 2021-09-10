@@ -196,7 +196,7 @@ export function deleteFormulaVariable(state: Formula, variable: Variable) {
 export function replaceNumWithVariable(state: Formula, variableReplacement: VariableWithReplacement) {
 	const { variable, replacement } = variableReplacement;
 	if (!variable || !("variables" in state) || !Array.isArray(state.variables)) return state;
-	const equation = replacement.replace("{___REPLACEMENT___}", ` {${variable.name}}`);
+	const equation = replacement.replaceAll("{___REPLACEMENT___}", ` {${variable.name}}`);
 	const variables: Array<Variable> = [...state.variables];
 	const vid = uuid();
 	variables.push({ ...variable, vid });

@@ -8,7 +8,7 @@ export type RootStackParamList = {
 	Signup: undefined;
 	Settings: undefined;
 	Formulator: { formula: Formula } | undefined;
-	Variable: { variable: Variable; replacement?: string } | undefined;
+	Variable: { variable: Variable; replacements?: Array<string> } | undefined;
 };
 
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;

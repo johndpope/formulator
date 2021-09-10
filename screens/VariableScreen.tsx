@@ -66,12 +66,33 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 		if (!variable.result) return;
 		if (nameIsInvalid) return;
 
-		formulaDispatch({
-			type: "REPLACE_NUM_WITH_VARIABLE",
-			payload: { variable, replacement: route.params?.replacement || "" },
+		showAlert({
+			title: "Replace All ?",
+			description: "Would you like to replace all instances of this number, or just this one?",
+			buttons: [
+				{
+					text: "Just this one",
+					onPress: () => {
+						formulaDispatch({
+							type: "REPLACE_NUM_WITH_VARIABLE",
+							payload: { variable, replacement: route.params?.replacements?.[0] || "" },
+						});
+						navigation.goBack();
+					},
+				},
+				{
+					text: "Replace All",
+					color: theme.colors.green,
+					onPress: () => {
+						formulaDispatch({
+							type: "REPLACE_NUM_WITH_VARIABLE",
+							payload: { variable, replacement: route.params?.replacements?.[1] || "" },
+						});
+						navigation.goBack();
+					},
+				},
+			],
 		});
-
-		navigation.goBack();
 	};
 
 	const handleNameChange = (n: string) => {
@@ -210,7 +231,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 								<Button
 									size="md"
 									text="save"
-									onPress={route.params?.replacement ? handleSaveAndReplace : handleSave}
+									onPress={route.params?.replacements ? handleSaveAndReplace : handleSave}
 									backgroundColor={theme.colors[variable.color]}
 								/>
 							</View>
