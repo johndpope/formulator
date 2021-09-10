@@ -12,6 +12,7 @@ import ColorPicker from "../components/variable/ColorPicker";
 import { defaultVariableState, variableReducer } from "../logic/VariableLogic";
 import { useThemeContext } from "../providers/ThemeProvider";
 
+import { useAlert } from "../hooks/useAlert";
 import { Button } from "../components/theme/buttons/Button";
 import { IconButton } from "../components/theme/buttons/IconButton";
 import { ScreenView } from "../components/theme/views/ScreenView";
@@ -21,6 +22,7 @@ import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
 export default function VariableScreen({ route, navigation }: VariableScreenProps) {
 	const { theme } = useThemeContext();
 	const { formula, formulaDispatch } = useFormulatorContext();
+	const { Alert, showAlert, dismissAlert } = useAlert();
 	const { dismissKeyboard, isKeyboardVisible, fadeOutOnKeyboard } = useKeyboardAnimations();
 
 	const [variable, dispatch] = React.useReducer(variableReducer, defaultVariableState);
@@ -28,8 +30,24 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	const [colorPickerShown, setColorPickerShown] = React.useState<boolean>(false);
 
 	const handleDelete = () => {
-		navigation.goBack();
-		formulaDispatch({ type: "DELETE_VARIABLE", payload: variable });
+		showAlert({
+			title: "NOTICE!",
+			description: `All instances of this variable will be replaced with the result value ( ${variable.result} ).\nAre you sure you wish to proceed?`,
+			buttons: [
+				{
+					text: "Cancel",
+					onPress: dismissAlert,
+				},
+				{
+					text: "Delete",
+					color: theme.colors.error,
+					onPress: () => {
+						navigation.goBack();
+						formulaDispatch({ type: "DELETE_VARIABLE", payload: variable });
+					},
+				},
+			],
+		});
 	};
 
 	const handleSave = () => {
@@ -98,6 +116,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 		<>
 			{variable && dispatch && (
 				<ScreenView padded={false}>
+					<Alert />
 					{isKeyboardVisible && (
 						<Pressable
 							onPress={() => dismissKeyboard()}

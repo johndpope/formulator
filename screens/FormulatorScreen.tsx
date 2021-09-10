@@ -8,6 +8,7 @@ import { FormulaScreenProps } from "../types/NavigatorTypes";
 import { View, TextInput, Animated, Pressable, Alert } from "react-native";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 
+import { useAlert } from "../hooks/useAlert";
 import { useThemeContext } from "../providers/ThemeProvider";
 import { Header } from "../components/theme/headers/Header";
 import { ScreenView } from "../components/theme/views/ScreenView";
@@ -21,6 +22,7 @@ import useKeyboardAnimations from "../hooks/useKeyboardAnimations";
 export default function FormulatorScreen({ route, navigation }: FormulaScreenProps) {
 	const { theme } = useThemeContext();
 	const { formula, formulaDispatch } = useFormulatorContext();
+	const { Alert, showAlert, dismissAlert } = useAlert();
 	const { dismissKeyboard, isKeyboardVisible, fadeOutOnKeyboard } = useKeyboardAnimations();
 
 	const [changeStatus, setChangeStatus] = React.useState<number>(2);
@@ -34,21 +36,25 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	}
 
 	function handleDelete() {
-		Alert.alert(
-			"Delete Formula Notice",
-			"Are you sure you want to delete this formula? This cannot be undone.",
-			[
+		showAlert({
+			title: "Hold up!",
+			description:
+				"Are you sure you want to delete this formula and all variables? \n This cannot be undone.",
+			buttons: [
 				{
 					text: "Cancel",
-					onPress: () => console.log("Cancel Pressed"),
-					style: "cancel",
+					onPress: dismissAlert,
 				},
-				{ text: "Delete", style: "destructive", onPress: () => console.log("OK Pressed") },
+				{
+					text: "Delete",
+					color: theme.colors.error,
+					onPress: () => {
+						navigation.goBack();
+						formulaDispatch({ type: "DELETE_FORMULA", payload: formula.fid });
+					},
+				},
 			],
-			{ cancelable: true }
-		);
-		// navigation.goBack();
-		// formulaDispatch({ type: "DELETE_FORMULA", payload: formula.fid });
+		});
 	}
 
 	function handleStatusChange() {
@@ -77,6 +83,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 
 	return (
 		<ScreenView>
+			<Alert />
 			{isKeyboardVisible && (
 				<Pressable onPress={() => dismissKeyboard()} style={tw.style(`absolute w-full h-full z-50`)} />
 			)}
