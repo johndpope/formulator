@@ -140,6 +140,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 									selectTextOnFocus
 									value={variable.name}
 									placeholder={variable.name}
+									keyboardAppearance="dark"
 									style={[
 										{
 											color: theme.text.primary,

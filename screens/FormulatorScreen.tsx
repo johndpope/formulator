@@ -5,7 +5,7 @@ import EquationResult from "../components/equation/EquationResult";
 import Equation from "../components/equation/Equation";
 import Calculator from "../components/calculator/Calculator";
 import { FormulaScreenProps } from "../types/NavigatorTypes";
-import { View, TextInput, Animated, Pressable } from "react-native";
+import { View, TextInput, Animated, Pressable, Alert } from "react-native";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
 
 import { useThemeContext } from "../providers/ThemeProvider";
@@ -34,8 +34,21 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 	}
 
 	function handleDelete() {
-		navigation.goBack();
-		formulaDispatch({ type: "DELETE_FORMULA", payload: formula.fid });
+		Alert.alert(
+			"Delete Formula Notice",
+			"Are you sure you want to delete this formula? This cannot be undone.",
+			[
+				{
+					text: "Cancel",
+					onPress: () => console.log("Cancel Pressed"),
+					style: "cancel",
+				},
+				{ text: "Delete", style: "destructive", onPress: () => console.log("OK Pressed") },
+			],
+			{ cancelable: true }
+		);
+		// navigation.goBack();
+		// formulaDispatch({ type: "DELETE_FORMULA", payload: formula.fid });
 	}
 
 	function handleStatusChange() {
@@ -95,6 +108,7 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 							selectTextOnFocus
 							value={formula.name}
 							placeholder={formula.name}
+							keyboardAppearance="dark"
 							style={[
 								{
 									color: theme.text.primary,

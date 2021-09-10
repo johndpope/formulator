@@ -101,6 +101,7 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 								<TextInput
 									value={email}
 									onChangeText={onChangeEmail}
+									keyboardAppearance="dark"
 									style={[
 										{
 											color: theme.text.primary,
@@ -122,6 +123,7 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 										value={password}
 										onChangeText={onChangePassword}
 										secureTextEntry={passwordHidden}
+										keyboardAppearance="dark"
 										style={[
 											{
 												color: theme.text.primary,

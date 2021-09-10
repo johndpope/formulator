@@ -101,6 +101,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 								<TextInput
 									value={email}
 									onChangeText={onChangeEmail}
+									keyboardAppearance="dark"
 									style={[
 										{
 											color: theme.text.primary,
@@ -129,6 +130,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 										value={password}
 										onChangeText={onChangePassword}
 										secureTextEntry={passwordHidden}
+										keyboardAppearance="dark"
 										style={[
 											{
 												color: theme.text.primary,
