@@ -55,7 +55,10 @@ export function generateConstantReplacements(constants: Array<EquationConstant>,
 	const start = reduced?.slice(0, before) || "";
 	const end = reduced?.slice(after, reduced.length) || "";
 	const singleReplacement = start + "{___REPLACEMENT___}" + end;
-	const fullReplacement = reduced.replaceAll(constants[index].value, "{___REPLACEMENT___}");
+	const fullReplacement = reduced.replace(
+		new RegExp(constants[index].value, "g"),
+		"{___REPLACEMENT___}"
+	);
 
 	return [singleReplacement, fullReplacement];
 }

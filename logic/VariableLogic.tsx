@@ -84,8 +84,8 @@ export const variableReducer = (state: Variable, action: VariableAction): Variab
 export function calculateResult(state: Variable) {
 	let result;
 	let equation = state.equation
-		.replaceAll(/\s|\|/g, "")
-		.replaceAll(/[.0-9]+%/g, (m) => `${parseInt(m) / 100}`);
+		.replace(/\s|\|/g, "")
+		.replace(/[.0-9]+%/g, (m) => `${parseInt(m) / 100}`);
 
 	try {
 		result = mathString(equation);

@@ -71,7 +71,11 @@ export function VariableChipList({ formula, dispatch }: VariableChipListProps) {
 				/>
 			) : (
 				<View style={tw`flex-1 flex flex-row items-center justify-center`}>
-					<Text style={[{ color: theme.text.secondary, fontFamily: "Poppins_400Regular" }, tw`mr-2`]}>
+					<Text
+						style={[
+							{ color: theme.text.secondary, fontFamily: "Poppins_400Regular" },
+							tw`mr-2 text-xs`,
+						]}>
 						Click "New" to add a new variable
 					</Text>
 					<FontAwesomeIcon icon={["fal", "arrow-right"]} size={12} color={theme.text.secondary} />

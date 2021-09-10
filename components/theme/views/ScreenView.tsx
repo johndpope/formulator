@@ -1,7 +1,8 @@
 import React from "react";
 import Constants from "expo-constants";
+import { StatusBar } from "expo-status-bar";
 import tw from "../../../styles/tailwind";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import { useThemeContext } from "../../../providers/ThemeProvider";
 
 interface ScreenViewProps {
@@ -21,6 +22,7 @@ export function ScreenView({ children, padded = true }: ScreenViewProps) {
 				tw`flex-1`,
 			]}>
 			{children}
+			<StatusBar style="light" />
 		</View>
 	);
 }

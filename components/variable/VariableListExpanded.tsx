@@ -1,6 +1,6 @@
 import React from "react";
 import tw from "../../styles/tailwind";
-import { Pressable, Text, View, Animated } from "react-native";
+import { Pressable, Text, View, Animated, TouchableWithoutFeedback } from "react-native";
 import { useThemeContext } from "../../providers/ThemeProvider";
 import { Formula, FormulaAction } from "../../types/FormulatorTypes";
 import { useNavigation } from "@react-navigation/core";
@@ -26,8 +26,10 @@ export const VariableListExpanded = ({
 	const { theme } = useThemeContext();
 	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 	return (
-		<View
+		<Pressable
+			onPress={(e) => e.preventDefault()}
 			style={tw.style(`flex-1`, {
+				zIndex: 500,
 				backgroundColor: theme.background.primary,
 			})}>
 			<Animated.View style={{ flex: 1, opacity: sheetAnimations.fadeIn }}>
@@ -68,7 +70,7 @@ export const VariableListExpanded = ({
 											fontFamily: "Poppins_400Regular",
 											color: theme.colors[item.color],
 										})}>
-										{item.equation.trim().replaceAll("|", "")}
+										{item.equation.trim().replace(/\|/g, "")}
 									</Text>
 								</View>
 								<IconButton
@@ -82,6 +84,6 @@ export const VariableListExpanded = ({
 					)}
 				/>
 			</Animated.View>
-		</View>
+		</Pressable>
 	);
 };

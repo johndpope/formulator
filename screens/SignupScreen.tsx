@@ -168,7 +168,7 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 						</View>
 
 						{authError ? (
-							<View style={tw`flex flex-row items-center justify-center p-4 rounded-md bg-red-500`}>
+							<View style={tw`flex flex-row items-center justify-center p-4 rounded-md`}>
 								<FontAwesomeIcon
 									size={24}
 									style={tw`text-white mr-2`}
@@ -177,7 +177,7 @@ export default function SignUp({ navigation }: SignupScreenProps) {
 								<FormText color={theme.colors.error}>{authError}</FormText>
 							</View>
 						) : (
-							<View style={tw`flex flex-row justify-center`}>
+							<View style={tw`flex flex-row justify-center p-4`}>
 								<FormLink onPress={() => navigation.navigate("Login")} color={theme.brand}>
 									Already signed up? Sign in here.
 								</FormLink>

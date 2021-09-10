@@ -1,6 +1,6 @@
 import React from "react";
 import tw from "../styles/tailwind";
-import { View, Text, TextInput, Pressable, Animated } from "react-native";
+import { View, Text, TextInput, Pressable, Animated, Platform } from "react-native";
 import { VariableScreenProps } from "../types/NavigatorTypes";
 import { Variable } from "../types/VariableTypes";
 import { useFormulatorContext } from "../providers/FormulatorProvider";
@@ -32,7 +32,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	const handleDelete = () => {
 		showAlert({
 			title: "NOTICE!",
-			description: `All instances of this variable will be replaced with the result value ( ${variable.result} ).\nAre you sure you wish to proceed?`,
+			description: `All instances of this variable will be replaced with the result value ( ${route.params?.variable.result} ).\nAre you sure you wish to proceed?`,
 			buttons: [
 				{
 					text: "Cancel",
@@ -96,7 +96,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	};
 
 	const handleNameChange = (n: string) => {
-		dispatch({ type: "CHANGE_NAME", payload: n.replaceAll("|", "") });
+		dispatch({ type: "CHANGE_NAME", payload: n.replace(/\|/g, "") });
 	};
 
 	const handleColorChange = (c: string) => {
@@ -136,7 +136,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 	return (
 		<>
 			{variable && dispatch && (
-				<ScreenView padded={false}>
+				<ScreenView padded={Platform.OS === "ios" ? false : true}>
 					<Alert />
 					{isKeyboardVisible && (
 						<Pressable
@@ -165,7 +165,7 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 								style={tw.style(
 									theme.shape,
 									{ borderColor: theme.colors[variable.color] },
-									`h-9 mx-5 flex-1 flex flex-row items-center border px-2`
+									`mx-5 flex-1 flex flex-row items-center border px-3 py-1`
 								)}>
 								<View
 									style={tw.style(
@@ -173,7 +173,8 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 										{ backgroundColor: theme.colors[variable.color] },
 										`absolute inset-x-0 inset-y-0 opacity-25`
 									)}></View>
-								<Text style={{ color: theme.colors[variable.color], fontFamily: "Poppins_600SemiBold" }}>
+								<Text
+									style={[{ color: theme.colors[variable.color], fontFamily: "Poppins_600SemiBold" }]}>
 									{"{"}
 								</Text>
 								<TextInput
@@ -186,11 +187,12 @@ export default function VariableScreen({ route, navigation }: VariableScreenProp
 											color: theme.text.primary,
 											fontFamily: "Poppins_400Regular",
 										},
-										tw`flex-1 p-1 text-center text-base rounded-md`,
+										tw`flex-1 text-center text-base`,
 									]}
 									onChangeText={handleNameChange}
 								/>
-								<Text style={{ color: theme.colors[variable.color], fontFamily: "Poppins_600SemiBold" }}>
+								<Text
+									style={[{ color: theme.colors[variable.color], fontFamily: "Poppins_600SemiBold" }]}>
 									{"}"}
 								</Text>
 							</View>

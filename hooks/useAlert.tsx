@@ -69,12 +69,17 @@ export function useAlert() {
 					<Animated.View
 						ref={viewRef}
 						style={[
-							{ opacity: fade },
-							tw.style(`absolute inset-y-0 inset-x-0 flex flex-row`, {
-								backgroundColor: "rgba(0,0,0,0.5)",
-								zIndex: 60,
-							}),
+							{ opacity: fade, zIndex: 60 },
+							tw.style(`absolute inset-y-0 inset-x-0 flex flex-row`),
 						]}>
+						<View
+							style={[
+								{
+									backgroundColor: theme.background.secondary,
+									opacity: 0.8,
+								},
+								tw.style(`absolute inset-y-0 inset-x-0`),
+							]}></View>
 						<Pressable onPress={dismissAlert} style={tw.style(`flex-1 p-10`)}>
 							<View
 								style={tw.style(`m-auto w-full shadow-2xl overflow-hidden`, theme.shape, {

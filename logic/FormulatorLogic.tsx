@@ -175,7 +175,10 @@ export function updateFormulaVariable(state: Formula, variable: Variable) {
 	let variables: Array<Variable> = [...state.variables];
 	let indexToUpdate: number = variables.findIndex((v: Variable) => v.vid === variable.vid);
 
-	const equation = state.equation.replaceAll(`${variables[indexToUpdate].name}`, variable.name);
+	const equation = state.equation.replace(
+		new RegExp(`${variables[indexToUpdate].name}`, "g"),
+		variable.name
+	);
 	variables[indexToUpdate] = variable;
 
 	return { ...state, equation, variables };
@@ -183,7 +186,7 @@ export function updateFormulaVariable(state: Formula, variable: Variable) {
 
 export function deleteFormulaVariable(state: Formula, variable: Variable) {
 	if (!variable || !("variables" in state) || !Array.isArray(state.variables)) return state;
-	let equation = state.equation.replaceAll(`{${variable.name}}`, `${variable.result}`);
+	let equation = state.equation.replace(new RegExp(`{${variable.name}}`, "g"), `${variable.result}`);
 
 	let variables: Array<Variable> = [...state.variables];
 	let indexToUpdate: number = variables.findIndex((v: Variable) => v.name === variable.name);
@@ -196,7 +199,7 @@ export function deleteFormulaVariable(state: Formula, variable: Variable) {
 export function replaceNumWithVariable(state: Formula, variableReplacement: VariableWithReplacement) {
 	const { variable, replacement } = variableReplacement;
 	if (!variable || !("variables" in state) || !Array.isArray(state.variables)) return state;
-	const equation = replacement.replaceAll("{___REPLACEMENT___}", ` {${variable.name}}`);
+	const equation = replacement.replace(/\{___REPLACEMENT___\}/g, ` {${variable.name}}`);
 	const variables: Array<Variable> = [...state.variables];
 	const vid = uuid();
 	variables.push({ ...variable, vid });
@@ -295,7 +298,7 @@ export function calculateResult(state: Formula) {
 	}
 
 	// Remove spaces / linebreaks, and replace percentage values
-	equation = equation.replaceAll(/\s|\|/g, "").replaceAll(/[.0-9]+%/g, (m) => `${parseInt(m) / 100}`);
+	equation = equation.replace(/\s|\|/g, "").replace(/[.0-9]+%/g, (m) => `${parseInt(m) / 100}`);
 
 	try {
 		result = mathString(equation);

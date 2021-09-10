@@ -29,7 +29,8 @@ import { useThemeContext } from "../providers/ThemeProvider";
 export default function LoginScreen({ navigation }: LoginScreenProps) {
 	const { theme } = useThemeContext();
 	const { signInWithEmail, signInWithGoogle, resetPassword, authError } = useAuthContext();
-	const { fadeOutOnKeyboard, translateOutOnKeyboard, dismissKeyboard } = useKeyboardAnimations();
+	const { isKeyboardVisible, fadeOutOnKeyboard, translateOutOnKeyboard, dismissKeyboard } =
+		useKeyboardAnimations();
 
 	const [email, onChangeEmail] = React.useState("");
 	const [emailError, setEmailError] = React.useState("");
@@ -155,7 +156,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 								<Button onPress={handleSignIn} text="Login" />
 							</View>
 
-							<View style={tw`absolute w-full top-full flex flex-col justify-center`}>
+							{!isKeyboardVisible && (
 								<Animated.View style={[{ opacity: fadeOutOnKeyboard }]}>
 									<View style={tw`flex flex-row h-20 items-center`}>
 										<View style={tw.style(`flex-1 border`, { borderColor: theme.border })} />
@@ -171,7 +172,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 										backgroundColor={theme.button.secondary}
 									/>
 								</Animated.View>
-							</View>
+							)}
 						</View>
 
 						{authError ? (
@@ -185,7 +186,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 								<FormText color={theme.colors.error}>{authError}</FormText>
 							</View>
 						) : (
-							<View style={tw.style(`flex flex-row justify-center`)}>
+							<View style={tw.style(`flex flex-row justify-center p-4`)}>
 								<FormLink color={theme.brand} onPress={() => navigation.navigate("Signup")}>
 									Don't have an account?
 								</FormLink>

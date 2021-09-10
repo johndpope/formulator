@@ -58,7 +58,7 @@ function FormulaListItem({ formula, onPress, onLongPress }: FormulaListItemProps
 			})}>
 			<View style={tw`flex-1 flex flex-col`}>
 				<ListTitle text={formula?.name} />
-				<ListSubtitle text={formula?.equation.replaceAll("|", "")} />
+				<ListSubtitle text={formula?.equation.replace(/\|/g, "")} />
 			</View>
 		</Pressable>
 	);
