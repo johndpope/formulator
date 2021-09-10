@@ -61,7 +61,7 @@ export const DropDownMenu = ({ toggle, children, position = "right" }: DropDownM
 							"left-0": position === "left",
 						},
 						theme.shape,
-						`absolute top-1 w-40 flex flex-col border overflow-hidden`
+						`absolute top-1 w-32 flex flex-col border overflow-hidden`
 					)}>
 					{children}
 				</View>

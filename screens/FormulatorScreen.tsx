@@ -135,7 +135,9 @@ export default function FormulatorScreen({ route, navigation }: FormulaScreenPro
 							/>
 						)}>
 						<DropDownItem text="Save" icon={["fal", "upload"]} onPress={handleSave} />
-						<DropDownItem text="Delete" icon={["fal", "trash-alt"]} onPress={handleDelete} />
+						{"fid" in formula && (
+							<DropDownItem text="Delete" icon={["fal", "trash-alt"]} onPress={handleDelete} />
+						)}
 					</DropDownMenu>
 				</Header>
 			</View>
