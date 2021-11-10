@@ -24,7 +24,6 @@ import {
 } from "@expo-google-fonts/poppins";
 
 library.add(fab, fal);
-require("dotenv").config();
 
 export default function App() {
 	const [fontsLoaded] = useFonts({

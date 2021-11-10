@@ -1,4 +1,5 @@
 import React from "react";
+import { FIREBASE_API_KEY } from "@env";
 import { AuthContextProps, AuthProviderProps } from "../types/AuthTypes";
 
 import firebase from "firebase";
@@ -9,7 +10,7 @@ import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 
 const firebaseConfig = {
-	apiKey: process.env.FIREBASE_API_KEY,
+	apiKey: FIREBASE_API_KEY,
 	authDomain: "variable-calculator-3e73a.firebaseapp.com",
 	projectId: "variable-calculator-3e73a",
 	storageBucket: "variable-calculator-3e73a.appspot.com",
