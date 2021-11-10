@@ -12,7 +12,6 @@ import ThemeProvider from "./providers/ThemeProvider";
 import { fal } from "@fortawesome/pro-light-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
-library.add(fab, fal);
 
 import { NovaMono_400Regular } from "@expo-google-fonts/nova-mono";
 import {
@@ -23,6 +22,9 @@ import {
 	Poppins_700Bold,
 	Poppins_900Black,
 } from "@expo-google-fonts/poppins";
+
+library.add(fab, fal);
+require("dotenv").config();
 
 export default function App() {
 	const [fontsLoaded] = useFonts({

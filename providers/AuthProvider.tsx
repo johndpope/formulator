@@ -9,7 +9,7 @@ import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 
 const firebaseConfig = {
-	apiKey: "AIzaSyDZrNtS-Cw79Vwh8coms5XDnopbHK8Vsv0",
+	apiKey: process.env.FIREBASE_API_KEY,
 	authDomain: "variable-calculator-3e73a.firebaseapp.com",
 	projectId: "variable-calculator-3e73a",
 	storageBucket: "variable-calculator-3e73a.appspot.com",
